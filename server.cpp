@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/10 16:05:58 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/10 22:34:14 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <unistd.h>
 
 void	exit_error(std::string error)
 {
@@ -78,28 +79,14 @@ struct kevent {
 
 *************************************************************************** */
 
-void	ft_recev_msg(int cfd, sockaddr_in client_addr)
-{
-	char				buffer[1024];
-
-	while (1) {
-	bzero(buffer, 1024);
-	recv(cfd, buffer, 1024, 0);
-	std::cout << "Message received by " << (client_addr.sin_addr.s_addr) << ": " << buffer << std::endl;
-	}
-}
-
 int	main(int ac, char **av)
 {
 	int					sfd = 0; 						// socket server
 	int					port;							// server port
-	int					cfd;						// socket client -> accept()
+	int					cfd;							// socket client -> accept()
 	socklen_t			addrlen;						// sizeof la structure sockaddr_in
+	char				buffer[1024];
 	struct sockaddr_in	server_addr, client_addr;		// structure, données pour bind(), accept(), etc
-
-	// KQUEUE VARIABLES //
-	struct kevent		change_list[64], event_list[64];
-	int		kq, n_ev;
 
 	if (ac != 2)
 		exit_error("./server [PORT]");
@@ -121,17 +108,24 @@ int	main(int ac, char **av)
 	if (listen(sfd, 5) < 0)
 		exit_error("Lister Error: Failed set soket to passive socket");
 
-	// Set structure kevent selon nos flags
-	EV_SET(&change_list[0], sfd, EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
-	EV_SET(&change_list[1], fileno(stdin), EVFILT_READ, EV_ADD | EV_ENABLE, 0, 0, 0);
+
+	// KQUEUE VARIABLES //
+	struct kevent		change_list, event_list[64];
+	int		kq, n_ev;
 
 	// initialiser kqueue
 	if ((kq = kqueue()) == -1)
 		exit_error("Kqueue failed");
 
+	// Set structure kevent selon nos flags
+	EV_SET(&change_list, sfd, EVFILT_READ, EV_ADD, 0, 0, 0);
+
+	// Add ma queue
+	kevent(kq, &change_list, 1, NULL, 0, NULL);
+
 	while (1)
 	{
-		n_ev = kevent(kq, change_list, 64, event_list, 64, NULL);
+		n_ev = kevent(kq, NULL, 0, event_list, 64, NULL);
 		if (n_ev < 0)
 			exit_error("kevent failed");
 		else if (n_ev > 0)
@@ -139,23 +133,45 @@ int	main(int ac, char **av)
 
 			if (event_list[0].flags & EV_EOF)
 				exit_error("kevent: EV_EOF");
-	
-			for (int fd = 0; fd < n_ev ; fd++)
+			
+			// Boucler sur le nombre de nouveaux events
+			for (int i = 0; i < n_ev ; i++)
 			{
 				// Handle kevent error
-				if (event_list[fd].flags & EV_ERROR)
+				if (event_list[i].flags & EV_ERROR)
 					exit_error("kevent: EV_ERROR");
 
 				// Accept client
-				if (event_list[fd].ident == sfd) /* Accept new clients */
+				if (event_list[i].ident == sfd) /* Accept new clients */
 				{
 					if ((cfd = accept(sfd, (struct sockaddr *)&client_addr, &addrlen)) == -1)
-						exit_error("Accept client error");
+						exit_error("Accept error");
+
+					// Ajouter mon nouveau client à ma liste d'evenement en lui precisant le cfd
+					EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
+					kevent(kq, &change_list, 1, NULL, 0, NULL);
+
+					std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 				}
 
 				// Read client that are already accepted
-				else if (event_list[fd].ident & EVFILT_READ) /* Read clients messages */
-					ft_recev_msg(cfd, client_addr);
+				else if (event_list[i].filter & EVFILT_READ) /* Read clients messages */
+				{
+					std::cout << "Client[" << event_list[i].ident << "] sent message : ";
+					bzero(buffer, 1024);
+					recv(event_list[i].ident, buffer, 1024, 0);
+					std::cout << buffer;
+				}
+
+				// SERVER DISPLAY SYSTEM FONCTIONNE PAS POUR L'INSTANT
+				// Write to clients that are connected
+				// else if (event_list[i].filter == sfd) /* Read clients messages */
+				// {
+				// 	std::cout << "Message from server : ";
+				// 	bzero(buffer, 1024);
+				// 	read(sfd, buffer, 1024);
+				// 	send(event_list[i].ident, buffer, 1024, 0);
+				// }
 			}
 		}
 	}
