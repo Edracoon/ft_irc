@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/10 12:01:43 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/10 12:22:45 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,11 +69,11 @@ in_addr_t == uint32_t
 
 int	main(int ac, char **av)
 {
-	int					sfd = 0; 			// socket server
-	int					port;				// server port
-	int					new_socket;			// socket client -> accept()
-	socklen_t			addrlen;			// sizeof la structure sockaddr_in
-	struct sockaddr_in	t_sockaddr_in;		// structure, données pour bind(), accept(), etc
+	int					sfd = 0; 						// socket server
+	int					port;							// server port
+	int					cfd = 0;						// socket client -> accept()
+	socklen_t			addrlen;						// sizeof la structure sockaddr_in
+	struct sockaddr_in	server_addr, client_addr;		// structure, données pour bind(), accept(), etc
 	char				buffer[1024];
 
 	if (ac != 2)
@@ -82,28 +82,28 @@ int	main(int ac, char **av)
 		exit_error("Socket Error");
 
 	port = atoi(av[1]);
-	addrlen = sizeof(t_sockaddr_in);
+	addrlen = sizeof(server_addr);
 
 	/* Remplire la structure pour donner les informations au bind */
-	t_sockaddr_in.sin_family			= AF_INET;				// famille ipv4
-	t_sockaddr_in.sin_port				= htons(port);			// port
-	t_sockaddr_in.sin_addr.s_addr		= htonl(INADDR_ANY);	// n'importe quelle address ?
+	server_addr.sin_family			= AF_INET;				// famille ipv4
+	server_addr.sin_port			= htons(port);			// port
+	server_addr.sin_addr.s_addr		= htonl(INADDR_ANY);	// n'importe quelle address ?
 
 	/* Cast de la grande structure sockaddr_in avec une plus petite structure sockaddr */
-	if (bind(sfd, (struct sockaddr *)&t_sockaddr_in, addrlen) == -1)
+	if (bind(sfd, (struct sockaddr *)&server_addr, addrlen) == -1)
 		exit_error("Bind Error");
 
 	if (listen(sfd, 5) == -1)
 		exit_error("Lister Error: Failed set soket to passive socket");
 
 	// ==================================== micka et kevin part
-
-	// while (1) {
-	// 	new_socket = accept(sfd, (struct sockaddr *)&t_sockaddr_in, &addrlen);
-	// 	if (new_socket < 0)
-	// 		exit_error("Accept client error");
-	// 	recv(new_socket, buffer, 1024, 0);
-	// 	std::cout << "Message received by " << (t_sockaddr_in.sin_addr.s_addr) << ": " << buffer << std::endl;
-	// }
+	cfd = accept(sfd, (struct sockaddr *)&client_addr, &addrlen);
+	if (cfd < 0)
+			exit_error("Accept client error");
+	while (1) {
+		bzero(buffer, 1024);
+		recv(cfd, buffer, 1024, 0);
+		std::cout << "Message received by " << (client_addr.sin_addr.s_addr) << ": " << buffer << std::endl;
+	}
 
 }
