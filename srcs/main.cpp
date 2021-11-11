@@ -6,13 +6,13 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/11 19:07:37 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/11 19:17:49 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/irc.hpp"
 
-int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int> client, int id)
+int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int>* client, int* id)
 {
 	struct sockaddr_in	client_addr;	// new struct for addr info client
 	int addrlen = sizeof(client_addr);	// size of struct for accept()
@@ -31,8 +31,8 @@ int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int
 	fcntl(cfd, F_SETFL, O_NONBLOCK);
 	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 	kevent(kq, &change_list, 1, NULL, 0, NULL);
-	
-	client.insert(std::make_pair(cfd, id++));
+
+	client->insert(std::make_pair(cfd, *id++));
 
 	std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 	return (1);
@@ -54,7 +54,7 @@ void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_
 		for ( ; it != ite ; it++)
 		{
 			// Verifie que le client ne s'envoie pas un message a lui meme
-			if ((unsigned long)it->first != event_list[i].ident)
+			if (it->first != event_list[i].ident)
 			{
 				send(it->first, "Client[", 8 ,0);
 				send(it->first, ft_itos(client.find(event_list[i].ident)->second), 8 ,0);
@@ -147,7 +147,7 @@ int	main(int ac, char **av)
 				/* Accept new clients */
 				else if (event_list[i].ident == (unsigned long)sfd)
 				{
-					if (accept_client(sfd, kq, change_list, client, id))
+					if (accept_client(sfd, kq, change_list, &client, &id))
 						break ;
 				}
 

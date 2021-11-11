@@ -2,7 +2,7 @@ NAME		=	ircserv
 
 CXX			=	clang++
 
-CXXFLAGS	=	-Wall -Wextra -Werror -std=c++98
+CXXFLAGS	= -std=c++98
 
 SRCS		=	srcs/main.cpp srcs/utils.cpp
 
