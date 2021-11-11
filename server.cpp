@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/10 22:34:14 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/11 12:51:43 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,6 +75,14 @@ struct kevent {
             int64_t    data;         filter data value
             void       *udata;        opaque user data identifier
 };
+
+
+Struct client pour renvoyer un message d'un client aux autres
+typedef struct		s_client
+{
+	int				fd;
+	struct s_client	*next;
+}	t_client;
 
 
 *************************************************************************** */
@@ -161,6 +169,22 @@ int	main(int ac, char **av)
 					bzero(buffer, 1024);
 					recv(event_list[i].ident, buffer, 1024, 0);
 					std::cout << buffer;
+					
+					// SERVER DISPLAY SYSTEM FONCTIONNE PAS POUR L'INSTANT
+					// renvoie le message d'un client aux autres clients
+					// if (event_list[i].filter & EVFILT_WRITE)
+					// {
+					//	Boucle sur tous les clients a partir d'une strcuture client
+					// 	while (t_client != NULL)
+					// 	{
+					//		Verifie que le client ne s'envoie pas un message a lui
+					// 		if (t_client.fd == event_list[i].ident)
+					// 		{
+					// 			send(t_client.fd, "Message from server : ", 23 ,0);
+					// 			send(t_client.fd, buffer, 1024, 0);
+					// 		}
+					// 	}
+					// }
 				}
 
 				// SERVER DISPLAY SYSTEM FONCTIONNE PAS POUR L'INSTANT
@@ -170,6 +194,7 @@ int	main(int ac, char **av)
 				// 	std::cout << "Message from server : ";
 				// 	bzero(buffer, 1024);
 				// 	read(sfd, buffer, 1024);
+				// 	std::cout << "buffer = " << buffer << std::endl; 
 				// 	send(event_list[i].ident, buffer, 1024, 0);
 				// }
 			}
