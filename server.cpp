@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/11 13:48:52 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/11 17:06:56 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,14 +18,17 @@
 #include <sys/socket.h>
 #include <sys/types.h>
 #include <netinet/in.h>
- #include <sys/event.h>
+#include <sys/event.h>
 #include <netdb.h>
 #include <arpa/inet.h>
 
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
+#include <string.h>		
 #include <unistd.h>
+#include <fcntl.h>		// fcntl (fd non bloquant)
+#include <errno.h>		// errno
+
 
 void	exit_error(std::string error)
 {
@@ -103,10 +106,11 @@ int	main(int ac, char **av)
 	std::map<int, int>	client;
 
 	if (ac != 2)
-		exit_error("./server [PORT]");
+		exit_error("Usage ./server [PORT]");
 	if(!(sfd = socket(AF_INET, SOCK_STREAM, 0)))
 		exit_error("Socket Error");
 
+	std::cout << "Server socket sucessfully created: " << sfd << std::endl;
 	port = atoi(av[1]);
 	addrlen = sizeof(server_addr);
 
@@ -118,8 +122,12 @@ int	main(int ac, char **av)
 	/* Cast de la grande structure sockaddr_in avec une plus petite structure sockaddr */
 	if (bind(sfd, (struct sockaddr *)&server_addr, addrlen) < 0)
 		exit_error("Bind Error");
+	
+	// Rendre le fd du server non bloquant, ce qui va permettre d'eviter de bloquer
+	// sur le accept dans la boucle si aucun client n'essaie de se connecter
+	fcntl(sfd, F_SETFL, O_NONBLOCK);
 
-	if (listen(sfd, 5) < 0)
+	if (listen(sfd, 42) < 0)
 		exit_error("Lister Error: Failed set soket to passive socket");
 
 
@@ -162,10 +170,16 @@ int	main(int ac, char **av)
 				// Accept client
 				else if (event_list[i].ident == sfd) /* Accept new clients */
 				{
+					// Si personne ne souhaite se connecter, le fd du server etant non bloquant,
+					// errno sera set avec l'information que personne n'essaie de se connecter,
+					// dans ce cas on continue pour repartir du haute de la boucle !
 					if ((cfd = accept(sfd, (struct sockaddr *)&client_addr, &addrlen)) == -1)
 						exit_error("Accept error");
-
+					if (errno)
+						
 					// Ajouter mon nouveau client à ma liste d'evenement en lui precisant le cfd
+					// le client fd sera set de maniere non bloquante avec cfd
+					fcntl(cfd, F_SETFL, O_NONBLOCK);
 					EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 					kevent(kq, &change_list, 1, NULL, 0, NULL);
 					
