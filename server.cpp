@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/11 13:45:48 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/11 13:48:52 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -194,7 +194,7 @@ int	main(int ac, char **av)
 							if (it->first != event_list[i].ident)
 							{
 								send(it->first, "Client[", 8 ,0);
-								send(it->first, ft_itos(event_list[i].ident), 8 ,0);
+								send(it->first, ft_itos(client.find(event_list[i].ident)->second), 8 ,0);
 								send(it->first, "] sent message : ", 18 ,0);
 								send(it->first, buffer, 1024, 0);
 							}
