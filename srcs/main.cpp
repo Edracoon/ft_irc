@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/12 12:05:24 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/12 16:14:50 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,8 @@ int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int
 	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 	kevent(kq, &change_list, 1, NULL, 0, NULL);
 
-	client->insert(std::make_pair(cfd, *id++));
+	client->insert(std::make_pair(cfd, *id));
+	*id += 1;
 
 	std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 	return (1);
@@ -40,7 +41,6 @@ int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int
 
 void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_list[64], int i)
 {
-	
 	bzero(buffer, 1024);
 	recv(event_list[i].ident, buffer, 1024, 0);
 	if (strcmp(buffer, "\n"))
@@ -58,7 +58,7 @@ void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_
 			if ((unsigned long)it->first != event_list[i].ident && strcmp(buffer, "\n"))
 			{
 				send(it->first, "Client[", 8 ,0);
-				send(it->first, ft_itos(client.find(event_list[i].ident)->second), 2,0);
+				send(it->first, ft_itos(client.find(event_list[i].ident)->second), 4,0);
 				send(it->first, "] sent message : ", 18 ,0);
 				send(it->first, buffer, 1024, 0);
 			}
