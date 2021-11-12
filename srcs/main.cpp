@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/12 11:14:08 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/12 12:05:24 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,10 +55,10 @@ void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_
 		for ( ; it != ite ; it++)
 		{
 			// Verifie que le client ne s'envoie pas un message a lui meme
-			if (it->first != event_list[i].ident)
+			if ((unsigned long)it->first != event_list[i].ident && strcmp(buffer, "\n"))
 			{
 				send(it->first, "Client[", 8 ,0);
-				send(it->first, ft_itos(client.find(event_list[i].ident)->second), 8 ,0);
+				send(it->first, ft_itos(client.find(event_list[i].ident)->second), 2,0);
 				send(it->first, "] sent message : ", 18 ,0);
 				send(it->first, buffer, 1024, 0);
 			}
