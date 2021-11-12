@@ -4,6 +4,7 @@
 /* C++ Includes */
 #include <iostream>
 #include <string>
+#include <cstring>
 #include <map>
 #include <sstream>
 

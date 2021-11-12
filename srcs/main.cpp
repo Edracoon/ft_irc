@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/11 19:17:49 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/12 11:14:08 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,10 +40,11 @@ int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int
 
 void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_list[64], int i)
 {
-	std::cout << "Client[" << event_list[i].ident << "] sent message : ";
+	
 	bzero(buffer, 1024);
 	recv(event_list[i].ident, buffer, 1024, 0);
-	std::cout << buffer;
+	if (strcmp(buffer, "\n"))
+		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
 	
 	// Send client message to all clients that are connected
 	std::map<int, int>::iterator	it	= client.begin();
