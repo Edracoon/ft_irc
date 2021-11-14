@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/12 16:14:50 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/14 17:11:10 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,7 +103,7 @@ int	main(int ac, char **av)
 	fcntl(sfd, F_SETFL, O_NONBLOCK);
 
 	if (listen(sfd, 42) < 0)
-		exit_error("Lister Error: Failed set soket to passive socket");
+		exit_error("Listen Error: Failed set soket to passive socket");
 
 	std::cout << "Server listening for clients connexion" << std::endl;
 
