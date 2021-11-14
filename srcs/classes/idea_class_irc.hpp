@@ -2,14 +2,15 @@
 # define IDEA_CLASS_IRC_HPP
 
 #include <iostream>
-#include "idea_class_channel.hpp"
+#include "channel.hpp"
 #include "idea_class_clients.hpp"
 
 class irc
 {
 	private:
-			channel		*irc_channels;
-			client		*irc_clients;
+			std::string					password;
+			std::vector<channel *>		irc_channels;
+			std::vector<client *>		irc_clients;
 
 	public:
 			irc();

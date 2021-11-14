@@ -13,7 +13,7 @@ class client
 				std::vector<std::string>	nickname_history;
 				int							fd;
 				channel						curr_chan;
-				// ...
+
 	public:
 				client();
 				~client();
