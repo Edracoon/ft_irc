@@ -19,6 +19,6 @@ class client
 				~client();
 };
 
-#include "idea_class_channel.hpp"
+#include "channel.hpp"
 
 #endif
