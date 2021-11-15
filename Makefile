@@ -4,9 +4,11 @@ CXX			=	clang++
 
 CXXFLAGS	= -Wall -Wextra -Werror -std=c++98
 
-SRCS		=	srcs/main.cpp srcs/utils.cpp
+SRCS		=	srcs/main.cpp srcs/utils.cpp srcs/tcp_protocol.cpp srcs/server_loop.cpp
 
-OBJS		=	$(SRCS:.cpp=.o)
+classes		=	srcs/classes/server.cpp srcs/classes/client.cpp srcs/classes/channel.cpp
+
+OBJS		=	$(SRCS:.cpp=.o) $(classes:.cpp=.o)
 
 all:			$(NAME)
 

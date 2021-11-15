@@ -1,0 +1,76 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   server.cpp                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
+/*   Updated: 2021/11/15 17:26:35 by epfennig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
+#include "server.hpp"
+
+server::server() {}
+server::~server() {}
+
+void					server::setPassword(const std::string & pass) { this->password = pass; }
+const std::string &		server::getPassword(void) const { return this->password; }
+
+
+int		server::acceptClient(int kq, struct kevent change_list)
+{
+	struct sockaddr_in	client_addr;	// new struct for addr info client
+	int addrlen = sizeof(client_addr);	// size of struct for accept()
+	int cfd;							// new client fd
+
+	// Si personne ne souhaite se connecter, le fd du server etant non bloquant,
+	// dans ce cas on continue pour repartir du haute de la boucle !
+	if ((cfd = accept(this->sfd, (struct sockaddr *)&client_addr, (socklen_t *)&addrlen)) == -1)
+		exit_error("Accept error");
+
+	/* #define EWOULDBLOCK		EAGAIN			Operation would block */
+	if (errno == EWOULDBLOCK)
+		return -1;
+
+	// Ajouter mon nouveau client à ma liste d'evenement en lui precisant le cfd
+	// le client fd sera set de maniere non bloquante avec cfd
+	fcntl(cfd, F_SETFL, O_NONBLOCK);
+	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
+	kevent(kq, &change_list, 1, NULL, 0, NULL);
+	
+	client	new_client(cfd);
+	this->clients.push_back(&new_client);
+
+	// std::cout << "Client[" << cfd << "] accepted !" << std::endl;
+	return (1);
+}
+
+void	server::recevMessage(char *buffer, struct kevent event_list[64], int i)
+{
+	bzero(buffer, 512);
+	recv(event_list[i].ident, buffer, 512, 0);
+	std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
+	// if (strcmp(buffer, "\n"))
+	// 	std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
+	
+	// Send client message to all clients that are connected
+	// std::map<int, int>::iterator	it	= client.begin();
+	// std::map<int, int>::iterator	ite	= client.end();
+	// if (event_list[i].filter & EVFILT_WRITE)
+	// {
+	// 	//Boucle sur tous les clients a partir de notre map client
+	// 	for ( ; it != ite ; it++)
+	// 	{
+	// 		// Verifie que le client ne s'envoie pas un message a lui meme
+	// 		if ((unsigned long)it->first != event_list[i].ident && strcmp(buffer, "\n"))
+	// 		{
+	// 			send(it->first, "Client[", 8 ,0);
+	// 			send(it->first, ft_itos(client.find(event_list[i].ident)->second), 4,0);
+	// 			send(it->first, "] sent message : ", 18 ,0);
+	// 			send(it->first, buffer, 1024, 0);
+	// 		}
+	// 	}
+	// }
+}

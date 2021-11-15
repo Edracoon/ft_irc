@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   channel.hpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
+/*   Updated: 2021/11/15 18:05:42 by epfennig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #ifndef CHANNEL_HPP
 # define CHANNEL_HPP
 
@@ -24,20 +36,20 @@ class channel
 				channel();
 				~channel();
 
-				int				addClient(); // /JOIN d'un client, toutes les etapes de verifications du channel etc
+				int						addClient(); // /JOIN d'un client, toutes les etapes de verifications du channel etc
 
 				const std::string&		getName(void) const;
 				const std::string&		getPassword(void) const;
 				const std::string&		getTopic(void) const;
 				bool					isOperator(std::string user);
 
-				const char& 			checkStatus(void) const;
+				char 			checkStatus(void) const;
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
 
 };
 
-#include "idea_class_clients.hpp"
+#include "client.hpp"
 
 #endif

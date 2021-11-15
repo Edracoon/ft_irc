@@ -24,6 +24,7 @@
 #include <fcntl.h>		// fcntl (fd non bloquant)
 #include <errno.h>		// errno
 
+
 /* ***************************************************************************
 
 ====================================
@@ -71,11 +72,18 @@ struct kevent {
 
 *************************************************************************** */
 
+class server;
+
+void	tcp_protocol(server* serv, char* cport);
+void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent event_list[64]);
+int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int>* client, int* id);
+void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_list[64], int i);
 
 /* === UTILS FUNCTIONS === */
-
 void			exit_error(std::string error);
 const char*		ft_itos ( int Number );
+
+#include "../srcs/classes/server.hpp"
 
 
 #endif
