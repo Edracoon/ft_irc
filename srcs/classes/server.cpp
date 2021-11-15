@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/15 19:33:27 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/16 00:17:29 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,12 +69,16 @@ void	server::recevMessage(char *buffer, struct kevent event_list[64], int i)
 	client*		temp = this->findClientByFd(event_list[i].ident);
 	if (temp != NULL && temp->isAccepted() == false)
 	{
-		if (strcmp(buffer, "PASS"))
-			std::cout << "mdp" << std::endl;
-		else if (strcmp(buffer, "NICK"))
-			std::cout << "nick" << std::endl;
-		else if (strcmp(buffer, "USER"))
-			std::cout << "user" << std::endl;
+		if (strstr(buffer, "PASS") && strstr(buffer, "NICK") && strstr(buffer, "USER"))
+			temp->login(std::string(buffer), 'a');
+		else if (strncmp(buffer, "PASS", 4) == 0)
+			temp->login(std::string(buffer), 'p');
+		else if (strncmp(buffer, "NICK", 4) == 0)
+			temp->login(std::string(buffer), 'n');
+		else if (strncmp(buffer, "USER", 4) == 0)
+			temp->login(std::string(buffer), 'u');
+		else
+			send(temp->getFd(), "You need to login first: PASS, NICK, USER\r\n", 43, 0);
 		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
 	}
 	return ;

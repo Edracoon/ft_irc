@@ -80,8 +80,11 @@ int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int
 void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_list[64], int i);
 
 /* === UTILS FUNCTIONS === */
-void			exit_error(std::string error);
-const char*		ft_itos ( int Number );
+
+void						exit_error(std::string error);
+const char*					ft_itos ( int Number );
+std::vector<std::string>	ft_split(std::string str, std::string delimiter);
+
 
 #include "../srcs/classes/server.hpp"
 
