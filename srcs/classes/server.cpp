@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/15 17:26:35 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/15 19:33:27 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,19 @@ server::~server() {}
 
 void					server::setPassword(const std::string & pass) { this->password = pass; }
 const std::string &		server::getPassword(void) const { return this->password; }
+
+
+client*					server::findClientByFd(unsigned long Fd)
+{
+	std::vector<client *>::iterator	it = this->clients.begin();
+	std::vector<client *>::iterator	ite = this->clients.end();
+
+	for ( ; it != ite ; it++ ) {
+		if ((*it)->getFd() == Fd)
+			return (*it);
+	}
+	return (NULL);
+}
 
 
 int		server::acceptClient(int kq, struct kevent change_list)
@@ -40,8 +53,8 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 	kevent(kq, &change_list, 1, NULL, 0, NULL);
 	
-	client	new_client(cfd);
-	this->clients.push_back(&new_client);
+	client	*new_client = new client(cfd);
+	this->clients.push_back(new_client);	// Add client to server list
 
 	// std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 	return (1);
@@ -51,9 +64,20 @@ void	server::recevMessage(char *buffer, struct kevent event_list[64], int i)
 {
 	bzero(buffer, 512);
 	recv(event_list[i].ident, buffer, 512, 0);
-	std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
-	// if (strcmp(buffer, "\n"))
-	// 	std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
+	if (std::string(buffer) == "\n")
+		return ;
+	client*		temp = this->findClientByFd(event_list[i].ident);
+	if (temp != NULL && temp->isAccepted() == false)
+	{
+		if (strcmp(buffer, "PASS"))
+			std::cout << "mdp" << std::endl;
+		else if (strcmp(buffer, "NICK"))
+			std::cout << "nick" << std::endl;
+		else if (strcmp(buffer, "USER"))
+			std::cout << "user" << std::endl;
+		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
+	}
+	return ;
 	
 	// Send client message to all clients that are connected
 	// std::map<int, int>::iterator	it	= client.begin();

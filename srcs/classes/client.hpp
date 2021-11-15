@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/15 17:50:04 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/15 19:28:42 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@
 #include <vector>
 #include "channel.hpp"
 
-
 class client
 {
 	private:
@@ -25,7 +24,7 @@ class client
 				std::string					nickname;
 				std::vector<std::string>	nickname_history;
 				bool						accepted;
-				int							fd;
+				unsigned long				fd;
 				bool						ope;
 				channel						curr_chan;
 
@@ -38,9 +37,10 @@ class client
 				void				setNickname(const std::string & Nickname);
 				const std::string & getNickname(void) const;
 				const std::string & getUsername(void) const;
+				unsigned long 		getFd() const;
 
 				void				joinChannel(channel chan);
-				
+
 };
 
 #include "channel.hpp"
