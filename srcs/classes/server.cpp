@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 01:00:50 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/16 18:59:46 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,49 +56,26 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	client	*new_client = new client(cfd);
 	this->clients.push_back(new_client);	// Add client to server list
 
-	// std::cout << "Client[" << cfd << "] accepted !" << std::endl;
+	std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 	return (1);
 }
 
-void	server::recevMessage(char *buffer, struct kevent event_list[64], int i)
+void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
 {
-	bzero(buffer, 512);
-	recv(event_list[i].ident, buffer, 512, 0);
-	if (std::string(buffer) == "\n")
-		return ;
 	client*		temp = this->findClientByFd(event_list[i].ident);
 	if (temp != NULL && temp->isAccepted() == false)
 	{
-		if (strstr(buffer, "PASS") && strstr(buffer, "NICK") && strstr(buffer, "USER"))
-			temp->login(std::string(buffer), 'a', this->password);
-		else if (strncmp(buffer, "PASS", 4) == 0)
-			temp->login(std::string(buffer), 'p', this->password);
-		else if (strncmp(buffer, "NICK", 4) == 0)
-			temp->login(std::string(buffer), 'n', this->password);
-		else if (strncmp(buffer, "USER", 4) == 0)
-			temp->login(std::string(buffer), 'u', this->password);
-		else
-			send(temp->getFd(), "You need to login first: PASS, NICK, USER\r\n", 43, 0);
-		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer;
+		// if (strstr(buffer, "PASS") && strstr(buffer, "NICK") && strstr(buffer, "USER"))
+		// 	temp->login(std::string(buffer), 'a', this->password);
+		// else if (strncmp(buffer, "PASS", 4) == 0)
+		// 	temp->login(std::string(buffer), 'p', this->password);
+		// else if (strncmp(buffer, "NICK", 4) == 0)
+		// 	temp->login(std::string(buffer), 'n', this->password);
+		// else if (strncmp(buffer, "USER", 4) == 0)
+		// 	temp->login(std::string(buffer), 'u', this->password);
+		// else
+		// 	send(temp->getFd(), "You need to login first: PASS, NICK, USER\r\n", 43, 0);
+		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer << std::endl;
 	}
 	return ;
-	
-	// Send client message to all clients that are connected
-	// std::map<int, int>::iterator	it	= client.begin();
-	// std::map<int, int>::iterator	ite	= client.end();
-	// if (event_list[i].filter & EVFILT_WRITE)
-	// {
-	// 	//Boucle sur tous les clients a partir de notre map client
-	// 	for ( ; it != ite ; it++)
-	// 	{
-	// 		// Verifie que le client ne s'envoie pas un message a lui meme
-	// 		if ((unsigned long)it->first != event_list[i].ident && strcmp(buffer, "\n"))
-	// 		{
-	// 			send(it->first, "Client[", 8 ,0);
-	// 			send(it->first, ft_itos(client.find(event_list[i].ident)->second), 4,0);
-	// 			send(it->first, "] sent message : ", 18 ,0);
-	// 			send(it->first, buffer, 1024, 0);
-	// 		}
-	// 	}
-	// }
 }
