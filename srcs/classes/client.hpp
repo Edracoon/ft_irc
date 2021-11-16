@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 00:17:04 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/16 01:01:05 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,7 +33,7 @@ class client
 				client(int Fd);
 				~client();
 
-				void				login(std::string message, char type);
+				void				login(std::string message, char type, std::string password);
 				bool				isAccepted() const;
 				void				setUsername(const std::string & Username);
 				void				setNickname(const std::string & Nickname);
