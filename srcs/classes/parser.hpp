@@ -9,15 +9,16 @@ class parser
 {
 	public:
 			enum cmd_type {
-				CMD_LOGIN,
+				CMD_CONNEX,
 				CMD_CHANNEL,
 				CMD_USER,
-				CMD_DIVER,
+				CMD_DIVERS,
 				MSG_CHAN
 			};
 
 			enum token_type {
 				CMD,
+				ARG,
 				CHAN,
 				USERNAME,
 				COMMENT
@@ -26,7 +27,7 @@ class parser
 			int												cmd_type;
 			std::vector< std::pair<int, std::string> >		tab;
 
-
+			
 };
 
 #endif

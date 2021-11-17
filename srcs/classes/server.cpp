@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 18:59:46 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/17 15:52:52 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,6 +62,7 @@ int		server::acceptClient(int kq, struct kevent change_list)
 
 void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
 {
+	// parser bonsoir;
 	client*		temp = this->findClientByFd(event_list[i].ident);
 	if (temp != NULL && temp->isAccepted() == false)
 	{

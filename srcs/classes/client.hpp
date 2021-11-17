@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 01:01:05 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/17 15:50:35 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,19 +29,24 @@ class client
 				bool						ope;
 				channel						curr_chan;
 
+				/* parser					client_parser; */
+				std::string					curr_msg;
+
 	public:
 				client(int Fd);
 				~client();
 
-				void				login(std::string message, char type, std::string password);
-				bool				isAccepted() const;
-				void				setUsername(const std::string & Username);
-				void				setNickname(const std::string & Nickname);
-				const std::string & getNickname(void) const;
-				const std::string & getUsername(void) const;
-				unsigned long 		getFd() const;
+				void					login(std::string message, char type, std::string password);
+				bool					isAccepted() const;
+				void					setUsername(const std::string & Username);
+				void					setNickname(const std::string & Nickname);
+				const std::string & 	getNickname(void) const;
+				const std::string & 	getUsername(void) const;
+				unsigned long 			getFd() const;
 
-				void				joinChannel(channel chan);
+				std::string&			getCurrMsg(void);
+
+				void					joinChannel(channel chan);
 
 };
 

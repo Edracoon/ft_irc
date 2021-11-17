@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 18:59:54 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/17 15:33:49 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,11 +52,27 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 				{
 					bzero(buffer, 512);
 					recv(event_list[i].ident, buffer, 512, 0);
-					if (std::string(buffer) == "\n")
+					client* temp = serv->findClientByFd(event_list[i].ident);
+					if (std::string(buffer) == "\r\n")
 						;
+					/* Rebuild string if ctrl+D is pressed by client */
+					else if (std::string(buffer).find("\n") == std::string::npos)
+					{
+						temp->getCurrMsg() += std::string(buffer);
+						std::cout << "currmsg = " << temp->getCurrMsg() << std::endl;
+					}
 					else
 					{
-						std::vector<std::string>	tab = ft_split(std::string(buffer), "\n");
+						std::vector<std::string>	tab;
+						if (!(temp->getCurrMsg().empty()))
+						{
+							if (!(std::string(buffer).empty()))
+								temp->getCurrMsg() += std::string(buffer);
+							tab = ft_split(temp->getCurrMsg(), "\n");
+							temp->getCurrMsg().clear();
+						}
+						else
+							tab = ft_split(std::string(buffer), "\n");
 						for (int j = 0 ; !tab[j].empty() ; j++)
 							serv->recevMessage(tab[j], event_list, i);
 					}

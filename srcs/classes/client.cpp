@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/16 12:06:06 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/17 15:08:30 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ void				client::setUsername(const std::string & Username) { this->username = Use
 void				client::setNickname(const std::string & Nickname) { this->nickname = Nickname; }
 const std::string & client::getNickname(void) const { return this->nickname; }
 const std::string & client::getUsername(void) const { return this->username; }
+std::string&		client::getCurrMsg(void) { return this->curr_msg; }
 
 unsigned long 		client::getFd() const { return this->fd; }
 
@@ -54,7 +55,6 @@ void				client::login(std::string message, char type, std::string password)
 		std::cout << tab[i] << std::endl;
 	// tab.clear();
 }
-
 
 void				client::joinChannel(channel chan)
 {
