@@ -19,9 +19,9 @@ class parser
 			enum token_type {
 				CMD,
 				ARG,
-				CHAN,
-				USERNAME,
-				COMMENT
+				CHAN,		// maybe
+				USERNAME,	// maybe
+				COMMENT		// maybe
 			};
 
 			int												cmd_type;

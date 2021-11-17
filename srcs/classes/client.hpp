@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/17 15:50:35 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/17 18:28:04 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@
 #include "../../includes/irc.hpp"
 #include <vector>
 #include "channel.hpp"
+#include "parser.hpp"
 
 class client
 {
@@ -29,7 +30,7 @@ class client
 				bool						ope;
 				channel						curr_chan;
 
-				/* parser					client_parser; */
+				parser						client_parser;
 				std::string					curr_msg;
 
 	public:
