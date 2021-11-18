@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/17 15:33:49 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/18 14:49:06 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,11 +68,13 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						{
 							if (!(std::string(buffer).empty()))
 								temp->getCurrMsg() += std::string(buffer);
-							tab = ft_split(temp->getCurrMsg(), "\n");
-							temp->getCurrMsg().clear();
+							tab = ft_split(temp->getCurrMsg(), "\n", 512);
 						}
 						else
-							tab = ft_split(std::string(buffer), "\n");
+						{
+							temp->getCurrMsg() = std::string(buffer);
+							tab = ft_split(temp->getCurrMsg(), "\n", 512);
+						}
 						for (int j = 0 ; !tab[j].empty() ; j++)
 							serv->recevMessage(tab[j], event_list, i);
 					}

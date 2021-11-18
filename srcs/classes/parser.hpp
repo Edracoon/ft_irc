@@ -5,6 +5,8 @@
 #include <vector>
 #include <utility>
 
+class client;
+
 class parser
 {
 	public:
@@ -19,15 +21,26 @@ class parser
 			enum token_type {
 				CMD,
 				ARG,
+				COLON,
 				CHAN,		// maybe
 				USERNAME,	// maybe
 				COMMENT		// maybe
 			};
 
+			std::string										msg;
+			int												ac;
 			int												cmd_type;
-			std::vector< std::pair<int, std::string> >		tab;
+			std::vector< std::pair<int, std::string> >		tokens;
 
-			
+			parser();
+			~parser(void);
+
+			void	parsing(client cl, std::string str);
+			// pass(client, tab);
+
+
 };
+
+#include "client.hpp"
 
 #endif

@@ -83,7 +83,7 @@ void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_
 
 void						exit_error(std::string error);
 const char*					ft_itos ( int Number );
-std::vector<std::string>	ft_split(std::string str, std::string delimiter);
+std::vector<std::string>	ft_split(std::string str, std::string delimiter, int times);
 
 
 #include "../srcs/classes/server.hpp"
