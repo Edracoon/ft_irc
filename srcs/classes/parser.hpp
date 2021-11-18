@@ -28,6 +28,7 @@ class parser
 			};
 
 			std::string										msg;
+			std::string										tab[20];
 			int												ac;
 			int												cmd_type;
 			std::vector< std::pair<int, std::string> >		tokens;
@@ -36,6 +37,7 @@ class parser
 			~parser(void);
 
 			void	parsing(client cl, std::string str);
+			int		isCmd(std::string cmd);
 			// pass(client, tab);
 
 

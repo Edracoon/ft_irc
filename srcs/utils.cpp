@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.cpp                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:45:05 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 14:59:27 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/18 15:39:17 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,6 +39,5 @@ std::vector<std::string>	ft_split(std::string str, std::string delimiter, int ti
 		times--;
 	}
 	tab.push_back(str);
-	std::cout << "str split = " << str << std::endl;
 	return (tab);
 }

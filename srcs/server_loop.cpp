@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_loop.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 14:49:06 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/18 15:44:08 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 					else if (std::string(buffer).find("\n") == std::string::npos)
 					{
 						temp->getCurrMsg() += std::string(buffer);
-						std::cout << "currmsg = " << temp->getCurrMsg() << std::endl;
 					}
 					else
 					{
@@ -75,8 +74,10 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 							temp->getCurrMsg() = std::string(buffer);
 							tab = ft_split(temp->getCurrMsg(), "\n", 512);
 						}
-						for (int j = 0 ; !tab[j].empty() ; j++)
+						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
+						{
 							serv->recevMessage(tab[j], event_list, i);
+						}
 					}
 				}
 			}
