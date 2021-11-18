@@ -10,12 +10,15 @@ class client;
 class parser
 {
 	public:
-			enum cmd_type {
-				CMD_CONNEX,
-				CMD_CHANNEL,
-				CMD_USER,
-				CMD_DIVERS,
-				MSG_CHAN
+			enum msg_type {
+				HELP,
+				PASS,
+				NICK,
+				USER,
+				OPER,
+				JOIN,
+				PRIVMSG,
+				MSG
 			};
 
 			enum token_type {
@@ -27,17 +30,20 @@ class parser
 				COMMENT		// maybe
 			};
 
-			std::string										msg;
-			std::string										tab[20];
-			int												ac;
-			int												cmd_type;
+			std::string										msg;		// Buffer envoyé au parser
+			std::string										tab[7];		// Tableau des commandes
+			int												ac;			// Nombre d'argument
+
+			int												cmd_type;	// Categorie de commande
+			std::string										cmd;		// OPER / JOIN / PRIVMSG etc ...
+
 			std::vector< std::pair<int, std::string> >		tokens;
 
 			parser();
 			~parser(void);
 
 			void	parsing(client cl, std::string str);
-			int		isCmd(std::string cmd);
+			int		whatIsCmd(std::string cmd);
 			// pass(client, tab);
 
 
