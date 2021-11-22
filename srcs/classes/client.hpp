@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 12:07:49 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/22 14:07:47 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,9 @@ class client
 				void					setNickname(const std::string & Nickname);
 				const std::string & 	getNickname(void) const;
 				const std::string & 	getUsername(void) const;
-				unsigned long 			getFd() const;
+				unsigned long 			getFd(void) const;
+
+				bool					isOpe(void);
 
 				std::string&			getCurrMsg(void);
 

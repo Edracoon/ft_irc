@@ -31,6 +31,7 @@ class parser
 			};
 
 			std::string										msg;		// Buffer envoyé au parser
+			std::string										prefix;		// if prefix, print it in place of nickname
 			std::string										tab[7];		// Tableau des commandes
 			int												ac;			// Nombre d'argument
 
