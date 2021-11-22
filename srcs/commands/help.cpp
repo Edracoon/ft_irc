@@ -20,7 +20,6 @@ void	cmd_help(client cl)
 
 void	Error_argument(client cl, int cmd_type)
 {
-	send(cl.getFd(), "Wrong number of argument\r\n", 27, 0);
 	if (cmd_type == 1)
 		send(cl.getFd(), "PASS <mdp>\r\n", 13, 0);
 	else if (cmd_type == 2)
@@ -33,4 +32,5 @@ void	Error_argument(client cl, int cmd_type)
 		send(cl.getFd(), "JOIN <canal> [<mdp>]\r\n", 23, 0);
 	else if (cmd_type == 6)
 		send(cl.getFd(), "PRIVMSG <destinataire> <texte à envoyer>\r\n", 44, 0);
+	send(cl.getFd(), "If you need help : /HELP\r\n", 27, 0);
 }

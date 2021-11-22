@@ -4,8 +4,10 @@
 
 void    cmd_pass(client cl, std::vector<std::string> cmd, server serv)
 {
-    if (cmd.size() == 2)
+    if (cmd.size() != 2)
         Error_argument(cl, 1);
-    if (cmd[1] == serv.getPassword())
+    else if (cmd[1] == serv.getPassword())
         cl.pass = true;
+    else
+        cl.pass = false;
 }
