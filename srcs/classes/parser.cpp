@@ -2,7 +2,6 @@
 
 parser::parser()
 {
-	this->prefix.clear();
 	this->tab[0] = "HELP";
 	this->tab[1] = "PASS";
 	this->tab[2] = "NICK";
@@ -22,7 +21,10 @@ void	parser::parsing(client cli, std::string msg)
 
 	/* Checking for prefix in case it's not an operator */
 	if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) != cli.getNickname()) && !cli.isOpe())
+	{
 		send(cli.getFd(), "Server: You canno't prefix a message this way (use your nickname or do not prefix)\r\n", 84, 0);
+		return ;
+	}
 	/* Store prefix in case it's an operator */
 	else if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) != cli.getNickname()))
 	{
@@ -33,8 +35,8 @@ void	parser::parsing(client cli, std::string msg)
 	std::cout << " - msg = " << this->msg << std::endl;
 
 	if (this->prefix.empty())
-		cmd_type = this->whatIsCmd(cmd[0]);				// Recup cmd type via enum, faciliter le parsing
-	else
+		cmd_type = this->whatIsCmd(cmd[0]);
+	else if (!(this->prefix.empty()))
 		cmd_type = this->whatIsCmd(cmd[1]);
 
 	/*	
@@ -72,7 +74,7 @@ void	parser::parsing(client cli, std::string msg)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 20; i++)
+	for (int i = 0; i < 7 ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
