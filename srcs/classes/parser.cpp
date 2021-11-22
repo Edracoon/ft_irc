@@ -13,7 +13,7 @@ parser::parser()
 
 parser::~parser() { }
 
-void	parser::parsing(client cli, std::string msg)
+void	parser::parsing(client cli, std::string msg, server serv)
 {
 	this->msg	= msg;
 
@@ -52,7 +52,7 @@ void	parser::parsing(client cli, std::string msg)
 	if (cmd_type == HELP)
 		cmd_help(cli);
 	else if (cmd_type == PASS)
-		;
+		cmd_pass(cli, cmd, serv);
 	else if (cmd_type == NICK)
 		;
 	else if (cmd_type == USER)

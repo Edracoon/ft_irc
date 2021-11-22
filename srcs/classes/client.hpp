@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 14:07:47 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/22 16:09:18 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,6 +27,7 @@ class client
 				std::string					nickname;
 				std::vector<std::string>	nickname_history;
 				bool						accepted;
+				
 				unsigned long				fd;
 				bool						ope;
 				channel						curr_chan;
@@ -35,6 +36,7 @@ class client
 				std::string					curr_msg;
 	public:
 				parser						parser;
+				bool						pass;
 
 	public:
 				client(int Fd);

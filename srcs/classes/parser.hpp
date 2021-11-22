@@ -6,6 +6,7 @@
 #include <utility>
 
 class client;
+class server;
 
 class parser
 {
@@ -43,7 +44,7 @@ class parser
 			parser();
 			~parser(void);
 
-			void	parsing(client cl, std::string str);
+			void	parsing(client cl, std::string str, server serv);
 			int		whatIsCmd(std::string cmd);
 			// pass(client, tab);
 
@@ -52,8 +53,10 @@ class parser
 /* === CMD FUNCTIONS === */
 void						cmd_help(client cl);
 void						Error_argument(client cl, int cmd_type);
+void    					cmd_pass(client cl, std::vector<std::string> cmd, server serv);
 
 
 #include "client.hpp"
+#include "../../includes/irc.hpp"
 
 #endif
