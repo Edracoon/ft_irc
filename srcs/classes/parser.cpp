@@ -17,7 +17,6 @@ parser::~parser() { }
 void	parser::parsing(client cli, std::string msg)
 {
 	this->msg	= msg;
-	(void)cli;
 
 	std::vector<std::string>	cmd = ft_split(this->msg, " ", 512);
 
@@ -33,7 +32,10 @@ void	parser::parsing(client cli, std::string msg)
 	std::cout << "prefix: " << (this->prefix.empty() ? cli.getNickname() : this->prefix);
 	std::cout << " - msg = " << this->msg << std::endl;
 
-	cmd_type = this->whatIsCmd(cmd[0]);				// Recup cmd type via enum, faciliter le parsing
+	if (this->prefix.empty())
+		cmd_type = this->whatIsCmd(cmd[0]);				// Recup cmd type via enum, faciliter le parsing
+	else
+		cmd_type = this->whatIsCmd(cmd[1]);
 
 	/*	
 	**	HELP -> Proposer cette commande lorsqu'une commande est mal utilisée
@@ -64,6 +66,7 @@ void	parser::parsing(client cli, std::string msg)
 
 	// Reinitialize data between message
 	this->prefix.clear();
+	this->msg.clear();
 	this->cmd_type = -1;
 }
 
@@ -71,7 +74,7 @@ int		parser::whatIsCmd(std::string cmd)
 {
 	for (int i = 0; i < 20; i++)
 	{
-		if (cmd == tab[i])
+		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
 	}
 	return (7);

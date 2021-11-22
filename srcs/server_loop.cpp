@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server_loop.cpp                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 15:44:08 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/22 15:26:38 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						{
 							serv->recevMessage(tab[j], event_list, i);
 						}
+						temp->getCurrMsg().clear();
 					}
 				}
 			}
