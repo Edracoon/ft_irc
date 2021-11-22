@@ -52,8 +52,8 @@ class parser
 
 /* === CMD FUNCTIONS === */
 void						cmd_help(client cl);
-void						Error_argument(client cl, int cmd_type);
-void    					cmd_pass(client cl, std::vector<std::string> cmd, server serv);
+void						cmd_pass(client cl, std::vector<std::string> cmd, server serv);
+void						cmd_user(client cli, std::vector<std::string> cmd, server serv);
 
 
 #include "client.hpp"

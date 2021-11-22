@@ -51,19 +51,19 @@ void	parser::parsing(client cli, std::string msg, server serv)
 
 	if (cmd_type == HELP)
 		cmd_help(cli);
-	else if (cmd_type == PASS)
+	else if (cmd_type == PASS && !cli.isAccepted())
 		cmd_pass(cli, cmd, serv);
 	else if (cmd_type == NICK)
 		;
-	else if (cmd_type == USER)
+	else if (cmd_type == USER && !cli.isAccepted())
+		cmd_user(cli, cmd, serv);
+	else if (cmd_type == OPER && cli.isAccepted())
 		;
-	else if (cmd_type == OPER)
+	else if (cmd_type == JOIN && cli.isAccepted())
 		;
-	else if (cmd_type == JOIN)
+	else if (cmd_type == PRIVMSG && cli.isAccepted())
 		;
-	else if (cmd_type == PRIVMSG)
-		;
-	else if (cmd_type == MSG)
+	else if (cmd_type == MSG && cli.isAccepted())
 		;
 
 	// Reinitialize data between message
