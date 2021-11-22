@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 15:24:29 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/22 12:07:49 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,8 +31,10 @@ class client
 				bool						ope;
 				channel						curr_chan;
 
-				parser						parser;
+				
 				std::string					curr_msg;
+	public:
+				parser						parser;
 
 	public:
 				client(int Fd);
@@ -48,8 +50,6 @@ class client
 				std::string&			getCurrMsg(void);
 
 				void					joinChannel(channel chan);
-
-				void					parseMsg();
 
 };
 

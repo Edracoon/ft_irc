@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 15:02:08 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/22 12:09:47 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,13 +34,4 @@ unsigned long 		client::getFd() const { return this->fd; }
 void				client::joinChannel(channel chan)
 {
 	(void)chan;
-}
-
-void				client::parseMsg(void)
-{
-	this->parser.parsing(*this, curr_msg);
-	/* Exec cmd after parsing */
-
-	/* clear buffer */
-	this->curr_msg.clear();
 }
