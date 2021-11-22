@@ -47,7 +47,6 @@ class parser
 			int		whatIsCmd(std::string cmd);
 			// pass(client, tab);
 
-
 };
 
 /* === CMD FUNCTIONS === */
