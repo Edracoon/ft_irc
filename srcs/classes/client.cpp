@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 12:09:47 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/22 15:10:15 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ const std::string & client::getUsername(void) const { return this->username; }
 std::string&		client::getCurrMsg(void) { return this->curr_msg; }
 
 unsigned long 		client::getFd() const { return this->fd; }
+
+bool				client::isOpe(void) { return this->ope; }
 
 void				client::joinChannel(channel chan)
 {
