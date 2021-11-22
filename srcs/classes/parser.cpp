@@ -32,7 +32,7 @@ void	parser::parsing(client cli, std::string msg)
 	*/
 
 	if (cmd_type == HELP)
-		;
+		cmd_help(cli);
 	else if (cmd_type == PASS)
 		;
 	else if (cmd_type == NICK)

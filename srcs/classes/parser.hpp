@@ -49,6 +49,11 @@ class parser
 
 };
 
+/* === CMD FUNCTIONS === */
+void						cmd_help(client cl);
+void						Error_argument(client cl, int cmd_type);
+
+
 #include "client.hpp"
 
 #endif
