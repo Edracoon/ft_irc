@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 17:24:09 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 09:48:55 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,18 @@ client*					server::findClientByFd(unsigned long Fd)
 
 	for ( ; it != ite ; it++ ) {
 		if ((*it)->getFd() == Fd)
+			return (*it);
+	}
+	return (NULL);
+}
+
+client*					server::findClientByName(std::string name)
+{
+	std::vector<client *>::iterator	it = this->clients.begin();
+	std::vector<client *>::iterator	ite = this->clients.end();
+
+	for ( ; it != ite ; it++ ) {
+		if ((*it)->getNickname() == name)
 			return (*it);
 	}
 	return (NULL);

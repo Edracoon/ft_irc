@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/17 15:55:01 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 09:47:01 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,9 @@ class server
 {
 	private:
 			std::string					password;
+	public:
 			std::vector<channel *>		channels;
 			std::vector<client *>		clients;
-	public:
 			int							sfd;
 	public:
 			server();
@@ -39,6 +39,7 @@ class server
 
 
 			client*					findClientByFd(unsigned long Fd);
+			client*					findClientByName(std::string name);
 
 };
 

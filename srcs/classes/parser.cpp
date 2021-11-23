@@ -54,9 +54,9 @@ void	parser::parsing(client cli, std::string msg, server serv)
 	else if (cmd_type == PASS && !cli.isAccepted())
 		cmd_pass(cli, cmd, serv);
 	else if (cmd_type == NICK)
-		;
+		cmd_nick(cli, cmd, serv);
 	else if (cmd_type == USER && !cli.isAccepted())
-		cmd_user(cli, cmd, serv);
+		cmd_user(cli, cmd);
 	else if (cmd_type == OPER && cli.isAccepted())
 		;
 	else if (cmd_type == JOIN && cli.isAccepted())

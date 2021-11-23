@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 17:44:46 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 09:51:51 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ class client
 	private:
 				std::string					username;
 				std::string					nickname;
-				std::vector<std::string>	nickname_history;
 				bool						accepted;
 				
 				unsigned long				fd;
@@ -35,8 +34,10 @@ class client
 				
 				std::string					curr_msg;
 	public:
+				std::vector<std::string>	nickname_history;
 				parser						parser;
 				bool						pass;
+				bool						nick;
 
 	public:
 				client(int Fd);

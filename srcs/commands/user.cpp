@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/22 18:24:39 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 09:56:06 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
-void	cmd_user(client cli, std::vector<std::string> cmd, server serv)
+void	cmd_user(client cli, std::vector<std::string> cmd)
 {
 	if  (cmd.size() < 5)
 		send(cli.getFd(), "ERR_NEEDMOREPARAMS\r\n", 21, 0);
