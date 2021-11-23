@@ -58,7 +58,7 @@ void	parser::parsing(client cli, std::string msg, server serv)
 	else if (cmd_type == USER && !cli.isAccepted())
 		cmd_user(cli, cmd);
 	else if (cmd_type == OPER && cli.isAccepted())
-		;
+		cmd_oper(cli, cmd, serv);
 	else if (cmd_type == JOIN && cli.isAccepted())
 		;
 	else if (cmd_type == PRIVMSG && cli.isAccepted())

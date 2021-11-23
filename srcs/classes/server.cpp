@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 09:48:55 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 11:14:59 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,4 +78,21 @@ void	server::recevMessage(std::string buffer, struct kevent event_list[64], int 
 	curr_client->parser.parsing(*curr_client, buffer, *this);
 	
 	return ;
+}
+
+void	server::parse_config_file()
+{
+	std::ifstream	ifs("config_irc.conf");
+	std::string		buff;
+	while (getline(ifs, buff))
+	{
+		if (strncmp(buff.c_str(), "serv_accept_connex:", 20) == 0)
+			serv_accept_connex = ft_split(buff, ": ", 1)[1];
+		else if (strncmp(buff.c_str(), "location:", 10) == 0)
+			location = ft_split(buff, ": ", 1)[1];
+		else if (strncmp(buff.c_str(), "oper:", 6) == 0)
+			pass_oper = ft_split(buff, ": ", 1)[1];
+		else if (strncmp(buff.c_str(), "server_responsible:", 20) == 0)
+			serv_responsible = ft_split(buff, ": ", 1)[1];
+	}
 }

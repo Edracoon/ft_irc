@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 09:47:01 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 11:14:46 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 class server
 {
 	private:
+			/* Config File Data */
+			std::string	serv_accept_connex;
+			std::string	location;
+			std::string	pass_oper;
+			std::string	serv_responsible;
+			/* Serv Data */
 			std::string					password;
 	public:
 			std::vector<channel *>		channels;
@@ -30,6 +36,9 @@ class server
 	public:
 			server();
 			~server();
+
+			void	parse_config_file();
+
 
 			int						acceptClient(int kq, struct kevent change_list);
 			void					disconnectClient();
