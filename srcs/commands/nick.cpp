@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 15:01:48 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 19:36:20 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,11 @@
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
-void	cmd_nick(client* cl, std::vector<std::string> cmd,  server serv)
+void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 {
 	if  (cmd.size() < 2)
 		send(cl->getFd(), "ERR_NONICKNAMEGIVEN\r\n", 22, 0);
-	else if (serv.findClientByName(cmd[1]) != NULL)
+	else if (serv->findClientByName(cmd[1]) != NULL)
 		send(cl->getFd(), "ERR_NICKNAMEINUSE\r\n", 20, 0);
 	else
 	{

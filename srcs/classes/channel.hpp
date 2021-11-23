@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 09:34:21 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 19:12:43 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,10 +33,10 @@ class channel
 				std::vector<char>				modes;		// channels modes
 
 	public:
-				channel();
+				channel(std::string Name);
 				~channel();
 
-				int						addClient(); // /JOIN d'un client, toutes les etapes de verifications du channel etc
+				int						addClient(client* cl, std::vector<std::string> cmd); // /JOIN d'un client, toutes les etapes de verifications du channel etc
 
 				const std::string&		getName(void) const;
 				const std::string&		getPassword(void) const;
@@ -47,6 +47,8 @@ class channel
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
+
+				void					printListUser(client* cli);
 
 };
 

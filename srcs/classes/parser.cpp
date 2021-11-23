@@ -14,7 +14,7 @@ parser::parser()
 
 parser::~parser() { }
 
-void	parser::parsing(client* cli, std::string msg, server serv)
+void	parser::parsing(client* cli, std::string msg, server* serv)
 {
 	this->msg	= msg;
 
@@ -62,7 +62,7 @@ void	parser::parsing(client* cli, std::string msg, server serv)
 	else if (cmd_type == OPER && cli->isAccepted())
 		cmd_oper(cli, cmd, serv);
 	else if (cmd_type == JOIN && cli->isAccepted())
-		cmd_join(cli, cmd, &serv);
+		cmd_join(cli, cmd, serv);
 	else if (cmd_type == PRIVMSG && cli->isAccepted())
 		cmd_privmsg(cli, cmd, serv);
 	else if (cmd_type == KILL && cli->isAccepted())

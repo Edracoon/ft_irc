@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:14:46 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 17:31:07 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,6 +49,8 @@ class server
 
 			client*					findClientByFd(unsigned long Fd);
 			client*					findClientByName(std::string name);
+
+			channel*				findChannelByName(std::string name);
 
 };
 

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 14:22:55 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 19:34:37 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,6 +42,17 @@ client*					server::findClientByName(std::string name)
 	return (NULL);
 }
 
+channel*				server::findChannelByName(std::string name)
+{
+	std::vector<channel *>::iterator	it = this->channels.begin();
+	std::vector<channel *>::iterator	ite = this->channels.end();
+
+	for ( ; it != ite ; it++ ) {
+		if ((*it)->getName() == name)
+			return (*it);
+	}
+	return (NULL);
+}
 
 int		server::acceptClient(int kq, struct kevent change_list)
 {
@@ -74,7 +85,7 @@ int		server::acceptClient(int kq, struct kevent change_list)
 void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
 {
 	client*		curr_client = this->findClientByFd(event_list[i].ident);
-	curr_client->parser.parsing(curr_client, buffer, *this);
+	curr_client->parser.parsing(curr_client, buffer, this);
 	
 	return ;
 }

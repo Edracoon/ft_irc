@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 15:38:46 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 19:22:23 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,15 @@ class client
 				bool						accepted;
 				unsigned long				fd;
 				bool						ope;
-				channel						curr_chan;
 
-				
 				std::string					curr_msg;
+				
 	public:
 				std::vector<std::string>	nickname_history;
 				parser						parser;
-				
+	
+				channel*					curr_chan;
+	
 				bool						pass;
 				bool						nick;
 				bool						user;
