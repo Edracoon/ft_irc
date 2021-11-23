@@ -62,7 +62,7 @@ void	parser::parsing(client cli, std::string msg, server serv)
 	else if (cmd_type == JOIN && cli.isAccepted())
 		;
 	else if (cmd_type == PRIVMSG && cli.isAccepted())
-		;
+		cmd_privmsg(cli, cmd, serv);
 	else if (cmd_type == MSG && cli.isAccepted())
 		;
 
