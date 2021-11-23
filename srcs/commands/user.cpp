@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 15:36:18 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 15:45:19 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,9 @@ void	cmd_user(client* cli, std::vector<std::string> cmd)
 	{
 		/* We just need to take the username and realname (not usefull in our case but it's rfc) */
 		cli->setUsername(cmd[1]);
-		cli->setRealname(ft_split(cli->getCurrMsg(), ":", 1)[1]);
+		cli->setRealname(ft_split(ft_split(cli->getCurrMsg(), "\n", 1)[0], ":", 1)[1]);
 		cli->user = true;
+		std::cout << "cmd_user -> " << cli->getUsername() << " - " << cli->getRealname() << std::endl;
 	}
 
 	if (cli->nick == true && cli->pass == true && cli->user == true)
