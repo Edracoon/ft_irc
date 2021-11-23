@@ -23,7 +23,7 @@ void    cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv)
         tmp = serv.findClientByName(destinataire[i]);
         cmd[2] += "\r\n";
         if (tmp->isAccepted())
-            send (tmp->getFd(), cmd[2].c_str(), cmd[2].length(), 0);
+            send (tmp->getFd(), ("From " + cl->getNickname() + ": " + cmd[2]).c_str(), cl->getNickname().length() + cmd[2].length() + 7, 0);
     }
 
     std::vector<client *>::iterator	it = serv.clients.begin();
