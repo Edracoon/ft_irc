@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:53:40 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 09:32:38 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:22:17 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ void	cmd_help(client cl)
 	}
 	else
 	{
-		send(cl.getFd(), "$=========< Help Page >=========$\r\n ", 37, 0);
+		send(cl.getFd(), "$=========< Help Page >=========$\r\n", 36, 0);
 		send(cl.getFd(), "-> JOIN <canal> [<mdp>]\r\n", 26, 0);
 		send(cl.getFd(), "-> OPER <utilisateur> <mot de passe>\r\n", 39, 0);
 		send(cl.getFd(), "-> NICK <pseudonyme>\r\n", 23, 0);
