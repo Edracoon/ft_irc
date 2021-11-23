@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 09:38:47 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 09:47:59 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:02:11 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,7 @@
 
 void	cmd_oper(client cli, std::vector<std::string> cmd, server serv)
 {
-	
+	(void)cli;
+	(void)cmd;
+	(void)serv;
 }

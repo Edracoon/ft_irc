@@ -7,6 +7,7 @@
 #include <cstring>
 #include <map>
 #include <sstream>
+#include <fstream>
 
 /* TCP / IP */
 #include <sys/socket.h>

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/17 15:55:01 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 10:54:43 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,12 @@
 class server
 {
 	private:
+			/* Config File Data */
+			std::string	serv_accept_connex;
+			std::string	location;
+			std::string	pass_oper;
+			std::string	serv_responsible;
+			/* Serv Data */
 			std::string					password;
 			std::vector<channel *>		channels;
 			std::vector<client *>		clients;
@@ -30,6 +36,9 @@ class server
 	public:
 			server();
 			~server();
+
+			void	parse_config_file();
+
 
 			int						acceptClient(int kq, struct kevent change_list);
 			void					disconnectClient();
