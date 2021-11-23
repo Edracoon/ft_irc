@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:21:08 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:24:21 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ int		server::acceptClient(int kq, struct kevent change_list)
 void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
 {
 	client*		curr_client = this->findClientByFd(event_list[i].ident);
-	curr_client->parser.parsing(*curr_client, buffer, *this);
+	curr_client->parser.parsing(curr_client, buffer, *this);
 	
 	return ;
 }

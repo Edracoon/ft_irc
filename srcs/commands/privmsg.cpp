@@ -2,35 +2,36 @@
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
-void    cmd_privmsg(client cl, std::vector<std::string> cmd,  server serv)
+void    cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv)
 {
     std::vector<std::string>	destinataire = ft_split(cmd[1], ",", 512);
     if (destinataire.size() > 14)
-        send(cl.getFd(), "ERR_TOOMANYTARGETS\r\n", 21, 0);
+        send(cl->getFd(), "ERR_TOOMANYTARGETS\r\n", 21, 0);
     else if (cmd.size() < 3)
-        send(cl.getFd(), "ERR_NOTEXTTOSEND\r\n", 19, 0);
-    // for (unsigned int i = 0; i < destinataire.size(); i++)
-    // {
-    //     if (serv.findClientByName(destinataire[i]) == NULL)
-    //     {
-    //         send(cl.getFd(), "ERR_NOSUCHNICK\r\n", 17, 0);
-    //         return ; 
-    //     }
-    // }
-    // for (unsigned int i = 0; i < destinataire.size(); i++)
-    // {
-    //     client *tmp;
-    //     tmp = serv.findClientByName(destinataire[i]);
-    //     if (tmp->isAccepted())
-    //         send (tmp->getFd(), cmd[2].c_str(), 512, 0);
-    // }
-
-    std::vector<client *>::iterator	it = serv.clients.begin();
-	std::vector<client *>::iterator	ite = serv.clients.end();
-
-    for (; it != ite; it++)
+        send(cl->getFd(), "ERR_NOTEXTTOSEND\r\n", 19, 0);
+    for (unsigned int i = 0; i < destinataire.size(); i++)
     {
-        std::cout << (*it)->isAccepted() << " - ";
-        std::cout << (*it)->getNickname() << std::endl;
+        if (serv.findClientByName(destinataire[i]) == NULL)
+        {
+            send(cl->getFd(), "ERR_NOSUCHNICK\r\n", 17, 0);
+            return ; 
+        }
     }
+    for (unsigned int i = 0; i < destinataire.size(); i++)
+    {
+        client *tmp;
+        tmp = serv.findClientByName(destinataire[i]);
+        cmd[2] += "\r\n";
+        if (tmp->isAccepted())
+            send (tmp->getFd(), cmd[2].c_str(), cmd[2].length(), 0);
+    }
+
+    // std::vector<client *>::iterator	it = serv.clients.begin();
+	// std::vector<client *>::iterator	ite = serv.clients.end();
+
+    // for (; it != ite; it++)
+    // {
+    //     std::cout << (*it)->isAccepted() << " - ";
+    //     std::cout << (*it)->getNickname() << std::endl;
+    // }
 }

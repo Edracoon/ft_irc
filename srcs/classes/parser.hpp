@@ -44,19 +44,19 @@ class parser
 			parser();
 			~parser(void);
 
-			void	parsing(client cl, std::string str, server serv);
+			void	parsing(client* cli, std::string str, server serv);
 			int		whatIsCmd(std::string cmd);
 			// pass(client, tab);
 
 };
 
 /* === CMD FUNCTIONS === */
-void						cmd_help(client cl);
-void						cmd_pass(client cl, std::vector<std::string> cmd, server serv);
-void						cmd_user(client cli, std::vector<std::string> cmd);
-void						cmd_nick(client cl, std::vector<std::string> cmd, server serv);
-void						cmd_oper(client cli, std::vector<std::string> cmd, server serv);
-void						cmd_privmsg(client cl, std::vector<std::string> cmd,  server serv);
+void						cmd_help(client* cl);
+void						cmd_pass(client* cl, std::vector<std::string> cmd, server serv);
+void						cmd_user(client* cli, std::vector<std::string> cmd);
+void						cmd_nick(client* cl, std::vector<std::string> cmd, server serv);
+void						cmd_oper(client* cli, std::vector<std::string> cmd, server serv);
+void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"
