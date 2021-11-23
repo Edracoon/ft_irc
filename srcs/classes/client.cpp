@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 14:23:17 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 15:39:14 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,12 @@ void				client::AcceptClient() { this->accepted = true; }
 
 void				client::setUsername(const std::string & Username) { this->username = Username; }
 void				client::setNickname(const std::string & Nickname) { this->nickname = Nickname; }
+void				client::setRealname(const std::string & Realname) { this->realname = Realname; }
+
 const std::string & client::getNickname(void) const { return this->nickname; }
 const std::string & client::getUsername(void) const { return this->username; }
+const std::string &	client::getRealname(void) const { return this->realname; }
+
 std::string&		client::getCurrMsg(void) { return this->curr_msg; }
 
 unsigned long 		client::getFd() const { return this->fd; }

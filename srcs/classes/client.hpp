@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:42:53 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 15:38:46 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,10 @@
 class client
 {
 	private:
-				std::string					username;
 				std::string					nickname;
+				std::string					username;
+				std::string					realname;
+				
 
 				bool						accepted;
 				unsigned long				fd;
@@ -49,8 +51,10 @@ class client
 				void					AcceptClient();
 				void					setUsername(const std::string & Username);
 				void					setNickname(const std::string & Nickname);
+				void					setRealname(const std::string & Realname);
 				const std::string & 	getNickname(void) const;
 				const std::string & 	getUsername(void) const;
+				const std::string &		getRealname(void) const;
 				unsigned long 			getFd(void) const;
 
 				bool					isOpe(void);
