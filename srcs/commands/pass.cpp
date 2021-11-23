@@ -18,4 +18,7 @@ void    cmd_pass(client* cl, std::vector<std::string> cmd, server serv)
     }
     else
         cl->pass = false;
+    
+    if (cl->nick == true && cl->pass == true && cl->user == true)
+		cl->AcceptClient();
 }

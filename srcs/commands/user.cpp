@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:45:56 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 14:35:09 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,7 @@ void	cmd_user(client* cli, std::vector<std::string> cmd)
 		cli->setUsername(ft_split(cli->getCurrMsg(), ":", 1)[1]);
 		cli->user = true;
 	}
+
+	if (cli->nick == true && cli->pass == true && cli->user == true)
+		cli->AcceptClient();
 }

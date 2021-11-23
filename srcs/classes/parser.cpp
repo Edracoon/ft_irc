@@ -9,14 +9,13 @@ parser::parser()
 	this->tab[4] = "OPER";
 	this->tab[5] = "JOIN";
 	this->tab[6] = "PRIVMSG";
+	this->tab[7] = "KILL";
 }
 
 parser::~parser() { }
 
 void	parser::parsing(client* cli, std::string msg, server serv)
 {
-	if (cli->nick == true && cli->pass == true && cli->user == true)
-		cli->AcceptClient();
 	this->msg	= msg;
 
 	std::vector<std::string>	cmd = ft_split(this->msg, " ", 512);
@@ -66,6 +65,8 @@ void	parser::parsing(client* cli, std::string msg, server serv)
 		;
 	else if (cmd_type == PRIVMSG && cli->isAccepted())
 		cmd_privmsg(cli, cmd, serv);
+	else if (cmd_type == KILL && cli->isAccepted())
+		cmd_kill(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		;
 
@@ -77,10 +78,10 @@ void	parser::parsing(client* cli, std::string msg, server serv)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 7 ; i++)
+	for (int i = 0; i < 8 ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
 	}
-	return (7);
+	return (8);
 }
