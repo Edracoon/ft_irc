@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   kill.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 14:03:44 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/23 14:33:38 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 14:57:01 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,9 +25,14 @@ void	cmd_kill(client* cl, std::vector<std::string> cmd, server serv)
     else
     {
         client *tmp = serv.findClientByName(cmd[1]);
-        send(tmp->getFd(), "you have been banned\r\n", 23, 0);
-        send(tmp->getFd(), cmd[2].c_str(), cmd[2].length(), 0);
-        send(tmp->getFd(), "\r\n", 3, 0);
+        send(tmp->getFd(), ("You have been banned\n" + cmd[2] + "\r\n").c_str(), cmd[2].length() + 25, 0);
         close(tmp->getFd());
+        
+        std::vector<client *>::iterator it = serv.clients.begin();
+        std::vector<client *>::iterator ite = serv.clients.end();
+        for ( ; it != ite ; it++) {
+            if ((*it)->getNickname() == tmp->getNickname())
+                serv.clients.erase(it);
+        }
     }
 }
