@@ -26,12 +26,13 @@ void    cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv)
             send (tmp->getFd(), cmd[2].c_str(), cmd[2].length(), 0);
     }
 
-    // std::vector<client *>::iterator	it = serv.clients.begin();
-	// std::vector<client *>::iterator	ite = serv.clients.end();
+    std::vector<client *>::iterator	it = serv.clients.begin();
+	std::vector<client *>::iterator	ite = serv.clients.end();
 
-    // for (; it != ite; it++)
-    // {
-    //     std::cout << (*it)->isAccepted() << " - ";
-    //     std::cout << (*it)->getNickname() << std::endl;
-    // }
+    for (; it != ite; it++)
+    {
+        std::cout << (*it)->isAccepted() << " - ";
+        std::cout << (*it)->getNickname() << " - ";
+        std::cout << (*it)->getUsername() << std::endl;
+    }
 }

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:27:15 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:45:56 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,6 @@ void	cmd_user(client* cli, std::vector<std::string> cmd)
 	{
 		/* Au final on s'en fout des information precedentes, je recupere juste l'username */
 		cli->setUsername(ft_split(cli->getCurrMsg(), ":", 1)[1]);
+		cli->user = true;
 	}
 }

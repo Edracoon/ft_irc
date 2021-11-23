@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 10:54:18 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/23 11:43:25 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,16 @@
 client::client(int Fd)
 {
 	this->fd		= Fd;
-	this->accepted	= true;
+	this->accepted	= false;
 	this->ope		= false;
 	this->pass		= false;
+	this->nick		= false;
 }
 
 client::~client() {}
 
 bool				client::isAccepted() const { return this->accepted; }
+void				client::AcceptClient() { this->accepted = true; }
 
 void				client::setUsername(const std::string & Username) { this->username = Username; }
 void				client::setNickname(const std::string & Nickname) { this->nickname = Nickname; }

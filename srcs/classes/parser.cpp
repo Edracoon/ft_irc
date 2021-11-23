@@ -15,6 +15,8 @@ parser::~parser() { }
 
 void	parser::parsing(client* cli, std::string msg, server serv)
 {
+	if (cli->nick == true && cli->pass == true && cli->user == true)
+		cli->AcceptClient();
 	this->msg	= msg;
 
 	std::vector<std::string>	cmd = ft_split(this->msg, " ", 512);
@@ -30,6 +32,7 @@ void	parser::parsing(client* cli, std::string msg, server serv)
 	{
 		this->prefix	= cmd[0].substr(1, cmd[0].find(' '));
 		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
+		cmd = ft_split(this->msg, " ", 512);
 	}
 	std::cout << "prefix: " << (this->prefix.empty() ? cli->getNickname() : this->prefix);
 	std::cout << " - msg = " << this->msg << std::endl;
@@ -51,11 +54,11 @@ void	parser::parsing(client* cli, std::string msg, server serv)
 
 	if (cmd_type == HELP)
 		cmd_help(cli);
-	else if (cmd_type == PASS && !cli->isAccepted())
+	else if (cmd_type == PASS)
 		cmd_pass(cli, cmd, serv);
 	else if (cmd_type == NICK)
 		cmd_nick(cli, cmd, serv);
-	else if (cmd_type == USER && !cli->isAccepted())
+	else if (cmd_type == USER)
 		cmd_user(cli, cmd);
 	else if (cmd_type == OPER && cli->isAccepted())
 		cmd_oper(cli, cmd, serv);
