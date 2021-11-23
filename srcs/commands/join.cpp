@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 16:01:35 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 16:02:35 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,5 +16,7 @@
 
 void	cmd_join(client* cli, std::vector<std::string>	cmd, server* serv)
 {
-	
+	(void)cli;
+	(void)cmd;
+	(void)serv;
 }

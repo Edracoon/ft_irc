@@ -59,6 +59,7 @@ void						cmd_nick(client* cl, std::vector<std::string> cmd, server serv);
 void						cmd_oper(client* cli, std::vector<std::string> cmd, server serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server serv);
+void						cmd_join(client* cli, std::vector<std::string>	cmd, server* serv);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"
