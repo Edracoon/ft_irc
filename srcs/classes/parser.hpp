@@ -19,6 +19,7 @@ class parser
 				OPER,
 				JOIN,
 				PRIVMSG,
+				KILL,
 				MSG
 			};
 
@@ -33,7 +34,7 @@ class parser
 
 			std::string										msg;		// Buffer envoyé au parser
 			std::string										prefix;		// if prefix, print it in place of nickname
-			std::string										tab[7];		// Tableau des commandes
+			std::string										tab[8];		// Tableau des commandes
 			int												ac;			// Nombre d'argument
 
 			int												cmd_type;	// Categorie de commande
@@ -57,6 +58,7 @@ void						cmd_user(client* cli, std::vector<std::string> cmd);
 void						cmd_nick(client* cl, std::vector<std::string> cmd, server serv);
 void						cmd_oper(client* cli, std::vector<std::string> cmd, server serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server serv);
+void						cmd_kill(client* cl, std::vector<std::string> cmd, server serv);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"

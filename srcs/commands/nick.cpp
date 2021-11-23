@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:59:31 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 14:35:02 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,4 +26,7 @@ void    cmd_nick(client* cl, std::vector<std::string> cmd,  server serv)
         cl->nick = true;
         cl->nickname_history.push_back(cmd[1]);
     }
+
+    if (cl->nick == true && cl->pass == true && cl->user == true)
+		cl->AcceptClient();
 }

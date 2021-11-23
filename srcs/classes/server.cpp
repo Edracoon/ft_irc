@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   server.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:24:21 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 14:22:55 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,6 @@ server::~server() {}
 
 void					server::setPassword(const std::string & pass) { this->password = pass; }
 const std::string &		server::getPassword(void) const { return this->password; }
-
 
 client*					server::findClientByFd(unsigned long Fd)
 {

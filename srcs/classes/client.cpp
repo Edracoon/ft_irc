@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   client.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 11:43:25 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 14:23:17 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ client::client(int Fd)
 {
 	this->fd		= Fd;
 	this->accepted	= false;
-	this->ope		= false;
+	this->ope		= true;
 	this->pass		= false;
 	this->nick		= false;
 }
