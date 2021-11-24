@@ -19,7 +19,7 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 		return (1);
 	}
 	
-	if (this->status == 'p')
+	else if (this->status == 'p')
 	{
 		if (cmd.size() < 3)
 			send(cl->getFd(), "ERR_PRIVCHANNEEDKEY\r\n", 22, 0);
@@ -30,18 +30,21 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 		return (1);
 	}
 
-	if (this->status == 'i')
+	else if (this->status == 'i')
 	{
 		send(cl->getFd(), "ERR_INVITEONLYCHAN\r\n", 21, 0);
 		return (0);
 	}
 
-	if (this->users.size() == max_user)
+	else if (this->users.size() == max_user)
 	{
 		send(cl->getFd(), "ERR_CHANNELISFULL\r\n", 20, 0);
 		return (0);
 	}
-	
+
+	else
+		this->users.push_back(cl);
+
 	return (1);
 }
 
@@ -81,6 +84,6 @@ void					channel::printListUser(client* cli)
 
 	send(cli->getFd(), std::string("$=========< Users in " + name + ">=========$\r\n").c_str(), name.length() + 36, 0);
 	for ( ; it != ite ; it++) {
-		send(cli->getFd(), ("	- " + (*it)->getNickname() + "\r\n").c_str(), (*it)->getNickname().length() + 7, 0);
+		send(cli->getFd(), ("- " + (*it)->getNickname() + "\r\n").c_str(), (*it)->getNickname().length() + 7, 0);
 	}
 }
