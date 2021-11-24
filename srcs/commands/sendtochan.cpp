@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:23 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/24 10:07:00 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 13:33:31 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
-void	sendToChan(client* cl, std::vector<std::string> cmd)
+void	sendToChan(client* cl)
 {
 	if (cl->curr_chan)
 	{
@@ -23,10 +23,9 @@ void	sendToChan(client* cl, std::vector<std::string> cmd)
 		
 		for ( ; it != ite ; it++)
 		{
-			// if ((*it)->getNickname() == cl->getNickname())
-			// 	continue ;
-			for (unsigned int i = 0; i < cmd.size(); i++)
-				send((*it)->getFd(), (cmd[i] + "\r\n").c_str() , cmd[i].length() + 3, 0);
+			if ((*it)->getNickname() == cl->getNickname())
+				continue ;
+			send((*it)->getFd(), ("From " + cl->getNickname() + ": " + cl->getCurrMsg()).c_str() , cl->getNickname().length() + cl->getCurrMsg().length() + 9, 0);
 		}
 	}
 }
