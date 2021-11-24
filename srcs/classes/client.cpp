@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:22:50 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 11:04:12 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,24 @@ client::client(int Fd)
 	this->fd		= Fd;
 	this->curr_chan	= NULL;
 	this->accepted	= false;
-	this->ope		= true;
+	this->ope		= false;
 	this->pass		= false;
 	this->nick		= false;
+	this->user		= false;
 }
 
-client::~client() {}
+client::~client()
+{
+	this->nickname.clear();
+	this->username.clear();
+	this->realname.clear();
+	this->nickname_history.clear();
+
+	this->accepted	= false;
+	this->pass		= false;
+	this->nick		= false;
+	this->user		= false;
+}
 
 bool				client::isAccepted() const { return this->accepted; }
 void				client::AcceptClient() { this->accepted = true; }
