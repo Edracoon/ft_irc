@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/24 09:42:19 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 15:01:29 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,15 +36,5 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		cmd[2] += "\r\n";
 		if (tmp->isAccepted())
 			send (tmp->getFd(), ("From " + cl->getNickname() + ": " + cmd[2]).c_str(), cl->getNickname().length() + cmd[2].length() + 7, 0);
-	}
-
-	std::vector<client *>::iterator	it = serv->clients.begin();
-	std::vector<client *>::iterator	ite = serv->clients.end();
-
-	for (; it != ite; it++)
-	{
-		std::cout << (*it)->isAccepted() << " - ";
-		std::cout << (*it)->getNickname() << " - ";
-		std::cout << (*it)->getUsername() << std::endl;
 	}
 }
