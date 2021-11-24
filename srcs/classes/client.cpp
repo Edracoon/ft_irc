@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 11:04:12 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 13:35:38 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,6 +21,11 @@ client::client(int Fd)
 	this->pass		= false;
 	this->nick		= false;
 	this->user		= false;
+}
+
+client::client(const client& copy)
+{
+	
 }
 
 client::~client()

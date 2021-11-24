@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 11:42:45 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 13:37:36 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,7 +74,7 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	fcntl(cfd, F_SETFL, O_NONBLOCK);
 	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 	kevent(kq, &change_list, 1, NULL, 0, NULL);
-	
+
 	client	*new_client = new client(cfd);
 	this->clients.push_back(new_client);	// Add client to server list
 
