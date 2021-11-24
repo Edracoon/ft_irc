@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 12:56:19 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 19:23:04 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,9 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 		cl->setNickname(cmd[1]);
 		cl->nick = true;
 		cl->nickname_history.push_back(cmd[1]);
+		/* Update name in client's current channel */
+		if (cl->curr_chan != NULL && serv->findChannelByName(cl->curr_chan->getName()) != NULL)
+			serv->findChannelByName(cl->curr_chan->getName())->findClientByName(cl->getNickname())->setNickname(cmd[1]);
 	}
 
 	if (cl->nick == true && cl->pass == true && cl->user == true)

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 12:56:28 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 19:22:59 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,6 +52,8 @@ class channel
 				bool					checkMaxUser(void) const;
 
 				void					printListUser(client* cli);
+
+				client*					findClientByName(std::string nickname);
 
 };
 

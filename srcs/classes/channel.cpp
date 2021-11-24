@@ -18,7 +18,7 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 		this->users.push_back(cl);
 		return (1);
 	}
-	
+
 	else if (this->status == 'p')
 	{
 		if (cmd.size() < 3)
@@ -57,10 +57,12 @@ void					channel::deleteClientFromChan(client *cl)
 	for ( ; it != ite ; it++ )
 	{
 		if ((*it)->getNickname() == cl->getNickname())
+		{
 			this->users.erase(it);
+			return ;
+		}
 	}
 }
-
 
 const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
@@ -93,11 +95,23 @@ bool					channel::checkMaxUser(void) const { return false; }
 
 void					channel::printListUser(client* cli)
 {
-	std::vector<client*	>::iterator	it	=	this->users.begin();
-	std::vector<client*	>::iterator	ite	=	this->users.end();
+	std::vector<client *>::iterator	it	=	this->users.begin();
+	std::vector<client *>::iterator	ite	=	this->users.end();
 
-	send(cli->getFd(), std::string("$=========< Users in " + name + " >=========$\r\n").c_str(), name.length() + 37, 0);
+	send(cli->getFd(), std::string("$=========< Users in " + name + " >=========$\r\n").c_str(), name.length() + 35, 0);
 	for ( ; it != ite ; it++) {
-		send(cli->getFd(), (std::string("- ") + (*it)->getNickname() + std::string("\r\n")).c_str(), (*it)->getNickname().length() + 6, 0);
+		send(cli->getFd(), (std::string("- ") + (*it)->getNickname() + std::string("\r\n")).c_str(), (*it)->getNickname().length() + 4, 0);
 	}
+}
+
+client*					channel::findClientByName(std::string nickname)
+{
+	std::vector<client *>::iterator	it	=	this->users.begin();
+	std::vector<client *>::iterator	ite	=	this->users.end();
+
+	for ( ; it != ite ; it++) {
+		if ((*it)->getNickname() == nickname)
+			return (*it);
+	}
+	return NULL;
 }

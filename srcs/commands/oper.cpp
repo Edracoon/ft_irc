@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 09:38:47 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:36:28 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 17:16:00 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,4 +19,5 @@ void	cmd_oper(client* cli, std::vector<std::string> cmd, server* serv)
 	(void)cli;
 	(void)cmd;
 	(void)serv;
+	// serv->findChannelByName(cl->curr_chan->getName())->findClientByName(cl->getNickname()).setNickname(cmd[1]);
 }
