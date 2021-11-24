@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:12:43 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 09:54:04 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,12 +24,14 @@ class channel
 				std::string						name;
 				std::string						password;	// if private
 				char							status;		// private ; secret ; invitation
-				std::vector<client *>			operators;	// operator list in the channel
-				std::vector<client *>			users;		// users list in the channel
-				std::vector<std::string>		black_list;	// mode +b
 				unsigned int					max_user;
 
 				std::string						topic;
+	
+	public:
+				std::vector<client *>			operators;	// operator list in the channel
+				std::vector<client *>			users;		// users list in the channel
+				std::vector<std::string>		black_list;	// mode +b
 				std::vector<char>				modes;		// channels modes
 
 	public:

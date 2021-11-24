@@ -20,5 +20,8 @@ void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 		cl->pass = false;
 	
 	if (cl->nick == true && cl->pass == true && cl->user == true)
+	{
+		send(cl->getFd(), "You’ve been accepted\n", 24, 0);
 		cl->AcceptClient();
+	}
 }

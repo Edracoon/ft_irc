@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   nick.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:36:20 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 10:02:21 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,5 +28,8 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 	}
 
 	if (cl->nick == true && cl->pass == true && cl->user == true)
+	{
+		send(cl->getFd(), "You’ve been accepted\n", 24, 0);
 		cl->AcceptClient();
+	}
 }

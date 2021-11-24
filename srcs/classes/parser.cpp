@@ -68,7 +68,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	else if (cmd_type == KILL && cli->isAccepted())
 		cmd_kill(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
-		;
+		sendToChan(cli, cmd);
 
 	// Reinitialize data between message
 	this->prefix.clear();

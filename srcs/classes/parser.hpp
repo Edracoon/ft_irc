@@ -60,6 +60,7 @@ void						cmd_oper(client* cli, std::vector<std::string> cmd, server* serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_join(client* cli, std::vector<std::string>	cmd, server* serv);
+void						sendToChan(client* cl, std::vector<std::string> cmd);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"
