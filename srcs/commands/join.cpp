@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 12:54:12 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 18:10:36 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,13 +15,13 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
-void	create_channel(client* cli, std::vector<std::string> cmd, server* serv)
+channel*	create_channel(client* cli, std::vector<std::string> cmd, server* serv)
 {
 	channel*	new_chan = new channel(cmd[1]);
 	new_chan->addClient(cli, cmd);
 	serv->channels.push_back(new_chan);
 	cli->curr_chan = new_chan;
-
+	return (new_chan);
 }
 
 void	cmd_join(client* cli, std::vector<std::string> cmd, server* serv)
@@ -45,7 +45,8 @@ void	cmd_join(client* cli, std::vector<std::string> cmd, server* serv)
 		/* Create chan or join it if its exists */
 		if (curr_chan == NULL)
 		{
-			create_channel(cli, cmd, serv);
+			curr_chan = create_channel(cli, cmd, serv);
+			curr_chan->printListUser(cli);
 		}
 		else
 		{

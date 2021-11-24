@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 13:35:53 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 18:48:58 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,8 @@ class client
 				client(int Fd);
 				client(const client& copy);
 				~client();
+
+				client&		operator=(const client& rhs);
 
 				bool					isAccepted() const;
 				void					AcceptClient();

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 17:10:21 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 13:35:38 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 18:50:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,20 +25,37 @@ client::client(int Fd)
 
 client::client(const client& copy)
 {
+	*this = copy;
+}
+
+client&		client::operator=(const client& rhs)
+{
+	this->nickname			= rhs.nickname;
+	this->username			= rhs.username;
+	this->realname			= rhs.realname;
+	this->nickname_history	= rhs.nickname_history;
 	
+	this->fd				= rhs.fd;
+	this->curr_chan			= rhs.curr_chan;
+	this->accepted			= rhs.accepted;
+	this->ope				= rhs.ope;
+	this->pass				= rhs.pass;
+	this->nick				= rhs.nick;
+	this->user				= rhs.user;
+	return (*this);
 }
 
 client::~client()
 {
-	this->nickname.clear();
-	this->username.clear();
-	this->realname.clear();
-	this->nickname_history.clear();
+	// this->nickname.clear();
+	// this->username.clear();
+	// this->realname.clear();
+	// this->nickname_history.clear();
 
-	this->accepted	= false;
-	this->pass		= false;
-	this->nick		= false;
-	this->user		= false;
+	// this->accepted	= false;
+	// this->pass		= false;
+	// this->nick		= false;
+	// this->user		= false;
 }
 
 bool				client::isAccepted() const { return this->accepted; }
