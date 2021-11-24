@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   user.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 10:02:43 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 19:39:56 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ void	cmd_user(client* cli, std::vector<std::string> cmd)
 
 	if (cli->nick == true && cli->pass == true && cli->user == true)
 	{
-		send(cli->getFd(), "You’ve been accepted\n", 24, 0);
+		std::string msg = "Welcome to $===< Ed&Flo IRC >===$\r\n"; 
+		send(cli->getFd(), msg.c_str(), msg.length(), 0);
+		msg = cli->getNickname() + "@" + cli->getUsername() + " running in v1.0\r\n";
+		send(cli->getFd(), msg.c_str(), msg.length(), 0);
 		cli->AcceptClient();
 	}
 }

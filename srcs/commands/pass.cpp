@@ -21,7 +21,10 @@ void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 	
 	if (cl->nick == true && cl->pass == true && cl->user == true)
 	{
-		send(cl->getFd(), "You’ve been accepted\n", 24, 0);
+		std::string msg = "Welcome to $===< Ed&Flo IRC >===$\r\n"; 
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		msg = cl->getNickname() + "@" + cl->getUsername() + " running in v1.0\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		cl->AcceptClient();
 	}
 }

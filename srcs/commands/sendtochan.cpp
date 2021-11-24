@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:23 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/24 15:17:57 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 19:28:30 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,8 @@ void	sendToChan(client* cl)
 		{
 			if ((*it)->getNickname() == cl->getNickname())
 				continue ;
-			send((*it)->getFd(), ("From " + cl->getNickname() + ": " + cl->getCurrMsg()).c_str() , cl->getNickname().length() + cl->getCurrMsg().length() + 7, 0);
+			std::string msg = cl->getNickname() + ": " + cl->getCurrMsg();
+			send((*it)->getFd(), msg.c_str() , msg.length(), 0);
 		}
 	}
 }
