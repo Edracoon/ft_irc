@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:34:37 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 11:29:08 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -104,5 +104,24 @@ void	server::parse_config_file()
 			pass_oper = ft_split(buff, ": ", 1)[1];
 		else if (strncmp(buff.c_str(), "server_responsible:", 20) == 0)
 			serv_responsible = ft_split(buff, ": ", 1)[1];
+	}
+}
+
+void			server::deleteClient(client* tmp)
+{
+	std::vector<client *>::iterator	it	=	this->clients.begin();
+	std::vector<client *>::iterator	ite =	this->clients.end();
+
+	for ( ; it != ite ; it++ )
+	{
+		if (tmp->getNickname() == (*it)->getNickname())
+		{
+			if ((*it)->curr_chan != NULL)
+				(*it)->curr_chan->deleteClientFromChan(*it);
+			std::cout << (*it)->getNickname() << " - " << (*it)->getUsername() << std::endl;
+			this->clients.erase(it);
+			delete *it;
+			return ;
+		}
 	}
 }

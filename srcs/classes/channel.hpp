@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 19:12:43 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 10:58:31 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,7 @@ class channel
 				~channel();
 
 				int						addClient(client* cl, std::vector<std::string> cmd); // /JOIN d'un client, toutes les etapes de verifications du channel etc
+				void					deleteClientFromChan(client *cl);
 
 				const std::string&		getName(void) const;
 				const std::string&		getPassword(void) const;

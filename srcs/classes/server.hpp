@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/23 17:31:07 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 10:52:25 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,7 +41,6 @@ class server
 
 
 			int						acceptClient(int kq, struct kevent change_list);
-			void					disconnectClient();
 			void					recevMessage(std::string buffer, struct kevent event_list[64], int i);
 			void					setPassword(const std::string & pass);
 			const std::string &		getPassword(void) const;
@@ -51,6 +50,8 @@ class server
 			client*					findClientByName(std::string name);
 
 			channel*				findChannelByName(std::string name);
+
+			void					deleteClient(client* tmp);
 
 };
 
