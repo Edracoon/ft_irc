@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 15:27:07 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 15:32:28 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,10 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 					bzero(buffer, 1024);
 					recv(event_list[i].ident, buffer, 1024, 0);
 					if (ft_strlen(buffer) > 510)
+					{
+						send(event_list[i].ident, "Limit message to 512 characteres\r\n", 34, 0);
 						continue ;
+					}
 					client* temp = serv->findClientByFd(event_list[i].ident);
 					if (std::string(buffer) == "\r\n")
 						;
