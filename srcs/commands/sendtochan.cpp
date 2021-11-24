@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sendtochan.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:23 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/24 13:33:31 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/24 15:17:57 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,7 @@ void	sendToChan(client* cl)
 		{
 			if ((*it)->getNickname() == cl->getNickname())
 				continue ;
-			send((*it)->getFd(), ("From " + cl->getNickname() + ": " + cl->getCurrMsg()).c_str() , cl->getNickname().length() + cl->getCurrMsg().length() + 9, 0);
+			send((*it)->getFd(), ("From " + cl->getNickname() + ": " + cl->getCurrMsg()).c_str() , cl->getNickname().length() + cl->getCurrMsg().length() + 7, 0);
 		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 11:05:45 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/24 15:27:07 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 {
 	int		n_ev;
 	
-	char	buffer[512];
+	char	buffer[1024];
 
 	while (1)
 	{
@@ -53,8 +53,10 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 				/* Read client messages that are already accepted */
 				else if (event_list[i].filter & EVFILT_READ)
 				{
-					bzero(buffer, 512);
-					recv(event_list[i].ident, buffer, 512, 0);
+					bzero(buffer, 1024);
+					recv(event_list[i].ident, buffer, 1024, 0);
+					if (ft_strlen(buffer) > 510)
+						continue ;
 					client* temp = serv->findClientByFd(event_list[i].ident);
 					if (std::string(buffer) == "\r\n")
 						;
