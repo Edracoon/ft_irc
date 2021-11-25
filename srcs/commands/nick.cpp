@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 19:39:41 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/25 11:55:10 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,9 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 			serv->findChannelByName(cl->curr_chan->getName())->findClientByName(cl->getNickname())->setNickname(cmd[1]);
 	}
 
-	if (cl->nick == true && cl->pass == true && cl->user == true)
+	if (!cl->isAccepted() && cl->nick == true && cl->pass == true && cl->user == true)
 	{
-		std::string msg = "Welcome to $===< Ed&Flo IRC >===$\r\n"; 
+		std::string msg = "$===< Welcome to Ed&Flo IRC >===$\r\n"; 
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		msg = cl->getNickname() + "@" + cl->getUsername() + " running in v1.0\r\n";
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
