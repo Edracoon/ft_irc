@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/25 11:56:57 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:19:42 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,10 +30,10 @@ void	cmd_user(client* cli, std::vector<std::string> cmd)
 
 	if (!cli->isAccepted() && cli->nick == true && cli->pass == true && cli->user == true)
 	{
-		std::string msg = "$===< Welcome to Ed&Flo IRC >===$\r\n";
+		std::string msg = ":127.0.0.1 001 " + cli->getNickname() + " :Welcome to the Internet Relay Network " + cli->getNickname() + "!" + cli->getUsername() + "@*\r\n";
 		send(cli->getFd(), msg.c_str(), msg.length(), 0);
-		msg = "-> " + cli->getNickname() + "@" + cli->getUsername() + " running in v1.0\r\n";
-		send(cli->getFd(), msg.c_str(), msg.length(), 0);
+		// msg = "-> " + cli->getNickname() + "@" + cli->getUsername() + " running in v1.0\r\n";
+		// send(cli->getFd(), msg.c_str(), msg.length(), 0);
 		cli->AcceptClient();
 	}
 }

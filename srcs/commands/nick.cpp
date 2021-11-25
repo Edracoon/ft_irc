@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/25 11:55:10 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/25 15:28:01 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,11 +17,16 @@
 void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 {
 	if  (cmd.size() < 2)
+	{
 		send(cl->getFd(), "ERR_NONICKNAMEGIVEN\r\n", 22, 0);
-	else if (serv->findClientByName(cmd[1]) != NULL)
+		return ;
+	}
+	cmd[1] = ft_split(cmd[1], "\n", 1)[0];
+	if (serv->findClientByName(cmd[1]) != NULL)
 		send(cl->getFd(), "ERR_NICKNAMEINUSE\r\n", 20, 0);
 	else
 	{
+		std::cout << "hello 1" << std::endl;
 		cl->setNickname(cmd[1]);
 		cl->nick = true;
 		cl->nickname_history.push_back(cmd[1]);
@@ -32,10 +37,10 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 
 	if (!cl->isAccepted() && cl->nick == true && cl->pass == true && cl->user == true)
 	{
-		std::string msg = "$===< Welcome to Ed&Flo IRC >===$\r\n"; 
+		std::string msg = ":127.0.0.1 001 " + cl->getNickname() + " :Welcome to the Internet Relay Network " + cl->getNickname() + "!" + cl->getUsername() + "@*\r\n";
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		msg = cl->getNickname() + "@" + cl->getUsername() + " running in v1.0\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		// msg = cl->getNickname() + "@" + cl->getUsername() + " running in v1.0\r\n";
+		// send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		cl->AcceptClient();
 	}
 }
