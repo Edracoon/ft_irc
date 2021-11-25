@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 18:10:36 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/25 17:57:30 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,9 +28,9 @@ void	cmd_join(client* cli, std::vector<std::string> cmd, server* serv)
 {
 	channel*	curr_chan = NULL;
 	if (cmd.size() < 2)
-		send(cli->getFd(), "ERR_NEEDMOREPARAMS\r\n", 21, 0);
+		send(cli->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
 	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
-		send(cli->getFd(), "ERR_BADCHANMASK\r\n", 18, 0);
+		send(cli->getFd(), (cmd[1] + " :Bad Channel Mask\r\n").c_str(), cmd[1].length() + 20, 0);
 	else
 	{
 		curr_chan = serv->findChannelByName(cmd[1]);

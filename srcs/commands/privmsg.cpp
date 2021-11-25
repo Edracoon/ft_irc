@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/24 15:01:29 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/25 18:03:06 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,20 +18,23 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 {
 	std::vector<std::string>	destinataire = ft_split(cmd[1], ",", 512);
 	if (destinataire.size() > 14)
-		send(cl->getFd(), "ERR_TOOMANYTARGETS\r\n", 20, 0);
+	{
+		std::string	msg = cl->getNickname() + " :407 recipients. Too many targets.\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cmd.size() < 3)
-		send(cl->getFd(), "ERR_NOTEXTTOSEND\r\n", 18, 0);
+		send(cl->getFd(), ":No text to send\r\n", 18, 0);
 	for (unsigned int i = 0; i < destinataire.size(); i++)
 	{
 		if (serv->findClientByName(destinataire[i]) == NULL)
 		{
-			send(cl->getFd(), "ERR_NOSUCHNICK\r\n", 16, 0);
+			send(cl->getFd(), (cmd[1] + " :No such nick/channel\r\n").c_str(), cmd[1].length() + 24, 0);
 			return ; 
 		}
 	}
+	client *tmp;
 	for (unsigned int i = 0; i < destinataire.size(); i++)
 	{
-		client *tmp;
 		tmp = serv->findClientByName(destinataire[i]);
 		if (tmp->isAccepted())
 		{
