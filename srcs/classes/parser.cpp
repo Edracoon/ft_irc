@@ -16,10 +16,11 @@ parser::~parser() { }
 
 void	parser::parsing(client* cli, std::string msg, server* serv)
 {
+	if (cli == NULL)
+		return ;
 	this->msg	= msg;
 
 	std::vector<std::string>	cmd = ft_split(this->msg, " ", 512);
-
 	/* Checking for prefix in case it's not an operator */
 	if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) != cli->getNickname()) && !cli->isOpe())
 	{
@@ -34,7 +35,6 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd = ft_split(this->msg, " ", 512);
 	}
 	// std::cout << "Serv: " << cli->getNickname() << " : " << this->msg << std::endl;
-
 	if (this->prefix.empty())
 		cmd_type = this->whatIsCmd(cmd[0]);
 	else if (!(this->prefix.empty()))
@@ -64,7 +64,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_join(cli, cmd, serv);
 	else if (cmd_type == PRIVMSG && cli->isAccepted())
 		cmd_privmsg(cli, cmd, serv);
-	else if (cmd_type == KILL && cli->isAccepted())
+	else if ((cmd_type == KILL || cmd[0] == "kill") && cli->isAccepted())
 		cmd_kill(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli);

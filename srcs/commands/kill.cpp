@@ -25,8 +25,16 @@ void	cmd_kill(client* cl, std::vector<std::string> cmd, server* serv)
 	else
 	{
 		client *tmp = serv->findClientByName(cmd[1]);
-		send(tmp->getFd(), ("You have been banned\n" + cmd[2] + "\r\n").c_str(), cmd[2].length() + 24, 0);
-		close(tmp->getFd());
-		serv->deleteClient(tmp);
+		if (tmp->getNickname() == cl->getNickname())
+			send(tmp->getFd(), ":You cannot KILL yourself\r\n", 28, 0);
+		else if (ft_split(cl->getCurrMsg(), ":", 1).size() == 1)
+			send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+		else
+		{
+			std::string msg = ":You are banned from this server for : " + (ft_split(cl->getCurrMsg(), ":", 1)[1]) + "\r\n";
+			send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+			close(tmp->getFd());
+			serv->deleteClient(tmp);
+		}
 	}
 }

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/25 15:23:31 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 20:10:21 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ server::~server() {}
 
 void					server::setPassword(const std::string & pass) { this->password = pass; }
 const std::string &		server::getPassword(void) const { return this->password; }
+const std::string &		server::getOperPassword(void) const { return this->pass_oper; }
 
 client*					server::findClientByFd(unsigned long Fd)
 {
@@ -93,17 +94,25 @@ void	server::recevMessage(std::string buffer, struct kevent event_list[64], int 
 void	server::parse_config_file()
 {
 	std::ifstream	ifs("config_irc.conf");
+	if (ifs.fail())
+		std::cout << "Error file" << std::endl;
 	std::string		buff;
-	while (getline(ifs, buff))
+
+	std::vector<std::string>	lines;
+	while (getline(ifs, buff)) {
+		lines.push_back(buff);
+	}
+
+	for (unsigned int i = 0 ; i < lines.size() ; i++)
 	{
-		if (strncmp(buff.c_str(), "serv_accept_connex:", 20) == 0)
-			serv_accept_connex = ft_split(buff, ": ", 1)[1];
-		else if (strncmp(buff.c_str(), "location:", 10) == 0)
-			location = ft_split(buff, ": ", 1)[1];
-		else if (strncmp(buff.c_str(), "oper:", 6) == 0)
-			pass_oper = ft_split(buff, ": ", 1)[1];
-		else if (strncmp(buff.c_str(), "server_responsible:", 20) == 0)
-			serv_responsible = ft_split(buff, ": ", 1)[1];
+		if (!strncmp(lines[i].c_str(), "serv_accept_connex:", 19))
+		serv_accept_connex = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "location:", 9))
+			location = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "oper:", 5))
+			pass_oper = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "server_responsible:", 19))
+			serv_responsible = ft_split(lines[i], ": ", 1)[1];
 	}
 }
 
@@ -121,6 +130,7 @@ void			server::deleteClient(client* tmp)
 			std::cout << (*it)->getNickname() << " - " << (*it)->getUsername() << std::endl;
 			this->clients.erase(it);
 			delete tmp;
+			tmp = NULL;
 			return ;
 		}
 	}

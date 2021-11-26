@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 14:11:44 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 19:23:00 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,7 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						}
 						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
 						{
-							std::cout << "Server Loop -> |" << tab[j] << "|" << std::endl;
+							std::cout << "Server Loop $=>  " << temp->getNickname() << "  ->  |" << tab[j] << "|" << std::endl;
 							serv->recevMessage(tab[j], event_list, i);
 						}
 						temp->getCurrMsg().clear();
