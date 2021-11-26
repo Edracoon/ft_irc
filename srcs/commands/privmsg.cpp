@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/25 18:03:06 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 15:24:57 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,19 +26,22 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		send(cl->getFd(), ":No text to send\r\n", 18, 0);
 	for (unsigned int i = 0; i < destinataire.size(); i++)
 	{
-		if (serv->findClientByName(destinataire[i]) == NULL)
+		if (serv->findClientByName(destinataire[i]) == NULL && serv->findChannelByName(destinataire[i]) == NULL)
 		{
 			send(cl->getFd(), (cmd[1] + " :No such nick/channel\r\n").c_str(), cmd[1].length() + 24, 0);
-			return ; 
+			return ;
 		}
 	}
+
 	client *tmp;
 	for (unsigned int i = 0; i < destinataire.size(); i++)
 	{
 		tmp = serv->findClientByName(destinataire[i]);
-		if (tmp->isAccepted())
+		if (destinataire[i][0] == '#' || destinataire[i][0] == '&')
+			sendToChan(cl);
+		else if (tmp->isAccepted())
 		{
-			std::string msg = "From " + cl->getNickname() + ": " + ft_split(cl->getCurrMsg(), cmd[1] + " ", 1)[1];
+			std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
 			send(tmp->getFd(), msg.c_str(), msg.length(), 0);
 		}
 	}

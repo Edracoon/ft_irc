@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/25 18:04:02 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 14:11:44 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,15 +75,20 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						{
 							if (!(std::string(buffer).empty()))
 								temp->getCurrMsg() += std::string(buffer);
-							tab = ft_split(temp->getCurrMsg(), "\n", 512);
+							tab = ft_split(temp->getCurrMsg(), "\r\n", 512);
+							if (tab[0] == temp->getCurrMsg())
+								tab = ft_split(temp->getCurrMsg(), "\n", 512);
 						}
 						else
 						{
 							temp->getCurrMsg() = std::string(buffer);
-							tab = ft_split(temp->getCurrMsg(), "\n", 512);
+							tab = ft_split(temp->getCurrMsg(), "\r\n", 512);
+							if (tab[0] == temp->getCurrMsg())
+								tab = ft_split(temp->getCurrMsg(), "\n", 512);
 						}
 						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
 						{
+							std::cout << "Server Loop -> |" << tab[j] << "|" << std::endl;
 							serv->recevMessage(tab[j], event_list, i);
 						}
 						temp->getCurrMsg().clear();

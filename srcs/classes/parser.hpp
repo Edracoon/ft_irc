@@ -54,12 +54,12 @@ class parser
 /* === CMD FUNCTIONS === */
 void						cmd_help(client* cl);
 void						cmd_pass(client* cl, std::vector<std::string> cmd, server* serv);
-void						cmd_user(client* cli, std::vector<std::string> cmd);
+void						cmd_user(client* cl, std::vector<std::string> cmd);
 void						cmd_nick(client* cl, std::vector<std::string> cmd, server* serv);
-void						cmd_oper(client* cli, std::vector<std::string> cmd, server* serv);
+void						cmd_oper(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
-void						cmd_join(client* cli, std::vector<std::string>	cmd, server* serv);
+void						cmd_join(client* cl, std::vector<std::string>	cmd, server* serv);
 void						sendToChan(client* cl);
 
 #include "client.hpp"

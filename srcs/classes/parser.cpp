@@ -33,7 +33,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
 		cmd = ft_split(this->msg, " ", 512);
 	}
-	std::cout << "Serv:" << cli->getNickname() << " : " << this->msg << std::endl;
+	// std::cout << "Serv: " << cli->getNickname() << " : " << this->msg << std::endl;
 
 	if (this->prefix.empty())
 		cmd_type = this->whatIsCmd(cmd[0]);
