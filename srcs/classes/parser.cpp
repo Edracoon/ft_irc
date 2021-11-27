@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 10:47:12 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/27 14:44:13 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,11 @@
 
 parser::parser()
 {
-	this->tab[0] = "HELP";
-	this->tab[1] = "PASS";
-	this->tab[2] = "NICK";
-	this->tab[3] = "USER";
-	this->tab[4] = "OPER";
-	this->tab[5] = "JOIN";
-	this->tab[6] = "PRIVMSG";
-	this->tab[7] = "KILL";
-	this->tab[8] = "PART";
+	this->tab[0] = "HELP"; this->tab[1] = "PASS";
+	this->tab[2] = "NICK"; this->tab[3] = "USER";
+	this->tab[4] = "OPER"; this->tab[5] = "JOIN";
+	this->tab[6] = "PRIVMSG"; this->tab[7] = "KILL";
+	this->tab[8] = "PART"; this->tab[9] = "SQUIT";
 }
 
 parser::~parser() { }
@@ -47,13 +43,17 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
 		cmd = ft_split(this->msg, " ", 512);
 	}
-	// std::cout << "Serv: " << cli->getNickname() << " : " << this->msg << std::endl;
-	if (this->prefix.empty())
-		cmd_type = this->whatIsCmd(cmd[0]);
-	else if (!(this->prefix.empty()))
-		cmd_type = this->whatIsCmd(cmd[1]);
+	else if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) == cli->getNickname()))
+	{
+		this->prefix	= cmd[0].substr(1, cmd[0].find(' '));
+		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
+		cmd = ft_split(this->msg, " ", 512);
+	}
 
-	/*	
+	/* Get What is Cmd */
+	cmd_type = this->whatIsCmd(cmd[0]);
+
+	/*
 	**	HELP -> Proposer cette commande lorsqu'une commande est mal utilisée
 	**	PASS <mot de passe>
 	**	USER <nom d'utilisateur> <hôte> <nom de serveur> :<nom réel>

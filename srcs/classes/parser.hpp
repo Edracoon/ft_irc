@@ -6,7 +6,11 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
+<<<<<<< HEAD
 /*   Updated: 2021/11/27 14:42:43 by epfennig         ###   ########.fr       */
+=======
+/*   Updated: 2021/11/27 14:19:16 by epfennig         ###   ########.fr       */
+>>>>>>> feature-squit
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,7 +51,7 @@ class parser
 
 			std::string										msg;		// Buffer envoyé au parser
 			std::string										prefix;		// if prefix, print it in place of nickname
-			std::string										tab[9];		// Tableau des commandes
+			std::string										tab[10];	// Tableau des commandes
 			int												ac;			// Nombre d'argument
 
 			int												cmd_type;	// Categorie de commande
