@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:37:06 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/27 14:42:43 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,6 @@ class parser
 
 			void	parsing(client* cli, std::string str, server* serv);
 			int		whatIsCmd(std::string cmd);
-			// pass(client, tab);
 };
 
 /* === CMD FUNCTIONS === */
