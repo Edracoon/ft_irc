@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:45:17 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 14:46:25 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ parser::parser()
 	this->tab[2] = "NICK"; this->tab[3] = "USER";
 	this->tab[4] = "OPER"; this->tab[5] = "JOIN";
 	this->tab[6] = "PRIVMSG"; this->tab[7] = "KILL";
-	this->tab[8] = "PART"; this->tab[9] = "SQUIT";
+	this->tab[8] = "PART";
 }
 
 parser::~parser() { }
