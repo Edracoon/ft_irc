@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:37:01 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/27 14:57:32 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,8 +21,8 @@ void	norme_client(client* cl)
 	std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
 	send(cl->getFd(), msg.c_str() , msg.length(), 0);
 	// ==================== Message for topic ==========================
-	msg = ":NiceIRC 332 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :No Topic set";
-	send(cl->getFd(), (msg + "\r\n").c_str() , msg.length(), 0);
+	msg = ":NiceIRC 332 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :No Topic set\r\n";
+	send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	std::cout << msg << std::endl;
 	// ================== List Name ====================================
 	std::vector<client *>::iterator it = cl->curr_chan->users.begin();
@@ -33,12 +33,12 @@ void	norme_client(client* cl)
 	{
 		msg += (*it)->getNickname() + " ";
 	}
-	msg.pop_back(); /* C++11 ? */
+	msg.erase(msg.length() - 1);
 	send(cl->getFd(), (msg + "\r\n").c_str(), msg.length() + 2, 0);
 	std::cout << msg << std::endl;
 	// ====================== RPL_END_OF_NAMES =========================
-	msg = ":NiceIRC 366 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :End of NAMES list";
-	send(cl->getFd(), (msg + "\r\n").c_str(), msg.length() + 2, 0);
+	msg = ":NiceIRC 366 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :End of NAMES list\r\n";
+	send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	std::cout << msg << std::endl;
 }
 

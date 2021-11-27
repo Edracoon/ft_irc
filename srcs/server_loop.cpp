@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 19:23:00 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 15:22:43 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,9 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						continue ;
 					}
 					client* temp = serv->findClientByFd(event_list[i].ident);
-					if (std::string(buffer) == "\r\n")
+					if (temp == NULL)
+						;
+					else if (std::string(buffer) == "\r\n")
 						;
 					/* Rebuild string if ctrl+D is pressed by client */
 					else if (std::string(buffer).find("\n") == std::string::npos)
