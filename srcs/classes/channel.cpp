@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 20:34:23 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 13:50:22 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 }
 
 
-void					channel::deleteClientFromChan(client *cl)
+bool					channel::deleteClientFromChan(client *cl)
 {
 	std::vector<client *>::iterator	it	=	this->users.begin();
 	std::vector<client *>::iterator	ite	=	this->users.end();
@@ -71,9 +71,10 @@ void					channel::deleteClientFromChan(client *cl)
 		if ((*it)->getNickname() == cl->getNickname())
 		{
 			this->users.erase(it);
-			return ;
+			return (true);
 		}
 	}
+	return (false);
 }
 
 const std::string&		channel::getName(void) const { return this->name; }

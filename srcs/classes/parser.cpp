@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 20:34:12 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 10:47:12 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,6 +22,7 @@ parser::parser()
 	this->tab[5] = "JOIN";
 	this->tab[6] = "PRIVMSG";
 	this->tab[7] = "KILL";
+	this->tab[8] = "PART";
 }
 
 parser::~parser() { }
@@ -78,6 +79,8 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_privmsg(cli, cmd, serv);
 	else if ((cmd_type == KILL || cmd[0] == "kill") && cli->isAccepted())
 		cmd_kill(cli, cmd, serv);
+	else if (cmd_type == PART && cli->isAccepted())
+		cmd_part(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli);
 
@@ -89,10 +92,10 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 8 ; i++)
+	for (int i = 0; i < 9 ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
 	}
-	return (8);
+	return (9);
 }
