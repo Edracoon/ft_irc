@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 13:35:42 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 14:37:06 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,6 +32,7 @@ class parser
 				JOIN,
 				PRIVMSG,
 				KILL,
+				PART,
 				MSG
 			};
 
@@ -46,7 +47,7 @@ class parser
 
 			std::string										msg;		// Buffer envoyé au parser
 			std::string										prefix;		// if prefix, print it in place of nickname
-			std::string										tab[8];		// Tableau des commandes
+			std::string										tab[9];		// Tableau des commandes
 			int												ac;			// Nombre d'argument
 
 			int												cmd_type;	// Categorie de commande
@@ -72,6 +73,7 @@ void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_join(client* cl, std::vector<std::string>	cmd, server* serv);
 void						sendToChan(client* cl);
+void						cmd_part(client* cl, std::vector<std::string> cmd, server* serv);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"
