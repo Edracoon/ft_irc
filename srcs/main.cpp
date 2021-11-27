@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/10 10:27:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/15 19:35:07 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/23 11:17:09 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ int	main(int ac, char **av)
 			serv.setPassword(std::string(av[2]));
 		else if (ac == 4 && (i = 2))
 			serv.setPassword(std::string(av[3]));
+		serv.parse_config_file();
 		tcp_protocol(&serv, av[i]);
 	}
 	else

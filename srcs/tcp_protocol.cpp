@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:18 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/15 17:27:30 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 14:08:09 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 void	tcp_protocol(server* serv, char* cport)
 {
 	int					port;							// server port
+	int					enable = 1;
 	socklen_t			addrlen;						// sizeof la structure sockaddr_in
 	struct sockaddr_in	server_addr;					// structure, données pour bind(), accept(), etc
 
@@ -22,6 +23,10 @@ void	tcp_protocol(server* serv, char* cport)
 		exit_error("Socket Error");
 
 	std::cout << "Server socket successfully created: " << serv->sfd << std::endl;
+
+	/* Optionnel mais permet d'éviter le bind error à cause de la socket deja utilisé */
+	if (setsockopt(serv->sfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
+		exit_error("Setsockopt Error");
 
 	port = atoi(cport);
 	addrlen = sizeof(server_addr);

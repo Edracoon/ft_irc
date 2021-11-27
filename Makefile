@@ -2,14 +2,15 @@ NAME		=	ircserv
 
 CXX			=	clang++
 
-CXXFLAGS	= -Wall -Wextra -Werror -std=c++98
+CXXFLAGS	= -Wall -Wextra -Werror -std=c++98 -g -fsanitize=address
 
 SRCS		=	srcs/main.cpp srcs/utils.cpp srcs/tcp_protocol.cpp srcs/server_loop.cpp
 
-classes		=	srcs/classes/server.cpp srcs/classes/client.cpp \
-				srcs/classes/channel.cpp srcs/classes/parser.cpp
+classes		=	$(wildcard srcs/classes/*.cpp)
 
-OBJS		=	$(SRCS:.cpp=.o) $(classes:.cpp=.o)
+commands	=	$(wildcard srcs/commands/*.cpp)
+
+OBJS		=	$(SRCS:.cpp=.o) $(classes:.cpp=.o) $(commands:.cpp=.o)
 
 all:			$(NAME)
 

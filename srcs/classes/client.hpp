@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:29 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 14:45:06 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 17:30:47 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,33 +23,49 @@
 class client
 {
 	private:
-				std::string					username;
 				std::string					nickname;
-				std::vector<std::string>	nickname_history;
+				std::string					username;
+				std::string					realname;
+				
+
 				bool						accepted;
 				unsigned long				fd;
-				bool						ope;
-				channel						curr_chan;
 
-				parser						parser;
 				std::string					curr_msg;
+				
+	public:
+				std::vector<std::string>	nickname_history;
+				parser						parser;
+	
+				channel*					curr_chan;
+				bool						ope;
+	
+				bool						pass;
+				bool						nick;
+				bool						user;
 
 	public:
 				client(int Fd);
+				client(const client& copy);
 				~client();
 
+				client&		operator=(const client& rhs);
+
 				bool					isAccepted() const;
+				void					AcceptClient();
 				void					setUsername(const std::string & Username);
 				void					setNickname(const std::string & Nickname);
+				void					setRealname(const std::string & Realname);
 				const std::string & 	getNickname(void) const;
 				const std::string & 	getUsername(void) const;
-				unsigned long 			getFd() const;
+				const std::string &		getRealname(void) const;
+				unsigned long 			getFd(void) const;
+
+				bool					isOpe(void);
 
 				std::string&			getCurrMsg(void);
 
 				void					joinChannel(channel chan);
-
-				void					parseMsg();
 
 };
 

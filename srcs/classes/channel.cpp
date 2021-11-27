@@ -1,13 +1,81 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   channel.cpp                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
+/*   Updated: 2021/11/27 13:50:22 by fgomez           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "channel.hpp"
 
-channel::channel()
+channel::channel(std::string Name)
 {
-	this->max_user = 10;
+	this->name		= Name;
+	this->max_user	= 10;
+	this->status	= 'n';	/* No status yet */
+
 }
 
 channel::~channel() {}
 
-int						channel::addClient() { return 1; } // /JOIN d'un client, toutes les etapes de verifications du channel etc
+int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un client, Verif, etc
+{
+	if (this->operators.size() == 0) /* It means it's a new channel */
+	{
+		this->operators.push_back(cl);
+		this->users.push_back(cl);
+		return (1);
+	}
+
+	else if (this->status == 'p')
+	{
+		if (cmd.size() < 3)
+			send(cl->getFd(), "ERR_PRIVCHANNEEDKEY\r\n", 22, 0);
+		else if (cmd[2] != this->password)
+			send(cl->getFd(), "ERR_BADCHANNELKEY\r\n", 20, 0);
+		else
+			this->users.push_back(cl);
+		return (1);
+	}
+
+	else if (this->status == 'i')
+	{
+		send(cl->getFd(), "ERR_INVITEONLYCHAN\r\n", 21, 0);
+		return (0);
+	}
+
+	else if (this->users.size() == max_user)
+	{
+		send(cl->getFd(), "ERR_CHANNELISFULL\r\n", 20, 0);
+		return (0);
+	}
+
+	else
+		this->users.push_back(cl);
+
+	return (1);
+}
+
+
+bool					channel::deleteClientFromChan(client *cl)
+{
+	std::vector<client *>::iterator	it	=	this->users.begin();
+	std::vector<client *>::iterator	ite	=	this->users.end();
+
+	for ( ; it != ite ; it++ )
+	{
+		if ((*it)->getNickname() == cl->getNickname())
+		{
+			this->users.erase(it);
+			return (true);
+		}
+	}
+	return (false);
+}
 
 const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
@@ -37,3 +105,26 @@ bool					channel::checkBlackList(std::string user) const
 }
 
 bool					channel::checkMaxUser(void) const { return false; }
+
+void					channel::printListUser(client* cli)
+{
+	std::vector<client *>::iterator	it	=	this->users.begin();
+	std::vector<client *>::iterator	ite	=	this->users.end();
+
+	send(cli->getFd(), std::string("$=========< Users in " + name + " >=========$\r\n").c_str(), name.length() + 35, 0);
+	for ( ; it != ite ; it++) {
+		send(cli->getFd(), (std::string("- ") + (*it)->getNickname() + std::string("\r\n")).c_str(), (*it)->getNickname().length() + 4, 0);
+	}
+}
+
+client*					channel::findClientByName(std::string nickname)
+{
+	std::vector<client *>::iterator	it	=	this->users.begin();
+	std::vector<client *>::iterator	ite	=	this->users.end();
+
+	for ( ; it != ite ; it++) {
+		if ((*it)->getNickname() == nickname)
+			return (*it);
+	}
+	return NULL;
+}

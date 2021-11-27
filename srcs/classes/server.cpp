@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/18 14:46:25 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/26 20:10:21 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ server::~server() {}
 
 void					server::setPassword(const std::string & pass) { this->password = pass; }
 const std::string &		server::getPassword(void) const { return this->password; }
-
+const std::string &		server::getOperPassword(void) const { return this->pass_oper; }
 
 client*					server::findClientByFd(unsigned long Fd)
 {
@@ -31,6 +31,29 @@ client*					server::findClientByFd(unsigned long Fd)
 	return (NULL);
 }
 
+client*					server::findClientByName(std::string name)
+{
+	std::vector<client *>::iterator	it = this->clients.begin();
+	std::vector<client *>::iterator	ite = this->clients.end();
+
+	for ( ; it != ite ; it++ ) {
+		if ((*it)->getNickname() == name)
+			return (*it);
+	}
+	return (NULL);
+}
+
+channel*				server::findChannelByName(std::string name)
+{
+	std::vector<channel *>::iterator	it = this->channels.begin();
+	std::vector<channel *>::iterator	ite = this->channels.end();
+
+	for ( ; it != ite ; it++ ) {
+		if ((*it)->getName() == name)
+			return (*it);
+	}
+	return (NULL);
+}
 
 int		server::acceptClient(int kq, struct kevent change_list)
 {
@@ -52,7 +75,7 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	fcntl(cfd, F_SETFL, O_NONBLOCK);
 	EV_SET(&change_list, cfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 	kevent(kq, &change_list, 1, NULL, 0, NULL);
-	
+
 	client	*new_client = new client(cfd);
 	this->clients.push_back(new_client);	// Add client to server list
 
@@ -62,21 +85,53 @@ int		server::acceptClient(int kq, struct kevent change_list)
 
 void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
 {
-	client*		temp = this->findClientByFd(event_list[i].ident);
-	temp->parseMsg();
-	if (temp != NULL && temp->isAccepted() == false)
-	{
-		// if (strstr(buffer, "PASS") && strstr(buffer, "NICK") && strstr(buffer, "USER"))
-		// 	temp->login(std::string(buffer), 'a', this->password);
-		// else if (strncmp(buffer, "PASS", 4) == 0)
-		// 	temp->login(std::string(buffer), 'p', this->password);
-		// else if (strncmp(buffer, "NICK", 4) == 0)
-		// 	temp->login(std::string(buffer), 'n', this->password);
-		// else if (strncmp(buffer, "USER", 4) == 0)
-		// 	temp->login(std::string(buffer), 'u', this->password);
-		// else
-		// 	send(temp->getFd(), "You need to login first: PASS, NICK, USER\r\n", 43, 0);
-		std::cout << "Client[" << event_list[i].ident << "] sent message : "  << buffer << std::endl;
-	}
+	client*		curr_client = this->findClientByFd(event_list[i].ident);
+	curr_client->parser.parsing(curr_client, buffer, this);
+	
 	return ;
+}
+
+void	server::parse_config_file()
+{
+	std::ifstream	ifs("config_irc.conf");
+	if (ifs.fail())
+		std::cout << "Error file" << std::endl;
+	std::string		buff;
+
+	std::vector<std::string>	lines;
+	while (getline(ifs, buff)) {
+		lines.push_back(buff);
+	}
+
+	for (unsigned int i = 0 ; i < lines.size() ; i++)
+	{
+		if (!strncmp(lines[i].c_str(), "serv_accept_connex:", 19))
+		serv_accept_connex = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "location:", 9))
+			location = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "oper:", 5))
+			pass_oper = ft_split(lines[i], ": ", 1)[1];
+		else if (!strncmp(lines[i].c_str(), "server_responsible:", 19))
+			serv_responsible = ft_split(lines[i], ": ", 1)[1];
+	}
+}
+
+void			server::deleteClient(client* tmp)
+{
+	std::vector<client *>::iterator	it	=	this->clients.begin();
+	std::vector<client *>::iterator	ite =	this->clients.end();
+
+	for ( ; it != ite ; it++ )
+	{
+		if (tmp->getNickname() == (*it)->getNickname())
+		{
+			if ((*it)->curr_chan != NULL)
+				(*it)->curr_chan->deleteClientFromChan(*it);
+			std::cout << (*it)->getNickname() << " - " << (*it)->getUsername() << std::endl;
+			this->clients.erase(it);
+			delete tmp;
+			tmp = NULL;
+			return ;
+		}
+	}
 }
