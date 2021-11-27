@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 20:10:21 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 18:38:41 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,10 +65,6 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	// dans ce cas on continue pour repartir du haute de la boucle !
 	if ((cfd = accept(this->sfd, (struct sockaddr *)&client_addr, (socklen_t *)&addrlen)) == -1)
 		exit_error("Accept error");
-
-	/* #define EWOULDBLOCK		EAGAIN			Operation would block */
-	if (errno == EWOULDBLOCK)
-		return -1;
 
 	// Ajouter mon nouveau client à ma liste d'evenement en lui precisant le cfd
 	// le client fd sera set de maniere non bloquante avec cfd

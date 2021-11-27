@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 15:22:43 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 18:35:14 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 				{
 					bzero(buffer, 1024);
 					recv(event_list[i].ident, buffer, 1024, 0);
-					if (ft_strlen(buffer) > 510)
+					if (ft_strlen(buffer) > 511)
 					{
 						send(event_list[i].ident, "Limit message to 512 characteres\r\n", 34, 0);
 						continue ;
@@ -88,9 +88,10 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 							if (tab[0] == temp->getCurrMsg())
 								tab = ft_split(temp->getCurrMsg(), "\n", 512);
 						}
+						/* Verif version agreger > 512 */
 						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
 						{
-							std::cout << "Server Loop $=>  " << temp->getNickname() << "  ->  |" << tab[j] << "|" << std::endl;
+							std::cout << "Server Loop $=> " << temp->getNickname() << " ->  |" << tab[j] << "|" << std::endl;
 							serv->recevMessage(tab[j], event_list, i);
 						}
 						temp->getCurrMsg().clear();

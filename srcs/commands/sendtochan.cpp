@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   sendtochan.cpp                                     :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:23 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/27 10:28:20 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/27 18:36:03 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,6 @@ void	sendToChan(client* cl)
 				continue ;
 			std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
 			send((*it)->getFd(), msg.c_str() , msg.length(), 0);
-			std::cout << msg << std::endl;
 		}
 	}
 }

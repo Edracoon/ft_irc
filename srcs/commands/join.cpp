@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:57:32 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/27 18:36:25 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,7 +65,6 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 		/* Leave Channel if Client is already in one */
 		if (cl->curr_chan != NULL)
 		{
-			std::cout << "here\n" << std::endl;
 			cl->curr_chan->deleteClientFromChan(cl);
 			cl->curr_chan = NULL;
 		}
