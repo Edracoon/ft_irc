@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:18 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 18:55:54 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 15:16:43 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,7 +50,6 @@ void	tcp_protocol(server* serv, char* cport)
 	std::cout << "Server listening for clients connexion" << std::endl;
 
 	// KQUEUE VARIABLES //
-	struct kevent		change_list, event_list[64];
 	int					kq;
 
 	// initialiser kqueue
@@ -58,10 +57,10 @@ void	tcp_protocol(server* serv, char* cport)
 		exit_error("Kqueue failed");
 
 	// Set structure kevent selon nos flags
-	EV_SET(&change_list, serv->sfd, EVFILT_READ, EV_ADD, 0, 0, 0);
+	EV_SET(&serv->change_list, serv->sfd, EVFILT_READ, EV_ADD, 0, 0, 0);
 
 	// Add ma queue
-	kevent(kq, &change_list, 1, NULL, 0, NULL);
+	kevent(kq, &serv->change_list, 1, NULL, 0, NULL);
 
-	server_loop(serv, kq, change_list, event_list);
+	server_loop(serv, kq);
 }

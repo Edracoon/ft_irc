@@ -6,61 +6,60 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 18:35:14 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:21:19 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/irc.hpp"
 
-void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent event_list[64])
+void	server_loop(server* serv, int kq)
 {
 	int		n_ev;
-	
 	char	buffer[1024];
+	serv->event_list.resize(1);
 
 	while (1)
 	{
-		if ((n_ev = kevent(kq, NULL, 0, event_list, 64, NULL)) < 0 )
+		if ((n_ev = kevent(kq, NULL, 0, serv->event_list.begin().base(), serv->event_list.size(), NULL)) < 0 )
 			exit_error("kevent failed");
 
-		else if (n_ev > 0)
+		if (n_ev > 0)
 		{
-			
 			/* Boucler sur le nombre de nouveaux events */
 			for (int i = 0; i < n_ev ; i++)
 			{
 				/* Handle kevent error */
-				if (event_list[i].flags & EV_ERROR)
+				if (serv->event_list[i].flags & EV_ERROR)
 					exit_error("kevent: EV_ERROR");
 
 				/* Client disconnect */
-				if (event_list[i].flags & EV_EOF)
+				if (serv->event_list[i].flags & EV_EOF)
 				{
-					std::cout << "Client[" << event_list[i].ident << "] disconnected !" << std::endl;
+					std::cout << "Client[" << serv->event_list[i].ident << "] disconnected !" << std::endl;
 					
-					client*	tmp = serv->findClientByFd(event_list[i].ident);
+					client*	tmp = serv->findClientByFd(serv->event_list[i].ident);
 					serv->deleteClient(tmp);
-					close(event_list[i].ident);
+					close(serv->event_list[i].ident);
 				}
 
 				/* Accept new clients */
-				else if (event_list[i].ident == (unsigned long)serv->sfd)
+				else if (serv->event_list[i].ident == (unsigned long)serv->sfd)
 				{
-					if (serv->acceptClient(kq, change_list))
+					if (serv->acceptClient(kq))
 						break ;
 				}
 
 				/* Read client messages that are already accepted */
-				else if (event_list[i].filter & EVFILT_READ)
+				else if (serv->event_list[i].filter & EVFILT_READ)
 				{
 					bzero(buffer, 1024);
-					recv(event_list[i].ident, buffer, 1024, 0);
+					recv(serv->event_list[i].ident, buffer, 1024, 0);
 					if (ft_strlen(buffer) > 511)
 					{
-						send(event_list[i].ident, "Limit message to 512 characteres\r\n", 34, 0);
+						send(serv->event_list[i].ident, "Limit message to 512 characteres\r\n", 34, 0);
 						continue ;
 					}
-					client* temp = serv->findClientByFd(event_list[i].ident);
+					client* temp = serv->findClientByFd(serv->event_list[i].ident);
 					if (temp == NULL)
 						;
 					else if (std::string(buffer) == "\r\n")
@@ -92,7 +91,7 @@ void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent 
 						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
 						{
 							std::cout << "Server Loop $=> " << temp->getNickname() << " ->  |" << tab[j] << "|" << std::endl;
-							serv->recevMessage(tab[j], event_list, i);
+							serv->recevMessage(tab[j], i);
 						}
 						temp->getCurrMsg().clear();
 					}

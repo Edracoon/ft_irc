@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 18:38:41 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 16:25:39 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ channel*				server::findChannelByName(std::string name)
 	return (NULL);
 }
 
-int		server::acceptClient(int kq, struct kevent change_list)
+int		server::acceptClient(int kq)
 {
 	struct sockaddr_in	client_addr;	// new struct for addr info client
 	int addrlen = sizeof(client_addr);	// size of struct for accept()
@@ -75,15 +75,18 @@ int		server::acceptClient(int kq, struct kevent change_list)
 	client	*new_client = new client(cfd);
 	this->clients.push_back(new_client);	// Add client to server list
 
+	/* Add kevent struct to vector */
+	
+	this->event_list.resize(event_list.size() + 1);
+	
 	std::cout << "Client[" << cfd << "] accepted !" << std::endl;
 	return (1);
 }
 
-void	server::recevMessage(std::string buffer, struct kevent event_list[64], int i)
+void	server::recevMessage(std::string buffer, int i)
 {
 	client*		curr_client = this->findClientByFd(event_list[i].ident);
 	curr_client->parser.parsing(curr_client, buffer, this);
-	
 	return ;
 }
 

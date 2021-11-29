@@ -10,7 +10,7 @@ void	cmd_part(client* cl, std::vector<std::string> cmd, server* serv)
 	if (cmd.size() < 2)
 	{
 		msg = cmd[0] + " :Not enough parameters\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length() + 25, 0);
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		return ;
 	}
 	curr_chan = serv->findChannelByName(cmd[1]);
