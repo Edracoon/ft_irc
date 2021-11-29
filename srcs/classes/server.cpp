@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 18:26:42 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:32:50 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -157,8 +157,10 @@ void	server::parse_config_file()
 	}
 }
 
-void			server::deleteClient(client* tmp)
+void			server::deleteClient(int fd)
 {
+	client *tmp = findClientByFd(fd);
+
 	std::vector<client *>::iterator	it	=	this->clients.begin();
 	std::vector<client *>::iterator	ite =	this->clients.end();
 

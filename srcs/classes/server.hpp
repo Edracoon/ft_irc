@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 18:23:39 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:32:10 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ class server
 
 			channel*				findChannelByName(std::string name);
 
-			void					deleteClient(client* tmp);
+			void					deleteClient(int fd);
 
 };
 

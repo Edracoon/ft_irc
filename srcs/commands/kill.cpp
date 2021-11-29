@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 14:03:44 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/29 12:22:42 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:34:29 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	cmd_kill(client* cl, std::vector<std::string> cmd, server* serv)
 			std::string msg = " :You are killed from this server for : " + (ft_split(cl->getCurrMsg(), ":", 1)[1]) + "\r\n";
 			send(tmp->getFd(), msg.c_str(), msg.length(), 0);
 			close(tmp->getFd());
-			serv->deleteClient(tmp);
+			serv->deleteClient(tmp->getFd());
 		}
 	}
 }

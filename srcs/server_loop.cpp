@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 18:23:49 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:33:09 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,23 +34,19 @@ void	server_loop(server* serv, int kq)
 
 				/* Client disconnect */
 				if (serv->event_list[i].flags & EV_EOF)
-				{
-					std::cout << "Client[" << serv->event_list[i].ident << "] disconnected !" << std::endl;
-					
-					client*	tmp = serv->findClientByFd(serv->event_list[i].ident);
-					serv->deleteClient(tmp);
+				{	
+					serv->deleteClient(serv->event_list[i].ident);
 					close(serv->event_list[i].ident);
+					std::cout << "Client[" << serv->event_list[i].ident << "] disconnected !" << std::endl;
 				}
-
-				/* Accept new clients */
 				else if (serv->event_list[i].ident == (unsigned long)serv->sfd)
 				{
+					/* Accept new clients */
 					serv->acceptClient(kq);
 				}
-
-				/* Read client messages that are already accepted */
 				else if (serv->event_list[i].filter & EVFILT_READ)
 				{
+					/* Read client messages that are already accepted */
 					serv->recevMessage(i);
 				}
 			}
