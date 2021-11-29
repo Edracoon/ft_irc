@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:43 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 15:59:22 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:23:39 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ class server
 			std::vector<client *>		clients;
 			int							sfd;
 
-			struct kevent					change_list;
+			std::vector<struct kevent>		change_list;
 			std::vector<struct kevent>		event_list;
 	public:
 			server();
@@ -43,7 +43,7 @@ class server
 			void	parse_config_file();
 
 			int						acceptClient(int kq);
-			void					recevMessage(std::string buffer, int i);
+			void					recevMessage(int i);
 			void					setPassword(const std::string & pass);
 			const std::string &		getPassword(void) const;
 			const std::string &		getOperPassword(void) const;

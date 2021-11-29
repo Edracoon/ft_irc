@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 16:21:19 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:23:49 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,15 +14,15 @@
 
 void	server_loop(server* serv, int kq)
 {
-	int		n_ev;
-	char	buffer[1024];
-	serv->event_list.resize(1);
+	int		n_ev;	
 
 	while (1)
 	{
-		if ((n_ev = kevent(kq, NULL, 0, serv->event_list.begin().base(), serv->event_list.size(), NULL)) < 0 )
+		serv->event_list.clear();
+		serv->event_list.resize(1);
+		if ((n_ev = kevent(kq, serv->change_list.begin().base(), serv->change_list.size(), serv->event_list.begin().base(), serv->event_list.size(), NULL)) < 0 )
 			exit_error("kevent failed");
-
+		serv->change_list.clear();
 		if (n_ev > 0)
 		{
 			/* Boucler sur le nombre de nouveaux events */
@@ -45,56 +45,13 @@ void	server_loop(server* serv, int kq)
 				/* Accept new clients */
 				else if (serv->event_list[i].ident == (unsigned long)serv->sfd)
 				{
-					if (serv->acceptClient(kq))
-						break ;
+					serv->acceptClient(kq);
 				}
 
 				/* Read client messages that are already accepted */
 				else if (serv->event_list[i].filter & EVFILT_READ)
 				{
-					bzero(buffer, 1024);
-					recv(serv->event_list[i].ident, buffer, 1024, 0);
-					if (ft_strlen(buffer) > 511)
-					{
-						send(serv->event_list[i].ident, "Limit message to 512 characteres\r\n", 34, 0);
-						continue ;
-					}
-					client* temp = serv->findClientByFd(serv->event_list[i].ident);
-					if (temp == NULL)
-						;
-					else if (std::string(buffer) == "\r\n")
-						;
-					/* Rebuild string if ctrl+D is pressed by client */
-					else if (std::string(buffer).find("\n") == std::string::npos)
-					{
-						temp->getCurrMsg() += std::string(buffer);
-					}
-					else
-					{
-						std::vector<std::string>	tab;
-						if (!(temp->getCurrMsg().empty()))
-						{
-							if (!(std::string(buffer).empty()))
-								temp->getCurrMsg() += std::string(buffer);
-							tab = ft_split(temp->getCurrMsg(), "\r\n", 512);
-							if (tab[0] == temp->getCurrMsg())
-								tab = ft_split(temp->getCurrMsg(), "\n", 512);
-						}
-						else
-						{
-							temp->getCurrMsg() = std::string(buffer);
-							tab = ft_split(temp->getCurrMsg(), "\r\n", 512);
-							if (tab[0] == temp->getCurrMsg())
-								tab = ft_split(temp->getCurrMsg(), "\n", 512);
-						}
-						/* Verif version agreger > 512 */
-						for (unsigned long j = 0 ; !tab[j].empty() ; j++)
-						{
-							std::cout << "Server Loop $=> " << temp->getNickname() << " ->  |" << tab[j] << "|" << std::endl;
-							serv->recevMessage(tab[j], i);
-						}
-						temp->getCurrMsg().clear();
-					}
+					serv->recevMessage(i);
 				}
 			}
 		}
