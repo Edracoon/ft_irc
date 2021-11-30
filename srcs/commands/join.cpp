@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 12:22:31 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 13:08:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
-void	norme_client(client* cl)
+void	sendInfoClient(client* cl)
 {
 	// ==================== Confirm client join chan ===================
 	std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
@@ -81,7 +81,7 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 				return ;
 			cl->curr_chan = curr_chan;
 			sendToChan(cl);
-			norme_client(cl);
+			sendInfoClient(cl);
 		}
 	}
 }
