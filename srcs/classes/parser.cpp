@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 16:21:17 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 20:30:00 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 parser::parser()
 {
-	this->tab[0] = "HELP"; this->tab[1] = "PASS";
-	this->tab[2] = "NICK"; this->tab[3] = "USER";
-	this->tab[4] = "OPER"; this->tab[5] = "JOIN";
-	this->tab[6] = "PRIVMSG"; this->tab[7] = "KILL";
-	this->tab[8] = "PART";
+	this->tab[0] = "HELP";		this->tab[1] = "PASS";
+	this->tab[2] = "NICK";		this->tab[3] = "USER";
+	this->tab[4] = "OPER";		this->tab[5] = "JOIN";
+	this->tab[6] = "PRIVMSG";	this->tab[7] = "KILL";
+	this->tab[8] = "PART";		this->tab[9] = "MODE";
+	this->tab[10] = "KICK";
 }
 
 parser::~parser() { }
@@ -81,6 +82,10 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_kill(cli, cmd, serv);
 	else if (cmd_type == PART && cli->isAccepted())
 		cmd_part(cli, cmd, serv);
+	else if (cmd_type == MODE && cli->isAccepted())
+		;
+	else if (cmd_type == KICK && cli->isAccepted())
+		cmd_kick(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli, cli->getCurrMsg());
 
@@ -92,10 +97,10 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 9 ; i++)
+	for (int i = 0; i < 11 ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
 	}
-	return (9);
+	return (MSG);
 }

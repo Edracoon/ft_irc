@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 10:23:37 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 20:00:28 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ class channel
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
-
-				void					printListUser(client* cli);
 
 				client*					findClientByName(std::string nickname);
 
