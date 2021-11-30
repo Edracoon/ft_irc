@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/22 17:46:50 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 13:11:32 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:22:01 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,10 +16,17 @@
 
 void	cmd_user(client* cl, std::vector<std::string> cmd)
 {
+	std::string	msg;
 	if  (cmd.size() < 5)
-		send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+	{
+		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cl->isAccepted())
-		send(cl->getFd(), ":Unauthorized command (already registered)\r\n", 44, 0);
+	{
+		msg = ":NiceIRC 462 " + cl->getNickname() + " :Unauthorized command (already registered)\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cmd.size() >= 5 && !cl->isAccepted())
 	{
 		/* We just need to take the username and realname (not usefull in our case but it's rfc) */

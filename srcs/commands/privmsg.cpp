@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/30 17:04:17 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:20:18 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,10 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	}
 	else if (cmd.size() < 3)
-		send(cl->getFd(), ":No text to send\r\n", 18, 0);
+	{
+		msg = ":NiceIRC 481 " + cl->getNickname() + " :No text to send\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	for (unsigned int i = 0; i < destinataire.size(); i++)
 	{
 		if (serv->findClientByName(destinataire[i]) == NULL && serv->findChannelByName(destinataire[i]) == NULL)
