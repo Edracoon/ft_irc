@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:59 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 18:33:09 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/29 18:35:29 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	server_loop(server* serv, int kq)
 {
-	int		n_ev;	
+	int		n_ev;
 
 	while (1)
 	{

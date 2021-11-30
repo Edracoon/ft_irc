@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 18:32:50 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 13:07:08 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -170,7 +170,6 @@ void			server::deleteClient(int fd)
 		{
 			if ((*it)->curr_chan != NULL)
 				(*it)->curr_chan->deleteClientFromChan(*it);
-			std::cout << (*it)->getNickname() << " - " << (*it)->getUsername() << std::endl;
 			this->clients.erase(it);
 			delete tmp;
 			tmp = NULL;
