@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 10:23:37 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 12:56:32 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ class channel
 				std::vector<client *>			operators;	// operator list in the channel
 				std::vector<client *>			users;		// users list in the channel
 				std::vector<std::string>		black_list;	// mode +b
-				std::vector<char>				modes;		// channels modes
+				std::string						modes;		// channels modes
 
 	public:
 				channel(std::string Name);

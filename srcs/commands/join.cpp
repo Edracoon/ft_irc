@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 12:22:31 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 13:31:50 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,6 @@ void	norme_client(client* cl)
 	// ==================== Message for topic ==========================
 	msg = ":NiceIRC 332 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :No Topic set\r\n";
 	send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	std::cout << msg << std::endl;
 	// ================== List Name ====================================
 	std::vector<client *>::iterator it = cl->curr_chan->users.begin();
 	std::vector<client *>::iterator ite = cl->curr_chan->users.end();
@@ -35,11 +34,15 @@ void	norme_client(client* cl)
 	}
 	msg.erase(msg.length() - 1);
 	send(cl->getFd(), (msg + "\r\n").c_str(), msg.length() + 2, 0);
-	std::cout << msg << std::endl;
 	// ====================== RPL_END_OF_NAMES =========================
 	msg = ":NiceIRC 366 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :End of NAMES list\r\n";
 	send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	std::cout << msg << std::endl;
+	// ====================== RPL_FOR_MODE =============================
+	if (!cl->curr_chan->modes.empty())
+	{
+		msg = ":NiceIRC 324 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :+" + cl->curr_chan->modes + "\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 }
 
 channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
@@ -48,6 +51,8 @@ channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
 	new_chan->addClient(cl, cmd);
 	serv->channels.push_back(new_chan);
 	cl->curr_chan = new_chan;
+	cl->curr_chan->modes.push_back('n');
+	cl->curr_chan->modes.push_back('t');
 	return (new_chan);
 }
 

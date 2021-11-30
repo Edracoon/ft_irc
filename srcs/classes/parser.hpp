@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:46:20 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 13:32:24 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ class parser
 				PRIVMSG,
 				KILL,
 				PART,
+				MODE,
 				MSG
 			};
 
@@ -47,7 +48,7 @@ class parser
 
 			std::string										msg;		// Buffer envoyé au parser
 			std::string										prefix;		// if prefix, print it in place of nickname
-			std::string										tab[9];	// Tableau des commandes
+			std::string										tab[11];	// Tableau des commandes
 			int												ac;			// Nombre d'argument
 
 			int												cmd_type;	// Categorie de commande
