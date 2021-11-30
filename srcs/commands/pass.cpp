@@ -16,7 +16,7 @@ void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 		if (cmd[1] == serv->getPassword())
 			cl->pass = true;
 		else
-			send(cl->getFd(), ":Password incorrect\r\n", 21, 0);
+			send(cl->getFd(), " :Password incorrect\r\n", 21, 0);
 	}
 	else
 		cl->pass = false;

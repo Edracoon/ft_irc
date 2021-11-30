@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:46:25 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:21:17 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -82,7 +82,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	else if (cmd_type == PART && cli->isAccepted())
 		cmd_part(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
-		sendToChan(cli);
+		sendToChan(cli, cli->getCurrMsg());
 
 	// Reinitialize data between message
 	this->prefix.clear();

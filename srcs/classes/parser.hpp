@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 14:46:20 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 16:18:58 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ void						cmd_oper(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_join(client* cl, std::vector<std::string>	cmd, server* serv);
-void						sendToChan(client* cl);
+void						sendToChan(client* cl, std::string msg);
 void						cmd_part(client* cl, std::vector<std::string> cmd, server* serv);
 
 #include "client.hpp"
