@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 11:39:49 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 15:55:22 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,12 +14,12 @@
 
 parser::parser()
 {
-	this->tab[0] = "HELP";		this->tab[1] = "PASS";
-	this->tab[2] = "NICK";		this->tab[3] = "USER";
-	this->tab[4] = "OPER";		this->tab[5] = "JOIN";
-	this->tab[6] = "PRIVMSG";	this->tab[7] = "KILL";
-	this->tab[8] = "PART";		this->tab[9] = "MODE";
-	this->tab[10] = "KICK";
+	this->tab[0] = "PASS";		this->tab[1] = "NICK";
+	this->tab[2] = "USER";
+	this->tab[3] = "OPER";		this->tab[4] = "JOIN";
+	this->tab[5] = "PRIVMSG";	this->tab[6] = "KILL";
+	this->tab[7] = "PART";		this->tab[8] = "MODE";
+	this->tab[9] = "KICK";		this->tab[10] = "LIST";
 }
 
 parser::~parser() { }
@@ -64,9 +64,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	**	PRIVMSG <destinataire> <texte à envoyer>
 	*/
 
-	if (cmd_type == HELP)
-		cmd_help(cli);
-	else if (cmd_type == PASS)
+	if (cmd_type == PASS)
 		cmd_pass(cli, cmd, serv);
 	else if (cmd_type == NICK)
 		cmd_nick(cli, cmd, serv);
@@ -86,6 +84,8 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_mode(cli, cmd, serv);
 	else if (cmd_type == KICK && cli->isAccepted())
 		cmd_kick(cli, cmd, serv);
+	else if (cmd_type == LIST && cli->isAccepted())
+		cmd_list(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli, cli->getCurrMsg());
 
@@ -97,7 +97,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 11 ; i++)
+	for (int i = 0; i < MSG ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);

@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 15:33:17 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 16:30:26 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,7 @@ channel::channel(std::string Name)
 	this->name		= Name;
 	this->max_user	= 10;
 	this->status	= 'n';	/* No status yet */
+	this->Nbuser	= 0;
 
 }
 
@@ -26,6 +27,7 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 {
 	if (this->operators.size() == 0) /* It means it's a new channel */
 	{
+		this->Nbuser += 1;
 		this->operators.push_back(cl);
 		this->users.push_back(cl);
 		return (1);
@@ -55,7 +57,10 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 	}
 
 	else
+	{
+		this->Nbuser += 1;
 		this->users.push_back(cl);
+	}
 
 	return (1);
 }
@@ -75,15 +80,14 @@ bool					channel::deleteClientFromChan(client *cl)
 		{
 			if (isOperator(cl->getNickname()) == true)
 			{
-				for ( ; it2 != ite2 ; )
-				{
-					if (*it2 == cl)
-					{
+				for ( ; it2 != ite2 ; ) {
+					if (*it2 == cl) {
 						this->operators.erase(it2);
 						break ;
 					}
 				}
 			}
+			this->Nbuser -= 1;
 			this->users.erase(it);
 			return (true);
 		}
@@ -94,6 +98,7 @@ bool					channel::deleteClientFromChan(client *cl)
 const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
 const std::string&		channel::getTopic(void) const { return this->topic; }
+const unsigned int&		channel::getNbuser(void) const { return this->Nbuser; }
 
 bool					channel::isOperator(std::string user)
 {

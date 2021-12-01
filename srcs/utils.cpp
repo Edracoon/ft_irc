@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:45:05 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/24 15:28:43 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 16:27:17 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,11 +18,11 @@ void	exit_error(std::string error)
 	exit(EXIT_FAILURE);
 }
 
-const char*	 ft_itos ( int Number )
+std::string	 ft_itos ( int Number )
 {
 	std::ostringstream	ss;
 	ss << Number;
-	return ss.str().c_str();
+	return ss.str();
 }
 
 std::vector<std::string>	ft_split(std::string str, std::string delimiter, int times)
@@ -34,6 +34,7 @@ std::vector<std::string>	ft_split(std::string str, std::string delimiter, int ti
 	while ((pos = str.find(delimiter)) != std::string::npos && times)
 	{
 		token = str.substr(0, pos);
+		// if (pos != 0)
 		tab.push_back(token);
 		str.erase(0, pos + delimiter.length());
 		times--;

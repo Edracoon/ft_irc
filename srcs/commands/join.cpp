@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   join.cpp                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 11:37:22 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 15:57:34 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,6 +30,8 @@ void	sendInfoClient(client* cl)
 	msg = ":NiceIRC 353 " + cl->getNickname() + " = " + cl->curr_chan->getName() + " :";
 	for ( ; it != ite ; it++)
 	{
+		if ((*it)->curr_chan->isOperator((*it)->getNickname()) == true)
+            msg += "@";
 		msg += (*it)->getNickname() + " ";
 	}
 	msg.erase(msg.length() - 1);
@@ -41,6 +43,7 @@ void	sendInfoClient(client* cl)
 
 channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
 {
+	// std::cout << "create_channel -> " << cmd[1] << std::endl;
 	channel*	new_chan = new channel(cmd[1]);
 	new_chan->addClient(cl, cmd);
 	serv->channels.push_back(new_chan);

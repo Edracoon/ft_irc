@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:31 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/29 14:57:54 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 16:27:37 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_
 /* === UTILS FUNCTIONS === */
 
 void						exit_error(std::string error);
-const char*					ft_itos ( int Number );
+std::string					ft_itos(int Number);
 std::vector<std::string>	ft_split(std::string str, std::string delimiter, int times);
 int							ft_strlen(char *str);
 

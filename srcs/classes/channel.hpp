@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 11:37:25 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 15:47:45 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,7 @@ class channel
 				char							status;		// private ; secret ; invitation
 				unsigned int					max_user;
 
+				unsigned int					Nbuser;
 				std::string						topic;
 	
 	public:
@@ -51,6 +52,7 @@ class channel
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
 
+				const unsigned int&		getNbuser(void) const;
 				client*					findClientByName(std::string nickname);
 
 };
