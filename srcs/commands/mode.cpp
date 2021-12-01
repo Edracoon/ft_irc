@@ -35,6 +35,7 @@ void	removeMode(client* cl, std::vector<std::string> cmd)
 {
 	for (unsigned int i = 1; i < cmd[2].size(); i++)
 		cl->curr_chan->modes.erase(cmd[2][i]);
+}
 
 void	addMode(client* cl, std::vector<std::string> cmd)
 {

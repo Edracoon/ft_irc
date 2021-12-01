@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 11:37:36 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 11:39:49 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	else if (cmd_type == PART && cli->isAccepted())
 		cmd_part(cli, cmd, serv);
 	else if (cmd_type == MODE && cli->isAccepted())
-		;
+		cmd_mode(cli, cmd, serv);
 	else if (cmd_type == KICK && cli->isAccepted())
 		cmd_kick(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
