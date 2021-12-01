@@ -45,46 +45,48 @@ void	addMode(client* cl, std::vector<std::string> cmd)
 
 void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 {
-	std::string msg;
-	int i;
+	std::string	msg;
+	int			i;
 
 	if (cmd.size() < 2)
 	{
 		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	}	
-	else if (cmd[1][0] == '#' || cmd[1][0] == '&')
+	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
 	{
-		if (!serv->findChannelByName(cmd[1]))
+		msg = ":NiceIRC 476 " + cl->getNickname() + " " + cmd[1] + " :Bad Channel Mask\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
+	else if (serv->findChannelByName(cmd[1]) == NULL)
+	{
+		msg = ":NiceIRC 403 " + cl->getNickname() + " " + cmd[1] + " :No such channel\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
+	else if (cmd.size() == 2)
+	{
+		msg = ":NiceIRC 324 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :+" + cl->curr_chan->modes + "\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
+	else
+	{
+		if ((i = check_mode(cmd)) == 0)
 		{
-			msg = ":NiceIRC 403 " + cl->getNickname() + " " + cmd[1] + " :No such channel\r\n";
+			msg = ":NiceIRC 324 " + cl->getNickname() + " " + cmd[2][i] + " :is unknown mode char to me for " + cl->curr_chan->getName() + "\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			return ;
+		}
+		if (cmd[2][0] == '+')
+		{
+			addMode(cl, cmd);
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
 			send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		}
-		else if (cmd.size() < 3)
+		else if (cmd[2][0] == '-')
 		{
-			msg = ":NiceIRC 324 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :+" + cl->curr_chan->modes + "\r\n";
+			removeMode(cl, cmd);
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
 			send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		}
-		else
-		{
-			if ((i = check_mode(cmd)) == 0)
-			{
-				msg = ":NiceIRC 324 " + cl->getNickname() + " " + cmd[2][i] + " :is unknown mode char to me for " + cl->curr_chan->getName() + "\r\n";
-				send(cl->getFd(), msg.c_str(), msg.length(), 0);
-				return ;
-			}
-			if (cmd[2][0] == '+')
-			{
-				addMode(cl, cmd);
-				msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
-				send(cl->getFd(), msg.c_str(), msg.length(), 0);
-			}
-			else if (cmd[2][0] == '-')
-			{
-				removeMode(cl, cmd);
-				msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
-				send(cl->getFd(), msg.c_str(), msg.length(), 0);
-			}
 		}
 	}
 }
