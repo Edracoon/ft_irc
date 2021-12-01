@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 20:04:52 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 15:33:17 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,10 +66,24 @@ bool					channel::deleteClientFromChan(client *cl)
 	std::vector<client *>::iterator	it	=	this->users.begin();
 	std::vector<client *>::iterator	ite	=	this->users.end();
 
+	std::vector<client *>::iterator	it2		=	this->operators.begin();
+	std::vector<client *>::iterator	ite2	=	this->operators.end();
+	
 	for ( ; it != ite ; it++ )
 	{
-		if ((*it)->getNickname() == cl->getNickname())
+		if ((*it) == cl)
 		{
+			if (isOperator(cl->getNickname()) == true)
+			{
+				for ( ; it2 != ite2 ; )
+				{
+					if (*it2 == cl)
+					{
+						this->operators.erase(it2);
+						break ;
+					}
+				}
+			}
 			this->users.erase(it);
 			return (true);
 		}

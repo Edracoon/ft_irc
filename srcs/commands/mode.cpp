@@ -3,38 +3,36 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
-int check_mode(std::vector<std::string> cmd)
+int check_mode(std::vector<std::string>& cmd, client* cl)
 {
-	for (unsigned int j = 1; j < cmd[2].size(); j++)
+	std::string		msg;
+	bool			error = false;
+	for (unsigned int j = 1 ; j < cmd[2].length() ; j++)
 	{
-		if (cmd[2][j] == 'o')
-			return j;
-		else if (cmd[2][j] == 'k')
-			return j;
-		else if (cmd[2][j] == 'v')
-			return j;
-		else if (cmd[2][j] == 'l')
-			return j;
-		else if (cmd[2][j] == 'i')
-			return j;
-		else if (cmd[2][j] == 's')
-			return j;
-		else if (cmd[2][j] == 'p')
-			return j;
-		else if (cmd[2][j] == 'b')
-			return j;
-		else if (cmd[2][j] == 'n')
-			return j;
-		else if (cmd[2][j] == 't')
-			return j;
+		if (cmd[2][j] == 'o' || cmd[2][j] == 'k' || cmd[2][j] == 'v' || cmd[2][j] == 'l' || cmd[2][j] == 'i' || \
+			cmd[2][j] == 's' || cmd[2][j] == 'p' || cmd[2][j] == 'b' || cmd[2][j] == 'n' || cmd[2][j] == 't')
+			;
+		else
+		{
+			if (error == false) {
+				msg = ":NiceIRC 472 " + cl->getNickname() + " " + cmd[2][j] + " :is unknown mode char to me for " + cmd[1] + "\r\n";
+				send(cl->getFd(), msg.c_str(), msg.length(), 0);
+				error = true;
+			}
+			std::string::iterator	it = cmd[2].begin() + cmd[2].find(cmd[2][j]);
+			cmd[2].erase(it);
+		}
 	}
 	return (0);
 }
 
 void	removeMode(client* cl, std::vector<std::string> cmd)
 {
-	for (unsigned int i = 1; i < cmd[2].size(); i++)
-		cl->curr_chan->modes.erase(cmd[2][i]);
+	size_t pos;
+	for (unsigned int i = 1; i < cmd[2].length(); i++) {
+		if ((pos = cl->curr_chan->modes.find(cmd[2][i])) != std::string::npos)
+			cl->curr_chan->modes.erase(pos, 1);
+	}
 }
 
 void	addMode(client* cl, std::vector<std::string> cmd)
@@ -46,7 +44,6 @@ void	addMode(client* cl, std::vector<std::string> cmd)
 void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 {
 	std::string	msg;
-	int			i;
 
 	if (cmd.size() < 2)
 	{
@@ -70,22 +67,18 @@ void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 	}
 	else
 	{
-		if ((i = check_mode(cmd)) == 0)
-		{
-			msg = ":NiceIRC 324 " + cl->getNickname() + " " + cmd[2][i] + " :is unknown mode char to me for " + cl->curr_chan->getName() + "\r\n";
-			send(cl->getFd(), msg.c_str(), msg.length(), 0);
-			return ;
-		}
+		check_mode(cmd, cl);
+		std::cout << "cmd[2] = " << cmd[2] << std::endl;
 		if (cmd[2][0] == '+')
 		{
 			addMode(cl, cmd);
-			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2] + "\r\n";
 			send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		}
 		else if (cmd[2][0] == '-')
 		{
 			removeMode(cl, cmd);
-			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2];
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2] + "\r\n";
 			send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		}
 	}

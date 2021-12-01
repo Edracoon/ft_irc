@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 16:34:51 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 13:35:59 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,8 +30,11 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 	}
 	else
 	{
-		msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "127.0.0.1 " + "NICK " + ":" + cmd[1] + "\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		if (cl->nick == true)
+		{
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "127.0.0.1 " + "NICK " + ":" + cmd[1] + "\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		}
 		cl->setNickname(cmd[1]);
 		cl->nick = true;
 		cl->nickname_history.push_back(cmd[1]);
