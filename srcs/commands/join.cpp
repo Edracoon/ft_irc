@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 13:31:50 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 14:22:48 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,11 +38,6 @@ void	norme_client(client* cl)
 	msg = ":NiceIRC 366 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :End of NAMES list\r\n";
 	send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	// ====================== RPL_FOR_MODE =============================
-	if (!cl->curr_chan->modes.empty())
-	{
-		msg = ":NiceIRC 324 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :+" + cl->curr_chan->modes + "\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
 }
 
 channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)

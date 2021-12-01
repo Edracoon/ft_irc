@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 13:33:50 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 13:49:02 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -94,7 +94,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 
 int		parser::whatIsCmd(std::string cmd)
 {
-	for (int i = 0; i < 9 ; i++)
+	for (int i = 0; i < 11 ; i++)
 	{
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);

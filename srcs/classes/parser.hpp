@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 13:32:24 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 13:49:30 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,6 +74,7 @@ void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_join(client* cl, std::vector<std::string>	cmd, server* serv);
 void						sendToChan(client* cl);
 void						cmd_part(client* cl, std::vector<std::string> cmd, server* serv);
+void						cmd_mode(client* cl, std::vector<std::string> cmd, server* serv);
 
 #include "client.hpp"
 #include "../../includes/irc.hpp"
