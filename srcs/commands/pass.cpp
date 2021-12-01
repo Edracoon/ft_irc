@@ -4,10 +4,17 @@
 
 void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 {
+	std::string	msg;
 	if (cmd.size() < 2)
-		send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+	{
+		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cl->isAccepted() == true)
-		send(cl->getFd(), ":Unauthorized command (already registered)\r\n", 44, 0);
+	{
+		msg = ":NiceIRC 462 " + cl->getNickname() + " :Unauthorized command (already registered)\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cl->isAccepted() == false)
 	{
 		/* Check for ':' some client are using it */
@@ -16,7 +23,10 @@ void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 		if (cmd[1] == serv->getPassword())
 			cl->pass = true;
 		else
-			send(cl->getFd(), ":Password incorrect\r\n", 21, 0);
+		{
+			msg = ":NiceIRC 464 " + cl->getNickname() + " :Password incorrect\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		}
 	}
 	else
 		cl->pass = false;

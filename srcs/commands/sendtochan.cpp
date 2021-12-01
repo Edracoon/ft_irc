@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:23 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/27 18:36:03 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/11/30 17:20:20 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
-void	sendToChan(client* cl)
+void	sendToChan(client* cl, std::string msg)
 {
 	if (cl->curr_chan)
 	{
@@ -25,7 +25,6 @@ void	sendToChan(client* cl)
 		{
 			if ((*it)->getNickname() == cl->getNickname())
 				continue ;
-			std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
 			send((*it)->getFd(), msg.c_str() , msg.length(), 0);
 		}
 	}

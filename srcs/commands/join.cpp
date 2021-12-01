@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 14:22:48 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 11:37:22 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
-void	norme_client(client* cl)
+void	sendInfoClient(client* cl)
 {
 	// ==================== Confirm client join chan ===================
 	std::string msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
@@ -27,7 +27,7 @@ void	norme_client(client* cl)
 	std::vector<client *>::iterator it = cl->curr_chan->users.begin();
 	std::vector<client *>::iterator ite = cl->curr_chan->users.end();
 
-	msg = ":NiceIRC 353 " + cl->getNickname() + " == " + cl->curr_chan->getName() + " :";
+	msg = ":NiceIRC 353 " + cl->getNickname() + " = " + cl->curr_chan->getName() + " :";
 	for ( ; it != ite ; it++)
 	{
 		msg += (*it)->getNickname() + " ";
@@ -37,7 +37,6 @@ void	norme_client(client* cl)
 	// ====================== RPL_END_OF_NAMES =========================
 	msg = ":NiceIRC 366 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :End of NAMES list\r\n";
 	send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	// ====================== RPL_FOR_MODE =============================
 }
 
 channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
@@ -54,10 +53,17 @@ channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
 void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 {
 	channel*	curr_chan = NULL;
+	std::string	msg;
 	if (cmd.size() < 2)
-		send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+	{
+		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
-		send(cl->getFd(), (cmd[1] + " :Bad Channel Mask\r\n").c_str(), cmd[1].length() + 20, 0);
+	{
+		msg = ":NiceIRC 476 " + cl->getNickname() + " " + cmd[1] + " :Bad Channel Mask\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+	}
 	else
 	{
 		curr_chan = serv->findChannelByName(cmd[1]);
@@ -73,15 +79,17 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 		if (curr_chan == NULL)
 		{
 			curr_chan = create_channel(cl, cmd, serv);
-			norme_client(cl);
+			sendInfoClient(cl);
 		}
 		else
 		{
+			
 			if (curr_chan->addClient(cl, cmd) == 0)
 				return ;
 			cl->curr_chan = curr_chan;
-			sendToChan(cl);
-			norme_client(cl);
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 JOIN :" + cmd[1] + "\r\n";
+			sendToChan(cl, msg);
+			sendInfoClient(cl);
 		}
 	}
 }

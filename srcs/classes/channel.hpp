@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 12:56:32 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 11:37:25 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -50,8 +50,6 @@ class channel
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
-
-				void					printListUser(client* cli);
 
 				client*					findClientByName(std::string nickname);
 

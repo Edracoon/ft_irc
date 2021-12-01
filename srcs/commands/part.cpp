@@ -9,7 +9,7 @@ void	cmd_part(client* cl, std::vector<std::string> cmd, server* serv)
 	std::string msg;
 	if (cmd.size() < 2)
 	{
-		msg = cmd[0] + " :Not enough parameters\r\n";
+		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		return ;
 	}
@@ -18,17 +18,23 @@ void	cmd_part(client* cl, std::vector<std::string> cmd, server* serv)
 	{
 		if (curr_chan->deleteClientFromChan(cl) == true)
 		{
-			sendToChan(cl);
+			if (cl->getCurrMsg().find(':') != std::string::npos)
+				msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 PART " + cmd[1] + " :" + ft_split(cl->getCurrMsg(), ":", 1)[1] + "\r\n";
+			else
+				msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 PART :" + cmd[1] + "\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			sendToChan(cl, msg);
 			cl->curr_chan = NULL;
 			return ;
 		}
 		else
 		{
-			msg = cmd[1] + " :You're not on that channel\r\n";
+			// :sunshine.freenode.net 442 epfennig #OK :You're not on that channel
+			msg = ":NiceIRC 442 " + cl->getNickname() + " " + cmd[1] + " :You're not on that channel\r\n";
 			send(cl->getFd(), msg.c_str(), msg.length(), 0);
 			return ;
 		}
 	}
-	msg = cmd[1] + " :No such channel\r\n";
+	msg = ":NiceIRC 401 " + cl->getNickname() + " " + cmd[1] + " :No such nick/channel\r\n";;
 	send(cl->getFd(), msg.c_str(), msg.length(), 0);
 }

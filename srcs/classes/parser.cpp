@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/30 13:49:02 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/01 11:37:36 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,11 +14,12 @@
 
 parser::parser()
 {
-	this->tab[0] = "HELP"; this->tab[1] = "PASS";
-	this->tab[2] = "NICK"; this->tab[3] = "USER";
-	this->tab[4] = "OPER"; this->tab[5] = "JOIN";
-	this->tab[6] = "PRIVMSG"; this->tab[7] = "KILL";
-	this->tab[8] = "PART";
+	this->tab[0] = "HELP";		this->tab[1] = "PASS";
+	this->tab[2] = "NICK";		this->tab[3] = "USER";
+	this->tab[4] = "OPER";		this->tab[5] = "JOIN";
+	this->tab[6] = "PRIVMSG";	this->tab[7] = "KILL";
+	this->tab[8] = "PART";		this->tab[9] = "MODE";
+	this->tab[10] = "KICK";
 }
 
 parser::~parser() { }
@@ -82,9 +83,11 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	else if (cmd_type == PART && cli->isAccepted())
 		cmd_part(cli, cmd, serv);
 	else if (cmd_type == MODE && cli->isAccepted())
-		cmd_mode(cli, cmd, serv);
+		;
+	else if (cmd_type == KICK && cli->isAccepted())
+		cmd_kick(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
-		sendToChan(cli);
+		sendToChan(cli, cli->getCurrMsg());
 
 	// Reinitialize data between message
 	this->prefix.clear();
@@ -99,5 +102,5 @@ int		parser::whatIsCmd(std::string cmd)
 		if (cmd == tab[i] || cmd == "/" + tab[i])
 			return (i);
 	}
-	return (9);
+	return (MSG);
 }

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 13:50:22 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/11/30 20:04:52 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,14 @@ const std::string&		channel::getTopic(void) const { return this->topic; }
 
 bool					channel::isOperator(std::string user)
 {
-	(void)user;
+	std::vector<client *>::iterator	it	= this->operators.begin();
+	std::vector<client *>::iterator	ite	= this->operators.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if ((*it)->getNickname() == user)
+			return (true);
+	}
 	return false;
 }
 
@@ -105,17 +112,6 @@ bool					channel::checkBlackList(std::string user) const
 }
 
 bool					channel::checkMaxUser(void) const { return false; }
-
-void					channel::printListUser(client* cli)
-{
-	std::vector<client *>::iterator	it	=	this->users.begin();
-	std::vector<client *>::iterator	ite	=	this->users.end();
-
-	send(cli->getFd(), std::string("$=========< Users in " + name + " >=========$\r\n").c_str(), name.length() + 35, 0);
-	for ( ; it != ite ; it++) {
-		send(cli->getFd(), (std::string("- ") + (*it)->getNickname() + std::string("\r\n")).c_str(), (*it)->getNickname().length() + 4, 0);
-	}
-}
 
 client*					channel::findClientByName(std::string nickname)
 {
