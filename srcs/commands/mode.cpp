@@ -38,7 +38,10 @@ void	removeMode(client* cl, std::vector<std::string> cmd)
 void	addMode(client* cl, std::vector<std::string> cmd)
 {
 	for (unsigned int i = 1; i < cmd[2].size(); i++)
-		cl->curr_chan->modes.push_back(cmd[2][i]);
+	{
+		if (cl->curr_chan->modes.find(cmd[2][i]) == std::string::npos)
+			cl->curr_chan->modes.push_back(cmd[2][i]);
+	}
 }
 
 void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
@@ -46,30 +49,16 @@ void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 	std::string	msg;
 
 	if (cmd.size() < 2)
-	{
-		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}	
+		send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
-	{
-		msg = ":NiceIRC 666 " + cl->getNickname() + " " + cmd[0] + " :We do not handle client modes !\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		return ;
-	}
+		send_error_code(cl->getFd(), "666", cl->getNickname(), cmd[0], ":We do not handle client modes !");
 	else if (serv->findChannelByName(cmd[1]) == NULL)
-	{
-		msg = ":NiceIRC 403 " + cl->getNickname() + " " + cmd[1] + " :No such channel\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "403", cl->getNickname(), cmd[1], ":No such channel");
 	else if (cmd.size() == 2)
-	{
-		msg = ":NiceIRC 324 " + cl->getNickname() + " " + cl->curr_chan->getName() + " :+" + cl->curr_chan->modes + "\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "324", cl->getNickname(), cl->curr_chan->getName() + " :+" + cl->curr_chan->modes, "");
 	else
 	{
 		check_mode(cmd, cl);
-		std::cout << "cmd[2] = " << cmd[2] << std::endl;
 		if (cmd[2][0] == '+')
 		{
 			addMode(cl, cmd);

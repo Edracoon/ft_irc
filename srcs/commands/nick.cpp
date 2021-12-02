@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 11:59:30 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 13:35:59 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 13:58:27 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,16 +18,9 @@ void	cmd_nick(client* cl, std::vector<std::string> cmd,  server* serv)
 {
 	std::string msg;
 	if  (cmd.size() < 2)
-	{
-		msg = ":NiceIRC 481 " + cl->getNickname() + " :No nickname given\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		return ;
-	}
+		send_error_code(cl->getFd(), "431", cl->getNickname(), ":No nickname given", "");
 	if (serv->findClientByName(cmd[1]) != NULL)
-	{
-		msg = ":NiceIRC 443 " + cl->getNickname() + " " + cmd[1] + " :Nickname is already in use\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "443", cl->getNickname(), cmd[1], ":Nickname is already in use");
 	else
 	{
 		if (cl->nick == true)

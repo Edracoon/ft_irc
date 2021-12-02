@@ -9,21 +9,15 @@ void	cmd_part(client* cl, std::vector<std::string> cmd, server* serv)
 	std::string msg;
 	if (cmd.size() < 2)
 	{
-		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
+		send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 		return ;
 	}
+
 	curr_chan = serv->findChannelByName(cmd[1]);
 	if (curr_chan == NULL)
-	{
-		msg = ":NiceIRC 401 " + cl->getNickname() + " " + cmd[1] + " :No such nick/channel\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[1], ":No such nick/channel");
 	else if ((curr_chan != NULL && cl->curr_chan && cl->curr_chan->getName() != cmd[1]) || cl->curr_chan == NULL)
-	{
-		msg = ":NiceIRC 442 " + cl->getNickname() + " " + cmd[1] + " :You're not on that channel\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "442", cl->getNickname(), cmd[1], ":You're not on that channel");
 	else if (curr_chan != NULL && curr_chan->getName() ==  cmd[1])
 	{
 		if (cl->getCurrMsg().find(':') != std::string::npos)
