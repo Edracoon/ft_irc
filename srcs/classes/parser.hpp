@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 15:54:12 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 18:44:58 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,9 @@ void						sendToChan(client* cl, std::string msg);
 void						cmd_part(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_kick(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_mode(client* cl, std::vector<std::string> cmd, server* serv);
-void   						 cmd_list(client* cl, std::vector<std::string> cmd, server* serv);
+void						cmd_list(client* cl, std::vector<std::string> cmd, server* serv);
+void						send_error_code(unsigned int fd, std::string error_code, std::string nickname, \
+											std::string arg1, std::string error_msg);
 
 
 #include "client.hpp"
