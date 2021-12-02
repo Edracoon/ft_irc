@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/02 17:39:49 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 21:23:37 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ bool					channel::deleteClientFromChan(client *cl)
 		{
 			if (isOperator(cl->getNickname()) == true)
 			{
-				for ( ; it2 != ite2 ; ) {
+				for ( ; it2 != ite2 ; it2++ ) {
 					if (*it2 == cl) {
 						this->operators.erase(it2);
 						break ;
@@ -144,4 +144,30 @@ client*					channel::findClientByName(std::string nickname)
 			return (*it);
 	}
 	return NULL;
+}
+
+std::vector<std::string>::iterator	channel::findIteratorStr(std::vector<std::string>& vec, std::string str)
+{
+	std::vector<std::string>::iterator	it = vec.begin();
+	std::vector<std::string>::iterator	ite = vec.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if (*it == str)
+			return (it);
+	}
+	return (ite);
+}
+
+std::vector<client *>::iterator	channel::findIteratorClient(std::vector<client *>& vec, std::string str)
+{
+	std::vector<client *>::iterator	it = vec.begin();
+	std::vector<client *>::iterator	ite = vec.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if ((*it)->getNickname() == str)
+			return (it);
+	}
+	return (ite);
 }
