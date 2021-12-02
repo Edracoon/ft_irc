@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 15:57:34 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/01 18:44:30 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,15 +58,9 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 	channel*	curr_chan = NULL;
 	std::string	msg;
 	if (cmd.size() < 2)
-	{
-		msg = ":NiceIRC 461 " + cl->getNickname() + " " + cmd[0] + " :Not enough parameters\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
-	{
-		msg = ":NiceIRC 476 " + cl->getNickname() + " " + cmd[1] + " :Bad Channel Mask\r\n";
-		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-	}
+		send_error_code(cl->getFd(), "476", cl->getNickname(), cmd[1], ":Bad Channel Mask");
 	else
 	{
 		curr_chan = serv->findChannelByName(cmd[1]);

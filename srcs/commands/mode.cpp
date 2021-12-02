@@ -52,9 +52,9 @@ void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 	}	
 	else if (cmd[1][0] != '#' && cmd[1][0] != '&')
 	{
+		msg = ":NiceIRC 666 " + cl->getNickname() + " " + cmd[0] + " :We do not handle client modes !\r\n";
+		send(cl->getFd(), msg.c_str(), msg.length(), 0);
 		return ;
-		// msg = ":NiceIRC 476 " + cl->getNickname() + " " + cmd[1] + " :Bad Channel Mask\r\n";
-		// send(cl->getFd(), msg.c_str(), msg.length(), 0);
 	}
 	else if (serv->findChannelByName(cmd[1]) == NULL)
 	{
