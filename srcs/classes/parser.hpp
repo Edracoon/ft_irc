@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.hpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 18:44:58 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 14:26:13 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,13 @@ class parser
 				MODE,
 				KICK,
 				LIST,
+				TOPIC,
 				MSG
 			};
 
 			std::string		msg;		// Buffer envoyé au parser
 			std::string		prefix;		// if prefix, print it in place of nickname
-			std::string		tab[11];	// Tableau des commandes
+			std::string		tab[12];	// Tableau des commandes
 
 			int				cmd_type;	// Categorie de commande
 

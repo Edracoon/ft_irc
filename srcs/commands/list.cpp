@@ -11,7 +11,7 @@ void	cmd_list(client* cl, std::vector<std::string> cmd, server* serv)
 		std::vector<channel *>::iterator it = serv->channels.begin();
 		std::vector<channel *>::iterator ite = serv->channels.end();
 
-		if (cmd[1][0] != '#' || cmd.size() == 1)
+		if (cmd[1][0] != '#')
 		{
 			for ( ; it != ite; it++)
 			{
