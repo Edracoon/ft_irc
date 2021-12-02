@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 17:47:10 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 15:32:01 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,6 @@ channel::channel(std::string Name)
 	this->max_user	= 10;
 	this->status	= 'n';	/* No status yet */
 	this->Nbuser	= 0;
-
 }
 
 channel::~channel() {}
@@ -99,6 +98,8 @@ const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
 const std::string&		channel::getTopic(void) const { return this->topic; }
 const unsigned int&		channel::getNbuser(void) const { return this->Nbuser; }
+
+void					channel::setTopic(std::string const & Topic) { this->topic = Topic; }
 
 bool					channel::isOperator(std::string user)
 {
