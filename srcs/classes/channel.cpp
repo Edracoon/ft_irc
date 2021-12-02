@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 17:47:10 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 17:36:17 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -99,6 +99,7 @@ const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
 const std::string&		channel::getTopic(void) const { return this->topic; }
 const unsigned int&		channel::getNbuser(void) const { return this->Nbuser; }
+void					channel::setPassword(std::string pass) { password = pass; }
 
 bool					channel::isOperator(std::string user)
 {

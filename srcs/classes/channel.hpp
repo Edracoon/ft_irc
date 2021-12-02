@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 15:47:45 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 17:35:40 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,7 @@ class channel
 				const std::string&		getTopic(void) const;
 				bool					isOperator(std::string user);
 
+				void					setPassword(std::string pass);
 				char 					checkStatus(void) const;
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;

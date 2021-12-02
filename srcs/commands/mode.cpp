@@ -3,6 +3,23 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
+void	takeParamMode(client* cl, char m, std::vector<std::string> cmd)
+{
+	/* [ +k <key> ] [ +l <max_user> ] [ +b <users_banlist> ] [ +t <topic> ] [ +v <user> ] [ +o <user> ] */
+	if (m == 'k')
+		cl->curr_chan->setPassword(cmd[3]);
+	else if (m == 'l')
+		;
+	else if (m == 'b')
+		;
+	else if (m == 't')
+		;
+	else if (m == 'v')
+		;
+	else if (m == 'o')
+		;
+}
+
 int check_mode(std::vector<std::string>& cmd, client* cl)
 {
 	std::string		msg;
@@ -45,8 +62,9 @@ void	addMode(client* cl, std::vector<std::string> cmd)
 		{
 			if (cmd.size() < 4)
 				send_error_code(cl->getFd(), "696", cl->getNickname(), std::string(1, cmd[2][i]), ":You must specify a parameter for this mode.");
-			else if (1)
-				; /* handle parameters for mode */
+			/* handle parameters for mode */
+			else
+				takeParamMode(cl, cmd[2][i], cmd);
 			mode_arg = true;
 		}
 		else if (mode_arg && cmd[2][i] == 'k' || cmd[2][i] == 'l' || cmd[2][i] == 'b' || \
@@ -70,7 +88,7 @@ void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 	else if (cmd.size() == 2)
 		send_error_code(cl->getFd(), "324", cl->getNickname(), cl->curr_chan->getName() + " :+" + cl->curr_chan->modes, "");
 	else if (serv->findChannelByName(cmd[1])->isOperator(cl->getNickname()) == false)
-		send_error_code(cl->getFd(), "482", cl->getNickname(), cmd[1], ":You must have channel op access or above to set channel mode i");
+		send_error_code(cl->getFd(), "482", cl->getNickname(), cmd[1], ":You must have channel op access or above to set channel modes.");
 	else
 	{
 		check_mode(cmd, cl); // ARG MODES -> [ +k <key> ] [ +l <max_user> ] [ +b <users_banlist> ] [ +t <topic> ] [ +v <user> ] [ +o <user> ]
