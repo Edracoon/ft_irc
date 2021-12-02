@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 15:55:22 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/02 13:47:59 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,11 +15,11 @@
 parser::parser()
 {
 	this->tab[0] = "PASS";		this->tab[1] = "NICK";
-	this->tab[2] = "USER";
-	this->tab[3] = "OPER";		this->tab[4] = "JOIN";
-	this->tab[5] = "PRIVMSG";	this->tab[6] = "KILL";
-	this->tab[7] = "PART";		this->tab[8] = "MODE";
-	this->tab[9] = "KICK";		this->tab[10] = "LIST";
+	this->tab[2] = "USER";		this->tab[3] = "OPER";		
+	this->tab[4] = "JOIN";		this->tab[5] = "PRIVMSG";	
+	this->tab[6] = "KILL";		this->tab[7] = "PART";		
+	this->tab[8] = "MODE";		this->tab[9] = "KICK";		
+	this->tab[10] = "LIST";		this->tab[11] = "TOPIC";
 }
 
 parser::~parser() { }
@@ -86,6 +86,8 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_kick(cli, cmd, serv);
 	else if (cmd_type == LIST && cli->isAccepted())
 		cmd_list(cli, cmd, serv);
+	else if (cmd_type == TOPIC && cli->isAccepted())
+		cmd_topic(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli, cli->getCurrMsg());
 
