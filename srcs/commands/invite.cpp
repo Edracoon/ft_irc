@@ -28,8 +28,9 @@ void	cmd_invite(client* cl, std::vector<std::string> cmd, server* serv)
 			send_error_code(cl->getFd(), "443", cl->getNickname(), cmd[1] + " " + cmd[2], ":is already on channel");
 		else
 		{
-			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 INVITE :" + cmd[1] + "\r\n";
-			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			send_error_code(cl->getFd(), "341", cl->getNickname(), cmd[1], ":" + cmd[2]);
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 INVITE :" + cmd[1] + ":" + cmd[2] + "\r\n";
+			send(curr_client->getFd(), msg.c_str(), msg.length(), 0);
 		}
 	}
 }
