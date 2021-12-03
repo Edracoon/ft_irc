@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:45:05 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 16:27:17 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 13:37:18 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,20 @@ std::vector<std::string>	ft_split(std::string str, std::string delimiter, int ti
 		times--;
 	}
 	tab.push_back(str);
+	return (tab);
+}
+
+std::vector<std::string>	ft_split_c(std::string str, char	c)
+{
+	std::string						buff;
+	std::stringstream				token(str);
+	std::vector<std::string>		tab;
+
+	while (getline(token, buff, c))
+	{
+		if (!buff.empty())
+			tab.push_back(buff);
+	}
 	return (tab);
 }
 

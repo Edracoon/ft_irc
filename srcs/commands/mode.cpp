@@ -3,19 +3,39 @@
 #include "../classes/parser.hpp"
 #include "../classes/channel.hpp"
 
-void	plusParamMode(char m, std::vector<std::string> cmd, channel *curr_chan, server* serv)
+void	plusParamMode(client* cl, char m, std::vector<std::string> cmd, channel *curr_chan, server* serv)
 {
 	/* [ +k <key> ] [ +l <max_user> ] [ +b <users_banlist> ] [ +t <topic> ] [ +v <user> ] [ +o <user> ] */
 	if (m == 'k')
 		curr_chan->setPassword(cmd[3]);
 	else if (m == 'l')
 		curr_chan->max_user = std::stoi(cmd[3]);
-	else if (m == 'b')
-		curr_chan->black_list.push_back(cmd[3]);
+	if (m == 'b')
+	{
+		if (cmd.size() > 3)
+			curr_chan->black_list.push_back(cmd[3]);
+		else
+		{
+			std::vector<std::string>::iterator it = curr_chan->black_list.begin();
+			std::vector<std::string>::iterator ite = curr_chan->black_list.end();
+			for ( ; it != ite; it++)
+				send_error_code(cl->getFd(), "367", cl->getNickname(), curr_chan->getName() + " " + *it + "!*@127.0.0.1 " +  cl->getNickname(), ":");
+		}
+	}
 	else if (m == 't')
-		curr_chan->setTopic(cmd[3]);
+		;
 	else if (m == 'v')
-		curr_chan->muteList.push_back(cmd[3]);
+	{
+		if (cmd.size() > 3)
+			curr_chan->muteList.push_back(cmd[3]);
+		else
+		{
+			std::vector<std::string>::iterator it = curr_chan->muteList.begin();
+			std::vector<std::string>::iterator ite = curr_chan->muteList.end();
+			for ( ; it != ite; it++)
+				send_error_code(cl->getFd(), "367", cl->getNickname(), curr_chan->getName() + " " + *it + "!*@127.0.0.1 " +  cl->getNickname(), ":");
+		}
+	}
 	else if (m == 'o')
 		curr_chan->operators.push_back(serv->findClientByName(cmd[3]));
 }
@@ -34,10 +54,7 @@ void	minusParamMode(char m, std::vector<std::string> cmd, channel *curr_chan)
 		curr_chan->modes.erase(curr_chan->modes.find(m), 1);
 	}
 	else if (m == 't')
-	{
-		curr_chan->setTopic("");
 		curr_chan->modes.erase(curr_chan->modes.find(m), 1);
-	}
 	else if (m == 'b' && cmd.size() < 4)
 	{
 		curr_chan->black_list.clear();
@@ -99,12 +116,11 @@ bool	removeMode(client* cl, std::vector<std::string> cmd, channel* curr_chan)
 	size_t	pos;
 	bool	mode_arg = false;
 	for (unsigned int i = 1; i < cmd[2].length(); i++) {
-		if ((curr_chan->modes.find(cmd[2][i]) != std::string::npos) || cmd[2][i] == 'o')
+		if ((curr_chan->modes.find(cmd[2][i]) != std::string::npos) || cmd[2][i] == 'o' || cmd[2][i] == 'b')
 		{
 			if (!mode_arg && (cmd[2][i] == 'k' || cmd[2][i] == 'l' || cmd[2][i] == 'b' || \
 							cmd[2][i] == 't' || cmd[2][i] == 'v' || cmd[2][i] == 'o'))
 			{
-				std::cout << "hello 0" << std::endl;
 				minusParamMode(cmd[2][i], cmd, curr_chan);
 				mode_arg = true;
 			}
@@ -131,19 +147,17 @@ bool	addMode(client* cl, std::vector<std::string> cmd, channel* curr_chan, serve
 		if (!mode_arg && (cmd[2][i] == 'k' || cmd[2][i] == 'l' || cmd[2][i] == 'b' || \
 						cmd[2][i] == 't' || cmd[2][i] == 'v' || cmd[2][i] == 'o'))
 		{
-			if (cmd.size() < 4)
+			/* handle parameters for mode */
+			if (cmd[2][i] == 'k' || cmd[2][i] == 'l' || \
+						cmd[2][i] == 't' || cmd[2][i] == 'o')
 			{
 				send_error_code(cl->getFd(), "696", cl->getNickname(), std::string(1, cmd[2][i]), ":You must specify a parameter for this mode.");
 				return false;
 			}
-			/* handle parameters for mode */
-			else
-			{
-				plusParamMode(cmd[2][i], cmd, curr_chan, serv);
-				mode_arg = true;
-				if (curr_chan->modes.find(cmd[2][i]) == std::string::npos && cmd[2][i] != 'o')
-					curr_chan->modes.push_back(cmd[2][i]);
-			}
+			plusParamMode(cl, cmd[2][i], cmd, curr_chan, serv);
+			mode_arg = true;
+			if (curr_chan->modes.find(cmd[2][i]) == std::string::npos && cmd[2][i] != 'o' && cmd[2][i] != 'b')
+				curr_chan->modes.push_back(cmd[2][i]);
 		}
 		else if (mode_arg && (cmd[2][i] == 'k' || cmd[2][i] == 'l' || cmd[2][i] == 'b' || \
 							cmd[2][i] == 't' || cmd[2][i] == 'v' || cmd[2][i] == 'o'))
@@ -178,7 +192,6 @@ void	cmd_mode(client* cl, std::vector<std::string> cmd, server* serv)
 		check_mode(cmd, cl); // ARG MODES -> [ +k <key> ] [ +l <max_user> ] [ +b <users_banlist> ] [ +t <topic> ] [ +v <user> ] [ +o <user> ]
 		if (cmd[2][0] == '+')
 		{
-
 			if (addMode(cl, cmd, curr_chan, serv)) {
 				msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cmd[0] + " " + cmd[1] + " :" + cmd[2] + "\r\n";
 				send(cl->getFd(), msg.c_str(), msg.length(), 0);

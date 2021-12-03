@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/02 21:23:48 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 15:08:09 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,7 +62,7 @@ class channel
 				client*					findClientByName(std::string nickname);
 
 				std::vector<std::string>::iterator	findIteratorStr(std::vector<std::string>& vec, std::string str);
-				std::vector<client *>::iterator	findIteratorClient(std::vector<client *>& vec, std::string str);
+				std::vector<client *>::iterator		findIteratorClient(std::vector<client *>& vec, std::string str);
 
 };
 

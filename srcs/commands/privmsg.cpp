@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/02 14:18:33 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 14:50:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,20 +28,23 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		{
 			if (serv->findClientByName(destinataire[i]) == NULL && serv->findChannelByName(destinataire[i]) == NULL)
 			{
-				msg = ":NiceIRC 401 " + cl->getNickname() + " " + cmd[1] + " :No such nick/channel\r\n";
-				send(cl->getFd(), msg.c_str(), msg.length(), 0);
+				send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[1], ":No such nick/channel");
 				return ;
 			}
 		}
-		client	*tmp;
+		client	*tmp_cl;
+		channel	*tmp_chan;
 		msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
-		for (unsigned int i = 0; i < destinataire.size(); i++)
+		for (unsigned int i = 0 ; i < destinataire.size() ; i++)
 		{
-			tmp = serv->findClientByName(destinataire[i]);
-			if (destinataire[i][0] == '#' || destinataire[i][0] == '&')
+			tmp_cl		= serv->findClientByName(destinataire[i]);
+			tmp_chan	= serv->findChannelByName(destinataire[i]);
+			if (tmp_chan != NULL && tmp_chan->modes.find('n') != std::string::npos)
+				send_error_code(cl->getFd(), "404", cl->getNickname(), tmp_chan->getName(), ":You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.");
+			else if ((destinataire[i][0] == '#' || destinataire[i][0] == '&'))
 				sendToChan(cl, msg);
-			else if (tmp->isAccepted())
-				send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+			else if (tmp_cl != NULL && tmp_cl->isAccepted())
+				send(tmp_cl->getFd(), msg.c_str(), msg.length(), 0);
 		}
 	}
 }

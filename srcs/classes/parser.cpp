@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   parser.cpp                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 10:47:07 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/03 13:27:42 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,7 +31,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		return ;
 	this->msg	= msg;
 
-	std::vector<std::string>	cmd = ft_split(this->msg, " ", 512);
+	std::vector<std::string>	cmd = ft_split_c(this->msg, ' ');
 	/* Checking for prefix in case it's not an operator */
 	if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) != cli->getNickname()) && !cli->isOpe())
 	{
@@ -43,13 +43,13 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	{
 		this->prefix	= cmd[0].substr(1, cmd[0].find(' '));
 		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
-		cmd = ft_split(this->msg, " ", 512);
+		cmd = ft_split_c(this->msg, ' ');
 	}
 	else if (cmd[0][0] == ':' && (cmd[0].substr(1, cmd[0].find(' ')) == cli->getNickname()))
 	{
 		this->prefix	= cmd[0].substr(1, cmd[0].find(' '));
 		this->msg		= msg.substr(cmd[0].substr(1, cmd[0].find(' ')).length() + 2, msg.length());
-		cmd = ft_split(this->msg, " ", 512);
+		cmd = ft_split_c(this->msg, ' ');
 	}
 
 	/* Get What is Cmd */

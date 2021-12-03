@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/02 21:23:37 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 15:08:54 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,7 @@ channel::~channel() {}
 
 int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un client, Verif, etc
 {
-	if (this->operators.size() == 0) /* It means it's a new channel */
+	if (this->operators.size() == 0 && this->users.size() == 0) /* It means it's a new channel */
 	{
 		this->Nbuser += 1;
 		this->operators.push_back(cl);
@@ -32,27 +32,49 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 		return (1);
 	}
 
-	else if (this->status == 'p')
+	if (this->max_user == this->Nbuser)
 	{
-		if (cmd.size() < 3)
-			send(cl->getFd(), "ERR_PRIVCHANNEEDKEY\r\n", 22, 0);
-		else if (cmd[2] != this->password)
-			send(cl->getFd(), "ERR_BADCHANNELKEY\r\n", 20, 0);
-		else
-			this->users.push_back(cl);
+		send_error_code(cl->getFd(), "471", cl->getNickname(), this->name, ":Cannot join channel (channel is full)");
+		return (0);
+	}
+
+	/* Handle b mode */
+	else if (this->black_list.size() != 0)
+	{
+		this->findIteratorStr(black_list, cl->getNickname());
+	}
+	
+	else if (cl->invited == this->name)
+	{
+		this->users.push_back(cl);
+		this->Nbuser += 1;
 		return (1);
 	}
 
-	else if (this->status == 'i')
+	/* Handle i mode */
+	else if (this->modes.find('i') != std::string::npos)
 	{
-		send(cl->getFd(), "ERR_INVITEONLYCHAN\r\n", 21, 0);
-		return (0);
+		if (cl->invited != this->name)
+		{
+			send_error_code(cl->getFd(), "473", cl->getNickname(), cmd[1], ":Cannot join channel (invite only)");
+			return (0);
+		}
 	}
 
-	else if (this->users.size() == max_user)
+	/* Handle k mode */
+	else if (this->modes.find('k') != std::string::npos && cmd.size() >= 3)
 	{
-		send(cl->getFd(), "ERR_CHANNELISFULL\r\n", 20, 0);
-		return (0);
+		if (cmd[2] == this->password)
+		{
+			this->users.push_back(cl);
+			this->Nbuser += 1;
+			return (1);
+		}
+		else
+		{
+			send_error_code(cl->getFd(), "475", cl->getNickname(), cmd[1], ":Cannot join channel (incorrect channel key)");
+			return (0);
+		}
 	}
 
 	else

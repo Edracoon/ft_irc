@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 18:44:30 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 15:01:37 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,6 @@ void	sendInfoClient(client* cl)
 
 channel*	create_channel(client* cl, std::vector<std::string> cmd, server* serv)
 {
-	// std::cout << "create_channel -> " << cmd[1] << std::endl;
 	channel*	new_chan = new channel(cmd[1]);
 	new_chan->addClient(cl, cmd);
 	serv->channels.push_back(new_chan);
@@ -80,13 +79,13 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 		}
 		else
 		{
-			
 			if (curr_chan->addClient(cl, cmd) == 0)
 				return ;
 			cl->curr_chan = curr_chan;
 			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 JOIN :" + cmd[1] + "\r\n";
 			sendToChan(cl, msg);
 			sendInfoClient(cl);
+
 		}
 	}
 }
