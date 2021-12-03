@@ -6,7 +6,7 @@
 /*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/02 13:47:59 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/03 10:47:07 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,7 @@ parser::parser()
 	this->tab[6] = "KILL";		this->tab[7] = "PART";		
 	this->tab[8] = "MODE";		this->tab[9] = "KICK";		
 	this->tab[10] = "LIST";		this->tab[11] = "TOPIC";
+	this->tab[12] = "INVITE";	this->tab[13] = "NAMES";
 }
 
 parser::~parser() { }
@@ -88,6 +89,10 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_list(cli, cmd, serv);
 	else if (cmd_type == TOPIC && cli->isAccepted())
 		cmd_topic(cli, cmd, serv);
+	else if (cmd_type == INVITE && cli->isAccepted())
+		cmd_invite(cli, cmd, serv);
+	else if (cmd_type == NAMES && cli->isAccepted())
+		cmd_names(cli, cmd, serv);
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli, cli->getCurrMsg());
 
