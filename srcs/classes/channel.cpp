@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 15:08:54 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:43:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,11 +41,16 @@ int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un 
 	/* Handle b mode */
 	else if (this->black_list.size() != 0)
 	{
-		this->findIteratorStr(black_list, cl->getNickname());
+		if (this->findIteratorStr(black_list, cl->getNickname()) != black_list.end())
+		{
+			send_error_code(cl->getFd(), "474", cl->getNickname(), this->name, ":Cannot join channel (you're banned)");
+			return (0);
+		}
 	}
 	
 	else if (cl->invited == this->name)
 	{
+		cl->invited.clear();
 		this->users.push_back(cl);
 		this->Nbuser += 1;
 		return (1);

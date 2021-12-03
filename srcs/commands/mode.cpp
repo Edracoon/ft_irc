@@ -148,8 +148,8 @@ bool	addMode(client* cl, std::vector<std::string> cmd, channel* curr_chan, serve
 						cmd[2][i] == 't' || cmd[2][i] == 'v' || cmd[2][i] == 'o'))
 		{
 			/* handle parameters for mode */
-			if (cmd[2][i] == 'k' || cmd[2][i] == 'l' || \
-						cmd[2][i] == 't' || cmd[2][i] == 'o')
+			if ((cmd[2][i] == 'k' || cmd[2][i] == 'l' || \
+						cmd[2][i] == 't' || cmd[2][i] == 'o') && cmd.size() < 4)
 			{
 				send_error_code(cl->getFd(), "696", cl->getNickname(), std::string(1, cmd[2][i]), ":You must specify a parameter for this mode.");
 				return false;

@@ -1,0 +1,107 @@
+:*.freenode.net NOTICE * :*** Looking up your ident...
+:*.freenode.net NOTICE * :*** Looking up your hostname...
+:*.freenode.net NOTICE * :*** Could not resolve your hostname: Domain not found; using your IP address (62.129.8.171) instead.
+:*.freenode.net NOTICE * :*** Looking up your ident...
+:*.freenode.net NOTICE * :*** Looking up your hostname...
+:*.freenode.net NOTICE * :*** Could not resolve your hostname: Domain not found; using your IP address (62.129.8.171) instead.
+:*.freenode.net CAP * LS :account-notify account-tag away-notify batch cap-notify chghost draft/relaymsg echo-message extended-join inspircd.org/poison inspircd.org/standard-replies invite-notify labeled-response message-tags multi-prefix sasl server-time setname userhost-in-names 
+PING :jRM|ZgZbDp
+:*.freenode.net CAP Edracoon ACK :multi-prefix
+:*.freenode.net NOTICE Edracoon :*** Ident lookup timed out, using ~epfennig instead.
+:karma.freenode.net 001 Edracoon :Welcome to the freenode IRC Network Edracoon!~epfennig@62.129.8.171
+:karma.freenode.net 002 Edracoon :Your host is *.freenode.net, running version InspIRCd-3
+:karma.freenode.net 003 Edracoon :This server was created 01:34:12 Dec 03 2021
+:karma.freenode.net 004 Edracoon karma.freenode.net InspIRCd-3 BDHILRSTWcdghikorswxz ABCDEFIJKLMNOPQRSTUWXYZbcdefhijklmnoprstuvwz :BEFIJLWXYZbdefhjklovw
+:karma.freenode.net 005 Edracoon ACCEPT=30 AWAYLEN=200 BOT=B CALLERID=g CASEMAPPING=ascii CHANLIMIT=#:20 CHANMODES=IXZbew,k,BEFJLWdfjl,ACDKMNOPQRSTUcimnprstuz CHANNELLEN=64 CHANTYPES=# ELIST=CMNTU ESILENCE=CcdiNnPpTtx EXCEPTS=e :are supported by this server
+:karma.freenode.net 005 Edracoon EXTBAN=,ACNOQRSTUacjmnpruwz HOSTLEN=64 INVEX=I KEYLEN=32 KICKLEN=255 LINELEN=512 MAXLIST=I:100,X:100,b:100,e:100,w:100 MAXTARGETS=20 MODES=20 MONITOR=30 NAMELEN=128 NAMESX NETWORK=freenode :are supported by this server
+:karma.freenode.net 005 Edracoon NICKLEN=30 PREFIX=(Yohv)!@%+ REMOVE SAFELIST SECURELIST=60 SILENCE=32 STATUSMSG=!@%+ TOPICLEN=390 UHNAMES USERIP USERLEN=10 USERMODES=,,s,BDHILRSTWcdghikorwxz VBANLIST :are supported by this server
+:karma.freenode.net 005 Edracoon VLIST=b WATCH=32 WHOX :are supported by this server
+:karma.freenode.net 251 Edracoon :There are 15 users and 17823 invisible on 16 servers
+:karma.freenode.net 252 Edracoon 11 :operator(s) online
+:karma.freenode.net 253 Edracoon 19 :unknown connections
+:karma.freenode.net 254 Edracoon 13886 :channels formed
+:karma.freenode.net 255 Edracoon :I have 4641 clients and 1 servers
+:karma.freenode.net 265 Edracoon :Current local users: 4641  Max: 4941
+:karma.freenode.net 266 Edracoon :Current global users: 17838  Max: 18490
+:karma.freenode.net 375 Edracoon :*.freenode.net message of the day
+:karma.freenode.net 372 Edracoon :  Hello, World!
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Welcome to the
+:karma.freenode.net 372 Edracoon :          __                               _
+:karma.freenode.net 372 Edracoon :         / _|_ __ ___  ___ _ __   ___   __| | ___
+:karma.freenode.net 372 Edracoon :        | |_| '__/ _ \/ _ \ '_ \ / _ \ / _` |/ _ \
+:karma.freenode.net 372 Edracoon :        |  _| | |  __/  __/ | | | (_) | (_| |  __/
+:karma.freenode.net 372 Edracoon :        |_| |_|  \___|\___|_| |_|\___/ \__,_|\___|
+:karma.freenode.net 372 Edracoon :                                   AUTONOMOUS ZONE
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Connect to us on:
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Hostname: irc.freenode.net / chat.freenode.net
+:karma.freenode.net 372 Edracoon :  Plaintext: 6660-6669
+:karma.freenode.net 372 Edracoon :  TLS/SSL: 6697,7000,7070
+:karma.freenode.net 372 Edracoon :  Webchat: https://webchat.freenode.net
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  By connecting to freenode you indicate that you have read and accept our
+:karma.freenode.net 372 Edracoon :  policies and guidelines as set out on https://freenode.net and agree to
+:karma.freenode.net 372 Edracoon :  be scanned for an open proxy.
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  If you are looking for assistance, please try:
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  #help                    - Help with general IRC and Services.
+:karma.freenode.net 372 Edracoon :  #chanhelp                - Help with channels and channel services.
+:karma.freenode.net 372 Edracoon :  #IRC                     - Help with the IRC.com by freenode app.
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Checkout some of our communities and services:
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  #freenode-bbs            - BBS [https://bbs.freenode.net/]
+:karma.freenode.net 372 Edracoon :  #freenode-bbs-discussion - BBS Discussion
+:karma.freenode.net 372 Edracoon :  #freenode-jobs           - Jobs [https://jobs.freenode.net/]
+:karma.freenode.net 372 Edracoon :  #freenode                - Chat about freenode.
+:karma.freenode.net 372 Edracoon :  #anonchan                - Chat anonymously.
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Type /join #<channel>
+:karma.freenode.net 372 Edracoon : 
+:karma.freenode.net 372 Edracoon :  Thank you for using freenode!
+:karma.freenode.net 376 Edracoon :End of message of the day.
+:karma.freenode.net 396 Edracoon joseon-a99.759.j1faas.IP :is now your displayed host
+:Edracoon!~epfennig@joseon-a99.759.j1faas.IP MODE Edracoon :+wRix
+:karma.freenode.net 477 Edracoon Edracoon :You need to be identified to a registered account to message this user
+:NickServ!services@services.joseon.kr NOTICE Edracoon :Nick Edracoon isn't registered.
+:*.freenode.net PONG *.freenode.net :karma.freenode.net
+:Edracoon!~epfennig@joseon-a99.759.j1faas.IP JOIN :#ok
+:karma.freenode.net 353 Edracoon = #ok :@Edracoon
+:karma.freenode.net 366 Edracoon #ok :End of /NAMES list.
+:karma.freenode.net 324 Edracoon #ok :+nt
+:karma.freenode.net 329 Edracoon #ok :1638549011
+:karma.freenode.net 352 Edracoon #ok ~epfennig joseon-a99.759.j1faas.IP *.freenode.net Edracoon H@ :0 Edgar Pfennig
+:karma.freenode.net 315 Edracoon #ok :End of /WHO list.
+:karma.freenode.net 368 Edracoon #ok :End of channel ban list
+:NiceIRC 001 Edracoon :Welcome to the Internet Relay Network Edracoon!epfennig@127.0.0.1
+:NiceIRC 666 Edracoon MODE :We do not handle client modes !
+:Edracoon!epfennig@127.0.0.1 JOIN #ok
+:NiceIRC 332 Edracoon #ok :No Topic set
+:NiceIRC 353 Edracoon = #ok :@Edracoon
+:NiceIRC 366 Edracoon #ok :End of NAMES list
+:NiceIRC 324 Edracoon #ok :+nt 
+:Edracoon!epfennig@127.0.0.1 JOIN #ok1
+:NiceIRC 332 Edracoon #ok1 :No Topic set
+:NiceIRC 353 Edracoon = #ok1 :@Edracoon
+:NiceIRC 366 Edracoon #ok1 :End of NAMES list
+:Edracoon!epfennig@127.0.0.1 JOIN #ok12
+:NiceIRC 332 Edracoon #ok12 :No Topic set
+:NiceIRC 353 Edracoon = #ok12 :@Edracoon
+:NiceIRC 366 Edracoon #ok12 :End of NAMES list
+:Edracoon!epfennig@127.0.0.1 JOIN #ok123
+:NiceIRC 332 Edracoon #ok123 :No Topic set
+:NiceIRC 353 Edracoon = #ok123 :@Edracoon
+:NiceIRC 366 Edracoon #ok123 :End of NAMES list
+:NiceIRC 332 Edracoon #ok 0 :[+nt]
+:NiceIRC 332 Edracoon #ok1 0 :[+nt]
+:NiceIRC 332 Edracoon #ok12 0 :[+nt]
+:NiceIRC 332 Edracoon #ok123 1 :[+nt]
+:NiceIRC 332 Edracoon :End of channel list. 
+:NiceIRC 332 Edracoon #ok 0 :[+nt]
+:NiceIRC 332 Edracoon #ok1 0 :[+nt]
+:NiceIRC 332 Edracoon #ok12 0 :[+nt]
+:NiceIRC 332 Edracoon #ok123 1 :[+nt]
+:NiceIRC 332 Edracoon :End of channel list. 

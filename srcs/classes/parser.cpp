@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 13:27:42 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 18:46:15 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,14 @@
 
 parser::parser()
 {
-	this->tab[0] = "PASS";		this->tab[1] = "NICK";
-	this->tab[2] = "USER";		this->tab[3] = "OPER";		
-	this->tab[4] = "JOIN";		this->tab[5] = "PRIVMSG";	
-	this->tab[6] = "KILL";		this->tab[7] = "PART";		
-	this->tab[8] = "MODE";		this->tab[9] = "KICK";		
-	this->tab[10] = "LIST";		this->tab[11] = "TOPIC";
-	this->tab[12] = "INVITE";	this->tab[13] = "NAMES";
+	this->tab[0] =	"PASS";		this->tab[1] =	"NICK";
+	this->tab[2] =	"USER";		this->tab[3] =	"OPER";		
+	this->tab[4] =	"JOIN";		this->tab[5] =	"PRIVMSG";	
+	this->tab[6] =	"KILL";		this->tab[7] =	"PART";		
+	this->tab[8] =	"MODE";		this->tab[9] =	"KICK";		
+	this->tab[10] =	"LIST";		this->tab[11] =	"TOPIC";
+	this->tab[12] =	"INVITE";	this->tab[13] =	"NAMES";
+	this->tab[14] =	"PING";
 }
 
 parser::~parser() { }
@@ -75,7 +76,7 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_oper(cli, cmd, serv);
 	else if (cmd_type == JOIN && cli->isAccepted())
 		cmd_join(cli, cmd, serv);
-	else if (cmd_type == PRIVMSG && cli->isAccepted())
+	else if ((cmd_type == PRIVMSG || cmd[0] == "NOTICE" || cmd[0] == "/NOTICE") && cli->isAccepted())
 		cmd_privmsg(cli, cmd, serv);
 	else if ((cmd_type == KILL || cmd[0] == "kill") && cli->isAccepted())
 		cmd_kill(cli, cmd, serv);
@@ -93,6 +94,8 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 		cmd_invite(cli, cmd, serv);
 	else if (cmd_type == NAMES && cli->isAccepted())
 		cmd_names(cli, cmd, serv);
+	else if (cmd_type == PING && cli->isAccepted())
+		send_error_code(cli->getFd(), ":NiceIRC", "PONG", "NiceIRC", ":NiceIRC"); // :*.freenode.net PONG *.freenode.net :sunshine.freenode.net
 	else if (cmd_type == MSG && cli->isAccepted())
 		sendToChan(cli, cli->getCurrMsg());
 

@@ -19,13 +19,21 @@ void	cmd_invite(client* cl, std::vector<std::string> cmd, server* serv)
 		if (curr_chan == NULL)
 			send_error_code(cl->getFd(), "403", cl->getNickname(), cmd[2], ":No such channel");
 		else if (curr_client == NULL)
+		{
 			send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[1], ":No such nick");
+		}
 		else if (cl->curr_chan->getName() != curr_chan->getName())
+		{
 			send_error_code(cl->getFd(), "442", cl->getNickname(), cmd[2], ":You're not on that channel!");
-		else if (cl->isOpe() == false)
+		}
+		else if (curr_chan->isOperator(cl->getNickname()) == false)
+		{
 			send_error_code(cl->getFd(), "482", cl->getNickname(), cmd[2], ":You're not channel operator");
-		else if (curr_client->curr_chan->getName() == curr_chan->getName())
+		}
+		else if (curr_client->curr_chan != NULL && curr_client->curr_chan->getName() == curr_chan->getName())
+		{
 			send_error_code(cl->getFd(), "443", cl->getNickname(), cmd[1] + " " + cmd[2], ":is already on channel");
+		}
 		else
 		{
 			send_error_code(cl->getFd(), "341", cl->getNickname(), cmd[1], ":" + cmd[2]);

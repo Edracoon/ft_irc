@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/03 14:50:48 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 17:14:53 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		{
 			tmp_cl		= serv->findClientByName(destinataire[i]);
 			tmp_chan	= serv->findChannelByName(destinataire[i]);
-			if (tmp_chan != NULL && tmp_chan->modes.find('n') != std::string::npos)
+			if (tmp_chan != NULL && tmp_chan->modes.find('n') != std::string::npos && cl->curr_chan != tmp_chan)
 				send_error_code(cl->getFd(), "404", cl->getNickname(), tmp_chan->getName(), ":You cannot send external messages to this channel whilst the +n (noextmsg) mode is set.");
 			else if ((destinataire[i][0] == '#' || destinataire[i][0] == '&'))
 				sendToChan(cl, msg);
