@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:03 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 17:57:45 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:30:04 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 
 class client;
 class server;
+class channel;
 
 class parser
 {
@@ -64,7 +65,7 @@ void						cmd_oper(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv);
 void						cmd_kill(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_join(client* cl, std::vector<std::string>	cmd, server* serv);
-void						sendToChan(client* cl, std::string msg);
+void						sendToChan(client* cl, channel* chan, std::string msg);
 void						cmd_part(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_kick(client* cl, std::vector<std::string> cmd, server* serv);
 void						cmd_mode(client* cl, std::vector<std::string> cmd, server* serv);
@@ -75,7 +76,7 @@ void						cmd_names(client* cl, std::vector<std::string> cmd, server* serv);
 void						send_error_code(unsigned int fd, std::string error_code, std::string nickname, \
 											std::string arg1, std::string error_msg);
 
-
+#include "channel.hpp"
 #include "client.hpp"
 #include "../../includes/irc.hpp"
 

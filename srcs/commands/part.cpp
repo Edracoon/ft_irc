@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/03 17:55:34 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 18:01:05 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:28:56 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,7 +37,7 @@ void	cmd_part(client* cl, std::vector<std::string> cmd, server* serv)
 		else
 			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 PART :" + cmd[1] + "\r\n";
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		sendToChan(cl, msg);
+		sendToChan(cl, NULL, msg);
 		curr_chan->deleteClientFromChan(cl);
 		cl->curr_chan = NULL;
 		return ;

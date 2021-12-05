@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 14:03:44 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/01 18:45:07 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:54:00 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,6 +35,12 @@ void	cmd_kill(client* cl, std::vector<std::string> cmd, server* serv)
 		{
 			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "127.0.0.1 " + "KILL " + ":" + cmd[1] + "\r\n";
 			send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+			if (tmp->curr_chan)
+			{
+				msg = ":" + tmp->getNickname() + "!" + tmp->getUsername() + "@127.0.0.1 PART :" + tmp->curr_chan->getName() + "\r\n";
+				send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+				sendToChan(tmp, NULL, msg);
+			}
 			close(tmp->getFd());
 			serv->deleteClient(tmp->getFd());
 		}

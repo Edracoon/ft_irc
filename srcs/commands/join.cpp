@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 15:49:07 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 15:01:37 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:42:46 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,6 +67,9 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 		/* Leave Channel if Client is already in one */
 		if (cl->curr_chan != NULL)
 		{
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 PART :" + cl->curr_chan->getName() + "\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			sendToChan(cl, NULL, msg);
 			cl->curr_chan->deleteClientFromChan(cl);
 			cl->curr_chan = NULL;
 		}
@@ -83,7 +86,7 @@ void	cmd_join(client* cl, std::vector<std::string> cmd, server* serv)
 				return ;
 			cl->curr_chan = curr_chan;
 			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 JOIN :" + cmd[1] + "\r\n";
-			sendToChan(cl, msg);
+			sendToChan(cl, NULL, msg);
 			sendInfoClient(cl);
 
 		}

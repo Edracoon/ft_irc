@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:37 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 18:10:56 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:09:53 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,7 +79,7 @@ int		server::acceptClient(int kq)
 	this->event_list.resize(event_list.size() + 1);
 	
 	std::cout << "Client[" << cfd << "] accepted !" << std::endl;
-	send_error_code(new_client->getFd(), "PING", ":Hello", "", "");
+	send(new_client->getFd(), "PING :Hello\r\n", 13, 0);
 	return (1);
 }
 

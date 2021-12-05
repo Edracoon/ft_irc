@@ -156,7 +156,7 @@ bool	addMode(client* cl, std::vector<std::string> cmd, channel* curr_chan, serve
 			}
 			plusParamMode(cl, cmd[2][i], cmd, curr_chan, serv);
 			mode_arg = true;
-			if (curr_chan->modes.find(cmd[2][i]) == std::string::npos && cmd[2][i] != 'o' && cmd[2][i] != 'b')
+			if (curr_chan->modes.find(cmd[2][i]) == std::string::npos && cmd[2][i] != 'o' && cmd[2][i] != 'b' && cmd[2][i] != 'v')
 				curr_chan->modes.push_back(cmd[2][i]);
 		}
 		else if (mode_arg && (cmd[2][i] == 'k' || cmd[2][i] == 'l' || cmd[2][i] == 'b' || \

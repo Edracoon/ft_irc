@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/30 18:05:23 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/01 18:44:22 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:28:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,7 @@ void	cmd_kick(client* cl, std::vector<std::string> cmd, server* serv)
 	{
 		msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 KICK " + cmd[1] + " " + cmd[2] + " :" + ft_split(cl->getCurrMsg(), ":", 1)[1];
 		send(cl->getFd(), msg.c_str(), msg.length(), 0);
-		sendToChan(cl, msg);
+		sendToChan(cl, NULL, msg);
 		serv->findChannelByName(cmd[1])->deleteClientFromChan(serv->findClientByName(cmd[2]));
 		serv->findClientByName(cmd[2])->curr_chan = NULL;
 	}

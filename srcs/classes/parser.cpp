@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:11 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 18:46:15 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:29:26 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,9 +95,9 @@ void	parser::parsing(client* cli, std::string msg, server* serv)
 	else if (cmd_type == NAMES && cli->isAccepted())
 		cmd_names(cli, cmd, serv);
 	else if (cmd_type == PING && cli->isAccepted())
-		send_error_code(cli->getFd(), ":NiceIRC", "PONG", "NiceIRC", ":NiceIRC"); // :*.freenode.net PONG *.freenode.net :sunshine.freenode.net
+		send(cli->getFd(), "PONG :NiceIRC\r\n", 15, 0); // :*.freenode.net PONG *.freenode.net :sunshine.freenode.net
 	else if (cmd_type == MSG && cli->isAccepted())
-		sendToChan(cli, cli->getCurrMsg());
+		sendToChan(cli, NULL, cli->getCurrMsg());
 
 	// Reinitialize data between message
 	this->prefix.clear();
