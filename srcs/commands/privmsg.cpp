@@ -3,16 +3,35 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/06 11:40:20 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/06 12:34:40 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../classes/client.hpp"
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
+
+void	bot_send(client* cl)
+{
+	std::string msg;
+	std::string	date;
+
+	std::time_t		time;
+	struct tm		*local;
+
+	time = std::time(&time);
+	local = localtime(&time);
+
+	date = "What time is it ? -> " + ft_itos(local->tm_mday) + "/" + \
+				  ft_itos(local->tm_mon + 1) + "/" + ft_itos(local->tm_year + 1900) + " - " + \
+				  ft_itos(local->tm_hour) + ":" +  ft_itos(local->tm_min) + ":" + ft_itos(local->tm_sec) + ".";
+
+	msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + date + "\r\n";
+	send(cl->getFd(), msg.c_str(), msg.length(), 0);
+}
 
 void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 {
@@ -24,10 +43,9 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		send_error_code(cl->getFd(), "481", cl->getNickname(), ":No text to send", "");
 	else
 	{
-		if (cmd[1] == "bot")
+		if (cmd[1] == "TimeBot")
 		{
-			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + "Hello World\r\n";
-			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			bot_send(cl);
 			return ;
 		}
 		for (unsigned int i = 0; i < destinataire.size(); i++)
