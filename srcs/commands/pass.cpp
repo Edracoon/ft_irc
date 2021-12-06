@@ -1,13 +1,26 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pass.cpp                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2021/12/03 17:55:43 by epfennig          #+#    #+#             */
+/*   Updated: 2021/12/03 17:55:44 by epfennig         ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "../classes/client.hpp"
 #include "../classes/server.hpp"
 #include "../classes/parser.hpp"
 
 void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 {
+	std::string	msg;
 	if (cmd.size() < 2)
-		send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+		send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 	else if (cl->isAccepted() == true)
-		send(cl->getFd(), ":Unauthorized command (already registered)\r\n", 44, 0);
+		send_error_code(cl->getFd(), "462", cl->getNickname(), ":Unauthorized command (already registered)", "");
 	else if (cl->isAccepted() == false)
 	{
 		/* Check for ':' some client are using it */
@@ -16,7 +29,7 @@ void	cmd_pass(client* cl, std::vector<std::string> cmd, server* serv)
 		if (cmd[1] == serv->getPassword())
 			cl->pass = true;
 		else
-			send(cl->getFd(), ":Password incorrect\r\n", 21, 0);
+			send_error_code(cl->getFd(), "464", cl->getNickname(), ":Password incorrect", "");
 	}
 	else
 		cl->pass = false;

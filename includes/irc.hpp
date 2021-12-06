@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:31 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/26 20:34:32 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/03 12:34:20 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,15 +88,16 @@ struct kevent {
 class server;
 
 void	tcp_protocol(server* serv, char* cport);
-void	server_loop(server* serv, int kq, struct kevent change_list, struct kevent event_list[64]);
+void	server_loop(server* serv, int kq);
 int		accept_client(int sfd, int kq, struct kevent change_list, std::map<int, int>* client, int* id);
 void	recev_message(char *buffer, std::map<int, int> client, struct kevent event_list[64], int i);
 
 /* === UTILS FUNCTIONS === */
 
 void						exit_error(std::string error);
-const char*					ft_itos ( int Number );
+std::string					ft_itos(int Number);
 std::vector<std::string>	ft_split(std::string str, std::string delimiter, int times);
+std::vector<std::string>	ft_split_c(std::string str, char	c);
 int							ft_strlen(char *str);
 
 #include "../srcs/classes/server.hpp"

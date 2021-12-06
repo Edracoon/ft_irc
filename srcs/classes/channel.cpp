@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/26 20:34:22 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 13:50:22 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/03 18:43:48 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,45 +17,76 @@ channel::channel(std::string Name)
 	this->name		= Name;
 	this->max_user	= 10;
 	this->status	= 'n';	/* No status yet */
-
+	this->Nbuser	= 0;
 }
 
 channel::~channel() {}
 
 int		channel::addClient(client* cl, std::vector<std::string> cmd)  // JOIN d'un client, Verif, etc
 {
-	if (this->operators.size() == 0) /* It means it's a new channel */
+	if (this->operators.size() == 0 && this->users.size() == 0) /* It means it's a new channel */
 	{
+		this->Nbuser += 1;
 		this->operators.push_back(cl);
 		this->users.push_back(cl);
 		return (1);
 	}
 
-	else if (this->status == 'p')
+	if (this->max_user == this->Nbuser)
 	{
-		if (cmd.size() < 3)
-			send(cl->getFd(), "ERR_PRIVCHANNEEDKEY\r\n", 22, 0);
-		else if (cmd[2] != this->password)
-			send(cl->getFd(), "ERR_BADCHANNELKEY\r\n", 20, 0);
-		else
-			this->users.push_back(cl);
+		send_error_code(cl->getFd(), "471", cl->getNickname(), this->name, ":Cannot join channel (channel is full)");
+		return (0);
+	}
+
+	/* Handle b mode */
+	else if (this->black_list.size() != 0)
+	{
+		if (this->findIteratorStr(black_list, cl->getNickname()) != black_list.end())
+		{
+			send_error_code(cl->getFd(), "474", cl->getNickname(), this->name, ":Cannot join channel (you're banned)");
+			return (0);
+		}
+	}
+	
+	else if (cl->invited == this->name)
+	{
+		cl->invited.clear();
+		this->users.push_back(cl);
+		this->Nbuser += 1;
 		return (1);
 	}
 
-	else if (this->status == 'i')
+	/* Handle i mode */
+	else if (this->modes.find('i') != std::string::npos)
 	{
-		send(cl->getFd(), "ERR_INVITEONLYCHAN\r\n", 21, 0);
-		return (0);
+		if (cl->invited != this->name)
+		{
+			send_error_code(cl->getFd(), "473", cl->getNickname(), cmd[1], ":Cannot join channel (invite only)");
+			return (0);
+		}
 	}
 
-	else if (this->users.size() == max_user)
+	/* Handle k mode */
+	else if (this->modes.find('k') != std::string::npos && cmd.size() >= 3)
 	{
-		send(cl->getFd(), "ERR_CHANNELISFULL\r\n", 20, 0);
-		return (0);
+		if (cmd[2] == this->password)
+		{
+			this->users.push_back(cl);
+			this->Nbuser += 1;
+			return (1);
+		}
+		else
+		{
+			send_error_code(cl->getFd(), "475", cl->getNickname(), cmd[1], ":Cannot join channel (incorrect channel key)");
+			return (0);
+		}
 	}
 
 	else
+	{
+		this->Nbuser += 1;
 		this->users.push_back(cl);
+	}
 
 	return (1);
 }
@@ -66,10 +97,23 @@ bool					channel::deleteClientFromChan(client *cl)
 	std::vector<client *>::iterator	it	=	this->users.begin();
 	std::vector<client *>::iterator	ite	=	this->users.end();
 
+	std::vector<client *>::iterator	it2		=	this->operators.begin();
+	std::vector<client *>::iterator	ite2	=	this->operators.end();
+	
 	for ( ; it != ite ; it++ )
 	{
-		if ((*it)->getNickname() == cl->getNickname())
+		if ((*it) == cl)
 		{
+			if (isOperator(cl->getNickname()) == true)
+			{
+				for ( ; it2 != ite2 ; it2++ ) {
+					if (*it2 == cl) {
+						this->operators.erase(it2);
+						break ;
+					}
+				}
+			}
+			this->Nbuser -= 1;
 			this->users.erase(it);
 			return (true);
 		}
@@ -80,10 +124,21 @@ bool					channel::deleteClientFromChan(client *cl)
 const std::string&		channel::getName(void) const { return this->name; }
 const std::string&		channel::getPassword(void) const { return this->name; }
 const std::string&		channel::getTopic(void) const { return this->topic; }
+const unsigned int&		channel::getNbuser(void) const { return this->Nbuser; }
+void					channel::setPassword(std::string pass) { password = pass; }
+
+void					channel::setTopic(std::string const & Topic) { this->topic = Topic; }
 
 bool					channel::isOperator(std::string user)
 {
-	(void)user;
+	std::vector<client *>::iterator	it	= this->operators.begin();
+	std::vector<client *>::iterator	ite	= this->operators.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if ((*it)->getNickname() == user)
+			return (true);
+	}
 	return false;
 }
 
@@ -106,17 +161,6 @@ bool					channel::checkBlackList(std::string user) const
 
 bool					channel::checkMaxUser(void) const { return false; }
 
-void					channel::printListUser(client* cli)
-{
-	std::vector<client *>::iterator	it	=	this->users.begin();
-	std::vector<client *>::iterator	ite	=	this->users.end();
-
-	send(cli->getFd(), std::string("$=========< Users in " + name + " >=========$\r\n").c_str(), name.length() + 35, 0);
-	for ( ; it != ite ; it++) {
-		send(cli->getFd(), (std::string("- ") + (*it)->getNickname() + std::string("\r\n")).c_str(), (*it)->getNickname().length() + 4, 0);
-	}
-}
-
 client*					channel::findClientByName(std::string nickname)
 {
 	std::vector<client *>::iterator	it	=	this->users.begin();
@@ -127,4 +171,30 @@ client*					channel::findClientByName(std::string nickname)
 			return (*it);
 	}
 	return NULL;
+}
+
+std::vector<std::string>::iterator	channel::findIteratorStr(std::vector<std::string>& vec, std::string str)
+{
+	std::vector<std::string>::iterator	it = vec.begin();
+	std::vector<std::string>::iterator	ite = vec.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if (*it == str)
+			return (it);
+	}
+	return (ite);
+}
+
+std::vector<client *>::iterator	channel::findIteratorClient(std::vector<client *>& vec, std::string str)
+{
+	std::vector<client *>::iterator	it = vec.begin();
+	std::vector<client *>::iterator	ite = vec.end();
+
+	for ( ; it != ite ; it++)
+	{
+		if ((*it)->getNickname() == str)
+			return (it);
+	}
+	return (ite);
 }

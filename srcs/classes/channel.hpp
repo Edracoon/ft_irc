@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   channel.hpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
+/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 18:03:33 by epfennig          #+#    #+#             */
-/*   Updated: 2021/11/27 10:23:37 by fgomez           ###   ########.fr       */
+/*   Updated: 2021/12/03 15:08:09 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,15 +24,18 @@ class channel
 				std::string						name;
 				std::string						password;	// if private
 				char							status;		// private ; secret ; invitation
-				unsigned int					max_user;
 
 				std::string						topic;
 	
 	public:
 				std::vector<client *>			operators;	// operator list in the channel
 				std::vector<client *>			users;		// users list in the channel
+				
 				std::vector<std::string>		black_list;	// mode +b
-				std::vector<char>				modes;		// channels modes
+				std::vector<std::string>		muteList;	// mode +v
+				std::string						modes;		// channels modes
+				unsigned int					Nbuser;
+				unsigned int					max_user;
 
 	public:
 				channel(std::string Name);
@@ -44,16 +47,22 @@ class channel
 				const std::string&		getName(void) const;
 				const std::string&		getPassword(void) const;
 				const std::string&		getTopic(void) const;
+
+				void					setTopic(std::string const & Topic);
+
 				bool					isOperator(std::string user);
 
+				void					setPassword(std::string pass);
 				char 					checkStatus(void) const;
 				bool 					checkMode(char mode) const;
 				bool					checkBlackList(std::string user) const;
 				bool					checkMaxUser(void) const;
 
-				void					printListUser(client* cli);
-
+				const unsigned int&		getNbuser(void) const;
 				client*					findClientByName(std::string nickname);
+
+				std::vector<std::string>::iterator	findIteratorStr(std::vector<std::string>& vec, std::string str);
+				std::vector<client *>::iterator		findIteratorClient(std::vector<client *>& vec, std::string str);
 
 };
 

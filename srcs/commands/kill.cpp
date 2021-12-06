@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/23 14:03:44 by fgomez            #+#    #+#             */
-/*   Updated: 2021/11/27 15:12:18 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/05 18:54:00 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,25 +17,32 @@
 
 void	cmd_kill(client* cl, std::vector<std::string> cmd, server* serv)
 {
+	std::string msg;
 	if (cl->isOpe() == false)
-		send(cl->getFd(), " :Permission Denied- You're not an IRC operator\r\n", 48, 0);
+		send_error_code(cl->getFd(), "481", cl->getNickname(), ":Permission Denied- You're not an IRC operator", "");
 	else if (cmd.size() < 3)
-		send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+		send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 	else if (serv->findClientByName(cmd[1]) == NULL)
-			send(cl->getFd(), (cmd[1] + " :No such nick/channel\r\n").c_str(), cmd[1].length() + 24, 0);
+		send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[1], ":No such nick/channel");
 	else
 	{
 		client *tmp = serv->findClientByName(cmd[1]);
 		if (tmp->getNickname() == cl->getNickname())
-			send(tmp->getFd(), " :You cannot KILL yourself\r\n", 28, 0);
+			send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[0], ":You cannot kill yourself");
 		else if (ft_split(cl->getCurrMsg(), ":", 1).size() == 1)
-			send(cl->getFd(), (cmd[0] + " :Not enough parameters\r\n").c_str(), cmd[0].length() + 25, 0);
+			send_error_code(cl->getFd(), "461", cl->getNickname(), cmd[0], ":Not enough parameters");
 		else
 		{
-			std::string msg = " :You are killed from this server for : " + (ft_split(cl->getCurrMsg(), ":", 1)[1]) + "\r\n";
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "127.0.0.1 " + "KILL " + ":" + cmd[1] + "\r\n";
 			send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+			if (tmp->curr_chan)
+			{
+				msg = ":" + tmp->getNickname() + "!" + tmp->getUsername() + "@127.0.0.1 PART :" + tmp->curr_chan->getName() + "\r\n";
+				send(tmp->getFd(), msg.c_str(), msg.length(), 0);
+				sendToChan(tmp, NULL, msg);
+			}
 			close(tmp->getFd());
-			serv->deleteClient(tmp);
+			serv->deleteClient(tmp->getFd());
 		}
 	}
 }
