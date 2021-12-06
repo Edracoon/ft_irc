@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   privmsg.cpp                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
+/*   By: fgomez <fgomez@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/05 19:20:34 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/06 11:40:20 by fgomez           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,12 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		send_error_code(cl->getFd(), "481", cl->getNickname(), ":No text to send", "");
 	else
 	{
+		if (cmd[1] == "bot")
+		{
+			msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + "Hello World\r\n";
+			send(cl->getFd(), msg.c_str(), msg.length(), 0);
+			return ;
+		}
 		for (unsigned int i = 0; i < destinataire.size(); i++)
 		{
 			if (serv->findClientByName(destinataire[i]) == NULL && serv->findChannelByName(destinataire[i]) == NULL)
