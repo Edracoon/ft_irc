@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/12/08 10:30:28 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/08 10:30:29 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:46:55 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,24 +28,18 @@ void	cmd_invite(client* cl, std::vector<std::string> cmd, server* serv)
 		curr_chan =	serv->findChannelByName(cmd[2]);
 		curr_client	= serv->findClientByName(cmd[1]);
 
+		if (cl->curr_chan == NULL)
+			return ;
 		if (curr_chan == NULL)
 			send_error_code(cl->getFd(), "403", cl->getNickname(), cmd[2], ":No such channel");
 		else if (curr_client == NULL)
-		{
 			send_error_code(cl->getFd(), "401", cl->getNickname(), cmd[1], ":No such nick");
-		}
 		else if (cl->curr_chan->getName() != curr_chan->getName())
-		{
 			send_error_code(cl->getFd(), "442", cl->getNickname(), cmd[2], ":You're not on that channel!");
-		}
 		else if (curr_chan->isOperator(cl->getNickname()) == false)
-		{
 			send_error_code(cl->getFd(), "482", cl->getNickname(), cmd[2], ":You're not channel operator");
-		}
 		else if (curr_client->curr_chan != NULL && curr_client->curr_chan->getName() == curr_chan->getName())
-		{
 			send_error_code(cl->getFd(), "443", cl->getNickname(), cmd[1] + " " + cmd[2], ":is already on channel");
-		}
 		else
 		{
 			send_error_code(cl->getFd(), "341", cl->getNickname(), cmd[1], ":" + cmd[2]);
