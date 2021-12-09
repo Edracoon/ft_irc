@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:45:05 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/03 13:37:18 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:30:07 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,7 +14,7 @@
 
 void	exit_error(std::string error)
 {
-	std::cout << "Error: "<< error << std::endl;
+	std::cout << "[-] Error: "<< error << std::endl;
 	exit(EXIT_FAILURE);
 }
 

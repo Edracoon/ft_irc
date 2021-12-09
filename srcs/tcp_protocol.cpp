@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/15 16:44:18 by epfennig          #+#    #+#             */
-/*   Updated: 2021/12/09 13:49:20 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:30:54 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ void	tcp_protocol(server* serv, char* cport)
 	if(!(serv->sfd = socket(AF_INET, SOCK_STREAM, 0)))
 		exit_error("Socket Error");
 
-	std::cout << "Server socket successfully created: " << serv->sfd << std::endl;
+	std::cout << "[+] Server socket successfully created: " << serv->sfd << "." << std::endl;
 
 	/* Optionnel mais permet d'éviter le bind error à cause de la socket deja utilisé */
 	if (setsockopt(serv->sfd, SOL_SOCKET, SO_REUSEADDR, &enable, sizeof(int)) < 0)
@@ -47,7 +47,7 @@ void	tcp_protocol(server* serv, char* cport)
 	if (listen(serv->sfd, 42) < 0)
 		exit_error("Listen Error: Failed set soket to passive socket");
 
-	std::cout << "Server listening for clients connexion" << std::endl;
+	std::cout << "[+] Server listening for clients connexion." << std::endl;
 
 	// KQUEUE VARIABLES //
 	int					kq;

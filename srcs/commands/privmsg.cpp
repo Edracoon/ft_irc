@@ -6,7 +6,7 @@
 /*   By: epfennig <epfennig@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2021/11/24 09:42:17 by fgomez            #+#    #+#             */
-/*   Updated: 2021/12/09 14:29:21 by epfennig         ###   ########.fr       */
+/*   Updated: 2021/12/09 15:29:08 by epfennig         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,7 +59,6 @@ void	cmd_privmsg(client* cl, std::vector<std::string> cmd,  server* serv)
 		client	*tmp_cl;
 		channel	*tmp_chan;
 		msg = ":" + cl->getNickname() + "!" + cl->getUsername() + "@127.0.0.1 " + cl->getCurrMsg();
-		std::cout << "privmsg -> |" << cl->getCurrMsg() << "|" << std::endl;
 		for (unsigned int i = 0 ; i < destinataire.size() ; i++)
 		{
 			tmp_cl		= serv->findClientByName(destinataire[i]);
